@@ -1,0 +1,161 @@
+<!-- Hero Section Begin -->
+<%- include('./partials/userHeader.ejs') %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<div class="container mt-3">
+  <div class="main-body m-4">
+    <div class="row">
+      <div style="margin: auto" class="col-md-6 col-sm-12">
+        <div class="card p-4" style="border-radius: 15px">
+          <div class="errorMessages" id="errorMessages"></div>
+          <div class="card-body">
+            <form action="otp" method="post" id="myForm">
+              <div class="form-outline mb-4">
+                <label class="form-label">Name</label>
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  name="user_name"
+                  minlength="3"
+                  id="username"
+                  required
+                />
+              </div>
+
+              <div class="form-outline mb-4">
+                <label class="form-label">Email address</label>
+                <input
+                  type="email"
+                  class="form-control form-control-lg"
+                  name="email"
+                  id="userEmail"
+                  required="'"
+                />
+              </div>
+
+              <div class="form-outline mb-4">
+                <label class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control form-control-lg"
+                  minlength="3"
+                  name="password"
+                  id="password"
+                  required="'"
+                />
+              </div>
+              <div id="message"></div>
+
+              <div class="form-outline mb-4">
+                <label class="form-label">Repeat Password</label>
+                <input
+                  type="password"
+                  class="form-control form-control-lg"
+                  name="confirm"
+                  id="confirm_password"
+                  minlength="3"
+                  required=""
+                />
+              </div>
+
+              <button id="btn-submit" class="btn btn-dark btn-lg" type="submit">
+                Register
+              </button>
+              <p class="mt-3">
+                I already have an account?
+                <a href="/login" class="text-dark"><u>Login here</u></a>
+              </p>
+            </form>
+            <div class="card-body">
+              <a
+                class="btn btn-block btn-google"
+                href="/auth/google"
+                role="button"
+              >
+                <i class="fab fa-google"></i>
+                Sign Up with Google
+              </a>
+            </div>
+            <div class="card-body">
+              <a
+                class="btn btn-block btn-facebook"
+                href="/auth/facebook"
+                role="button"
+              >
+                <i class="fab fa-facebook"></i>
+                Sign Up with Facebook
+              </a>
+            </div>
+            <a href="#!" class="small text-muted">Terms of use.</a>
+            <a href="#!" class="small text-muted float-right">Privacy policy</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $("#password, #confirm_password").on("keyup", function () {
+    if ($("#password").val() == $("#confirm_password").val()) {
+      $("#message").html("Matching").css("color", "green");
+    } else $("#message").html("Not Matching").css("color", "red");
+  });
+</script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+  crossorigin="anonymous"
+></script>
+<script>
+  $("#btn-submit").click(function () {
+    $(".errorMessages").hide();
+    var hasError = false;
+    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    var emailaddressVal = $("#userEmail").val();
+    var PasswordVal = $("#userPassword").val();
+    var usernameVal = $("#username").val();
+    var confirmpasswordval = $("#confirmpassword").val();
+
+    if (emailaddressVal == "") {
+      $("#errorEmail").after(
+        '<p class="errorMessages" >This is required. Please make email.</p>'
+      );
+      hasError = true;
+    }
+    if (usernameVal == "") {
+      $("#errorFullname").after(
+        '<p class="errorMessages">This is required. Please make choice</p>'
+      );
+      hasError = true;
+    } else if (!emailReg.test(emailaddressVal)) {
+      $("#errorEmail").after(
+        '<p class="errorMessages">Enter a valid email address.</p>'
+      );
+      hasError = true;
+    }
+    if (PasswordVal == "") {
+      $("#errorPassword").after(
+        '<p class="errorMessages">This is required. Please make choice</p>'
+      );
+      hasError = true;
+    }
+    if (confirmpasswordval !== PasswordVal) {
+      $("#errorConformpassword").after(
+        '<p class="errorMessages">confirm password wrong.</p>'
+      );
+      hasError = true;
+    }
+    if (hasError == true) {
+      return false;
+    }
+  });
+</script>
+<style>
+  .errorMessages {
+    color: red;
+    font-size: small;
+    font-family: "Poppins";
+  }
+</style> -->
+<%- include('./partials/userFooter.ejs') %>

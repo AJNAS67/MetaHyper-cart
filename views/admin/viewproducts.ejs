@@ -1,0 +1,102 @@
+<%- include('./partials/admin-dash.ejs') %>
+<!-- Bootstrap Table with Header - Dark -->
+<div class="card mt-4 m-3">
+  <h5 class="card-header">Products</h5>
+  <div class="table-responsive text-nowrap">
+    <table class="table">
+      <thead class="table-dark">
+        <tr>
+          <th>Sl</th>
+          <th>Name</th>
+          <th>quantity</th>
+          <th>price</th>
+          <th>brand</th>
+          <th>Image</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        <% products.forEach(function(product,i){ %>
+        <tr>
+          <td><%=i+1%></td>
+          <td><%= product.name %></td>
+          <td><%= product.quantity %></td>
+          <td><%= product.price %></td>
+          <td><%= product.brand %></td>
+          <td>
+          
+          <td>
+            <div class="dropdown">
+              <button
+                type="button"
+                class="btn p-0 dropdown-toggle hide-arrow"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bx bx-dots-vertical-rounded"></i>
+              </button>
+              <div class="dropdown-menu">
+                <form
+                  action="/admin/editproductpage/<%= product._id %>"
+                  method="get"
+                  id="edit_form"
+                >
+                  <a
+                    class="dropdown-item"
+                    onclick="document.getElementById('edit_form').submit()"
+                    ;
+                    ><i class="bx bx-edit me-1"></i> Edit</a
+                  >
+                </form>
+                <form
+                  action="/admin/deleteproduct/<%= product._id %>"
+                  method="post"
+                  id="delete_form"
+                >
+                  <a
+                    class="dropdown-item"
+                    onclick="document.getElementById('delete_form').submit()"
+                    ;
+                    ><i class="bx bx-trash me-1"></i> Delete</a
+                  >
+                </form>
+                <% if (product.status=="Blocked" ) { %>
+
+                <form
+                  action="/admin/unblockDress/<%= product._id %> "
+                  method="post"
+                  id="unblock_form"
+                >
+                  <a
+                    class="dropdown-item"
+                    onclick="document.getElementById('unblock_form').submit()"
+                    ;
+                    ><i class="bi bi-unlock"></i> Unblock</a
+                  >
+                </form>
+
+                <% } else { %>
+                <form
+                  action="/admin/blockDress/<%= product._id %>"
+                  method="post"
+                  id="block_form"
+                >
+                  <a
+                    class="dropdown-item"
+                    onclick="document.getElementById('block_form').submit()"
+                    ;
+                    ><i class="bx bx-block me-1"></i> Block</a
+                  >
+                </form>
+                <% } %>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--/ Bootstrap Table with Header Dark -->
+
+<%- include('./partials/admin-footer.ejs') %>

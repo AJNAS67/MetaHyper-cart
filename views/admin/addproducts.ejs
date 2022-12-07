@@ -1,0 +1,85 @@
+<%- include('./partials/admin-dash.ejs') %>
+
+<section>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-6">
+        <h2 class="text-center">Add product</h2>
+        <form
+          action="/admin/add-products"
+          enctype="multipart/form-data"
+          method="post"
+        >
+          <label for="">name</label>
+          <input type="text" name="name" class="form-control" required="" />
+
+          <label for="">quantity</label>
+          <input type="text" name="quantity" class="form-control" required="" />
+
+          <label for="">price</label>
+          <input type="text" name="price" class="form-control" required="" />
+          <label for="">discount</label>
+          <input type="text" name="discount" class="form-control" required="" />
+
+          <div class="form-group">
+            <label for="input-1">Category </label>
+            <select
+              class="group input-group form-control"
+              name="category"
+              
+            >
+              <option value="" selected>Select Your Dress Catogory</option>
+              <% category.forEach(function(x){ %>
+
+              <option value="<%= x._id%>"><%= x.category %></option>
+              <% }) %>
+            </select>
+            <!-- <input type="text" class="form-control" id="input-1" placeholder="Enter Your Name"> -->
+          </div>
+
+          <label for="">description</label>
+
+          <input
+            type="text"
+            name="description"
+            class="form-control"
+            required=""
+          />
+          <label for="">brand</label>
+
+          <select class="group input-group form-control" name="brand" id="">
+            <option value="" selected>Select Your Dress Brand</option>
+            <option value="Indian Terrain">Indian Terrain</option>
+            <option value="Peter England">Peter England</option>
+            <option value="Allen Solly">Allen Solly</option>
+            <option value="Louis Philippe">Louis Philippe</option>
+            <option value="John Players">John Players</option>
+            <option value="Flying Machine">Flying Machine</option>
+          </select>
+
+          <label for="image">image</label>
+          <input
+            type="file"
+            class="form-control"
+            id="image"
+            name="Image"
+            required
+            placeholder="Choose an image"
+            multiple
+          />
+
+          <button type="submit" class="btn btn-success mt-4">
+            Add Product
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+  crossorigin="anonymous"
+></script>
+
+<%- include('./partials/admin-footer.ejs') %>

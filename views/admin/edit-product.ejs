@@ -1,0 +1,109 @@
+<%- include('./partials/admin-dash.ejs') %>
+
+<div class="col-lg">
+  <div class="card">
+    <div class="card-body">
+      <div class="card-title">Edit Product</div>
+      <hr />
+      <form
+        action="/admin/updateProduct/<%= product._id %>"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <label for="">name</label>
+        <input
+          type="text"
+          value="<%= product.name %>"
+          name="name"
+          class="form-control"
+          required=""
+        />
+
+        <label for="">quantity</label>
+        <input
+          type="text"
+          value="<%=product.quantity%>"
+          name="quantity"
+          class="form-control"
+          required=""
+        />
+
+        <label for="">price</label>
+        <input
+          type="text"
+          value="<%=product.price%>"
+          name="price"
+          class="form-control"
+          required=""
+        />
+        <label for="">discount</label>
+        <input
+          type="text"
+          value="<%=product.discount%>"
+          name="discount"
+          class="form-control"
+          required=""
+        />
+
+        <div class="form-group">
+          <label for="input-1">Category </label>
+          <select class="group input-group form-control" name="category" id="">
+            <% category.forEach(function(x){ %> <% if
+            (x.category==product.category){ %>
+            <option selected value="<%= x._id %>"><%= x.category %></option>
+            <% } else { %>
+            <option value="<%= x?._id %>"><%= x?.category %></option>
+            <% } %> <% }) %>
+          </select>
+        </div>
+
+        <label for="">description</label>
+
+        <input
+          type="text"
+          name="description"
+          class="form-control"
+          required=""
+          value="<%=product.description%>"
+        />
+        <label for="">brand</label>
+
+        <select class="group input-group form-control" name="brand" id="">
+          <option value="" selected><%=product.brand%></option>
+          <option value="Indian Terrain">Indian Terrain</option>
+          <option value="Peter England">Peter England</option>
+          <option value="Allen Solly">Allen Solly</option>
+          <option value="Louis Philippe">Louis Philippe</option>
+          <option value="John Players">John Players</option>
+          <option value="Flying Machine">Flying Machine</option>
+        </select>
+
+        <label for="input-5">image</label>
+
+        <img
+          src="/images/productImages/<%= product.image %>"
+          alt=""
+          style="width: 300px; height: 160px"
+        />
+        <input
+          type="file"
+          class="form-control"
+          id="image"
+          name="image"
+          required
+          placeholder="Choose an image"
+          
+          multiple
+        />
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-success px-5">
+            Update Dress
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('./partials/admin-footer.ejs') %>
