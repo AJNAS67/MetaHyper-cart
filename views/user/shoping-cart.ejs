@@ -159,10 +159,10 @@
         <div class="cart__total__procced">
           <h6>Cart total</h6>
           <ul>
-            <li>Subtotal <span>$ 750.0</span></li>
-            <li>Total <span>$ 750.0</span></li>
+            <li>Subtotal <span>$ <%=cartProducts.total%></span></li>
+            <li>Total <span>$ <%=cartProducts.total%></span></li>
           </ul>
-          <a href="#" class="primary-btn">Proceed to checkout</a>
+          <a href="/checkout" onclick="checkStock(event)" class="primary-btn">Proceed to checkout</a>
         </div>
       </div>
     </div>
@@ -202,5 +202,40 @@
     </div>
   </div>
   <% } %>
+
+
+  <script>
+    function checkStock(event) {
+      event.preventDefault()
+      console.log("ok 1");
+      $.ajax({
+        url: "/checkStock",
+        method: "get",
+        success: (response) => {
+          console.log("ok 2");
+          if(response.result){
+            console.log(response,";;;;;;;;;;;;;");
+              alerts = response.result.results;
+          console.log(alerts);
+          if (alerts.length != 0) {
+            
+            let text = ''
+            for(i=0;i<alerts.length;i++){
+            text+= ` ${alerts[i]} <br>`
+            }
+            document.getElementById('stockCheck').innerHTML=text
+            
+          }
+          
+          }
+          else if(response.state==true){
+              console.log('ok 3');
+              window.location.href = '/checkout'
+              
+          }
+        },
+      });
+    }
+  </script>
 
 <%- include('./partials/userFooter.ejs') %>

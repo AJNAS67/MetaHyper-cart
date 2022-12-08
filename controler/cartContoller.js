@@ -17,17 +17,16 @@ module.exports = {
       const findProduct = await productModel.findById(ProductId);
       const userId = req.session.userId;
       let cart = await cartModel.findOne({ userId });
+      console.log(cart,"cart");
 
       if (cart) {
         let itemIndex = cart.products.findIndex(
           (p) => p.ProductId == ProductId
         );
         if (itemIndex > -1) {
-          console.log("ajnas");
           let productItem = cart.products[itemIndex];
           productItem.quantity += quantity;
         } else {
-          console.log("mar");
           cart.products.push({ ProductId, quantity, name, price });
         }
         cart.total = cart.products.reduce((acc, curr) => {

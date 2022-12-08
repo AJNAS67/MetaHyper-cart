@@ -16,6 +16,7 @@ router.get("/otp", userController.optPage);
 router.get("/signup", userController.userSignup);
 router.get("/shopView", userController.shopView);
 router.get("/contact", userController.contact);
+router.get('/profile',userController.profile)
 router.get('/wishlist',authMiddleware.sessionchekDirectLogin,wishlistControler.wishlist)
 router.get('/removeWishlist/:wishId',wishlistControler.removeWishlist)
 router.get(

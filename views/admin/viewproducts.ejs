@@ -23,8 +23,15 @@
           <td><%= product.quantity %></td>
           <td><%= product.price %></td>
           <td><%= product.brand %></td>
-          <td>
-          
+
+          <td class="py-1">
+            <img
+              src="/images/productImages/<%=product.image[0]%>"
+              alt="image"
+              width="90px"
+            />
+          </td>
+
           <td>
             <div class="dropdown">
               <button

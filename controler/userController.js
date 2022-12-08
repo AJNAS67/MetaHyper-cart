@@ -326,4 +326,7 @@ module.exports = {
   //   })
 
   // }
+  profile:(req,res)=>{
+    res.render('user/profile',{login:true, user: req.session.user })
+  }
 };

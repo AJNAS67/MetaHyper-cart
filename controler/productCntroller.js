@@ -26,7 +26,7 @@ module.exports = {
       category,
       description,
       brand,
-      images
+      image
     });
     console.log(newProduct, "newProduct");
 
