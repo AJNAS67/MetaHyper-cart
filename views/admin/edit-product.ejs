@@ -6,7 +6,7 @@
       <div class="card-title">Edit Product</div>
       <hr />
       <form
-        action="/admin/updateProduct/<%= product._id %>"
+        action="/admin/updateProduct?id=<%= product._id %>"
         method="post"
         enctype="multipart/form-data"
       >
@@ -69,7 +69,7 @@
         <label for="">brand</label>
 
         <select class="group input-group form-control" name="brand" id="">
-          <option value="" selected><%=product.brand%></option>
+          <option value="<%=product.brand%>" selected><%=product.brand%></option>
           <option value="Indian Terrain">Indian Terrain</option>
           <option value="Peter England">Peter England</option>
           <option value="Allen Solly">Allen Solly</option>
@@ -81,7 +81,7 @@
         <label for="input-5">image</label>
 
         <img
-          src="/images/productImages/<%= product.image %>"
+          src="/images/productImages/<%= product.image[0] %>"
           alt=""
           style="width: 300px; height: 160px"
         />
@@ -90,9 +90,7 @@
           class="form-control"
           id="image"
           name="image"
-          required
           placeholder="Choose an image"
-          
           multiple
         />
 

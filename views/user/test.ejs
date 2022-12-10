@@ -54,3 +54,56 @@
         font-family: 'Poppins';
       }
     </style>
+
+
+editProduct : async (req,res) => {
+  try{
+      const id = req.query.id
+      const product = await Product.findById({_id:id})
+      if(req.body.images==""||req.body.productDescription==""){
+          await Product.updateOne(
+              {_id:id},
+              {$set:{
+                  productName:req.body.productName,
+                  productCategory:req.body.productCategory,
+                  productPrice:req.body.productPrice,
+                  oldPrice:req.body.oldPrice,
+                  productBrand:req.body.productBrand,
+                  productStock:req.body.productStock,
+                  productDiscount:req.body.productDiscount,
+                  productSize:req.body.productSize,
+                  productColor:req.body.productColor
+              }
+
+          })
+      }else{
+          const productImg = product.productImg
+          for (let i=0;i<productImg.length;i++){
+              const imgPath = productImg[i]
+              fs.unlink('./public/images/'+imgPath,()=>{
+                  console.log("Removed");
+              })
+          }
+          await Product.updateOne(
+              {_id:id},
+              {$set:{
+                  productImg:req.body.images,
+                  productName:req.body.productName,
+                  productCategory:req.body.productCategory,
+                  productPrice:req.body.productPrice,
+                  oldPrice:req.body.oldPrice,
+                  productBrand:req.body.productBrand,
+                  productStock:req.body.productStock,
+                  productDiscount:req.body.productDiscount,
+                  productSize:req.body.productSize,
+                  productColor:req.body.productColor,
+                  productDescription:req.body.productDescription
+              }}
+              )
+
+      }
+      res.redirect('/admin/productList')
+  }catch{
+      res.redirect('/admin/not-available')
+  }
+}

@@ -28,18 +28,17 @@ async function addTocart(prodId, prodName, ProdPrice) {
     });
     
     console.log(response,'resaja');
-    if (response.status == 200) {
-      console.log("working add to cart0000000000000000000000");
-      // toastr.options = {"positionClass" : "toast-bottom-right"}
-      // toastr.error ('thid product is out of stock')
-      await Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "this prouct is out of stock",
-        showConfirmButton: false,
-        timer: 1600,
-      });
-    }
+    // if (response.status == 200) {
+    //   console.log("working add to cart0000000000000000000000");
+      
+    //   await Swal.fire({
+    //     position: "top-end",
+    //     icon: "success",
+    //     title: "this prouct is out of stock",
+    //     showConfirmButton: false,
+    //     timer: 1600,
+    //   });
+    // }
     // window.location.reload();
     // toastr.success('cart item quantity updated')
   } catch (err) {

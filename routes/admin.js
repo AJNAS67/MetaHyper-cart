@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const adminController = require("../controler/adminController");
-const productController = require("../controler/productCntroller");
+const productController = require("../controler/productController");
 const categoryController = require("../controler/categoryController");
 const store=require('../middleware/multer')
 
@@ -22,10 +22,10 @@ router.get("/product", adminController.product);
 router.post("/add-products",store.uploadImages,store.resizeImages,productController.doAddProduct);
 router.post("/add-category", productController.addCategory);
 router.post("/deleteproduct/:id", productController.deleteproduct);
-router.get("/editproductpage/:id",store.uploadImages,store.resizeImages, productController.editproductpage);
+router.get("/editproductpage/:Id",store.uploadImages,store.resizeImages, productController.editproductpage);
 router.post("/deleteCategory/:id", productController.doDeleteCategory);
 
-router.post("/updateProduct/:id", productController.updateProduct);
+router.post("/updateProduct", store.uploadImages,store.resizeImages,productController.updateProduct);
 
 router.post("/unblockUser/:id", adminController.unblockUser);
 router.post("/blockUser/:id", adminController.blockUser);

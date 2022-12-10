@@ -96,11 +96,9 @@
       </div>
     </div>
     <div class="row property__gallery">
-      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       
 
       <% products.forEach(function(product) { %>
-        <p><%=product.image[0]%></p>
 
       <div class="col-lg-3 col-md-4 col-sm-6 mix women">
         <div class="product__item">
@@ -111,7 +109,7 @@
             <div class="label new">New</div>
             <ul class="product__hover">
               <li>
-                <a href="img/product/product-1.jpg" class="image-popup"
+                <a href="/product-details/<%=product.id%>"
                   ><span class="arrow_expand"></span
                 ></a>
               </li>

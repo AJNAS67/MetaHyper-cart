@@ -15,7 +15,6 @@ const upload = multer({
   storage: multerStorage,
   fileFilter: multerFilter,
 });
-
 const uploadFiles = upload.array("image", 4);
 
 const uploadImages = (req, res, next) => {
@@ -39,13 +38,14 @@ const resizeImages = async (req, res, next) => {
   await Promise.all(
     req.files.map(async (file) => {
       const filename = file.originalname.replace(/\..+$/, "");
-      const newFilename = `${file.fieldname}-${Date.now()}.jpeg`;
+      const newFilename = `${file.fieldname}-${Date.now()}-${Math.random()}.jpeg`;
 
       await sharp(file.buffer)
+        .resize(736, 1000)
         .toFormat("jpeg")
         .jpeg({ quality: 90 })
         .toFile(`./public/images/productImages/${newFilename}`);
-      console.log(newFilename,'filenmae');
+      console.log(newFilename, "filenmae");
       req.body.images.push(newFilename);
     })
   );

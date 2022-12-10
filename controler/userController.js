@@ -2,6 +2,7 @@ const User = require("../model/userModel");
 const productModel = require("../model/product");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
+const addressModel = require("../model/addressModel");
 
 var otp = Math.random();
 otp = otp * 1000000;
@@ -95,8 +96,9 @@ module.exports = {
       res.render("user/shopView", { login: false });
     }
   },
+
   productDetails: (req, res) => {
-    res.render("user/product-details", { login: true, user: req.session.user });
+    res.render("user/productDetails", { login: true, user: req.session.user });
   },
 
   checkout: (req, res) => {
@@ -326,7 +328,70 @@ module.exports = {
   //   })
 
   // }
-  profile:(req,res)=>{
-    res.render('user/profile',{login:true, user: req.session.user })
-  }
+  profile: (req, res) => {
+    try {
+      let user = req.session.user;
+      addressModel.find({ userId: req.session.userId }).then((result) => {
+        res.render("user/userProfile", {
+          user,
+          session: req.session,
+          addresses: result,
+          login: true,
+        });
+      });
+    } catch (err) {
+      res.status(429).render("admin/error-429");
+    }
+
+  },
+  prodDetail: async (req, res) => {
+    try {
+      let prodId = req.params.Id;
+      let user = req.session.user;
+      console.log(prodId, "sdfghjkl");
+      let product = await productModel.findOne({ _id: prodId });
+      let imageNum = product.image.length;
+      console.log(imageNum, "imageNum");
+
+      res.render("user/productDetails", {
+        login: true,
+        user,
+        product,
+        imageNum,
+      });
+    } catch (error) {}
+  },
+  addAddress: (req, res) => {
+    try {
+      let user = req.session.user;
+      res.render("user/addAdress", { login: true, user, session: req.session });
+    } catch (error) {
+      res.status(429).render("admin/error-429");
+    }
+  },
+  doAddaddress: async (req, res) => {
+    console.log(req.body, "addre");
+    console.log(req.session.userId,'userId');
+
+    
+    // try {
+    //   const address = await User({
+    //     firstName: req.body.firstName,
+    //     lastName: req.body.lastName,
+    //     mobNumber: req.body.phone,
+    //     email: req.body.email,
+    //     appartment: req.body.appartment,
+    //     homeaddress: req.body.address,
+    //     city: req.body.city,
+    //     state: req.body.state,
+    //     country: req.body.country,
+    //     zipcode: req.body.zipcode,
+    //     userId: req.session.userId,
+    //   });
+    //   address.save().then((result) => {});
+    //   res.redirect("/userProfile");
+    // } catch (error) {
+    //   res.status(429).render("admin/error-429");
+    // }
+  },
 };

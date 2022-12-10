@@ -30,6 +30,13 @@
     <link rel="stylesheet" href="/css/main.css" />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+      integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
   </head>
 
   <body>
@@ -97,7 +104,7 @@
             <div class="header__right">
               <div class="header__right__auth">
                 <% if(login) {%>
-                <a href="/profile"><b>Hi</b> &nbsp;<%= user%></a>
+                <a href="/userProfile"><b>Hi</b> &nbsp;<%= user%></a>
                 <a href="/logout">Logout</a>
 
                 <%}else {%>

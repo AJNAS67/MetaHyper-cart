@@ -21,6 +21,9 @@ const UserSchema = new mongoose.Schema({
     required: true,
     type: String,
   },
+  address: {
+    type:Array
+  },
 
   status: {
     type: String,

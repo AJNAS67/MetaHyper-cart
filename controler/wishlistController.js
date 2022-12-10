@@ -42,9 +42,7 @@ module.exports = {
         let itemIndex = list.myWishlist.findIndex(
           (p) => p.ProductId == ProductId
         );
-        console.log(itemIndex, "itemIndex");
         if (itemIndex > -1) {
-          console.log('hi');
           // list.myWishlist.splice(itemIndex, 1);
         } else {
           list.myWishlist.push({ ProductId, name });
@@ -55,7 +53,6 @@ module.exports = {
           userId: userId,
           myWishlist: [{ ProductId, name }],
         });
-        console.log(list, "list");
         await list.save();
         res.redirect("/");
 

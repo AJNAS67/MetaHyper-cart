@@ -8,7 +8,7 @@
         <div class="breadcrumb__links">
           <a href="./index.html"><i class="fa fa-home"></i> Home</a>
           <a href="#">Women’s </a>
-          <span>Essential structured blazer</span>
+          <span><%=product.name%></span>
         </div>
       </div>
     </div>
@@ -17,51 +17,39 @@
 <!-- Breadcrumb End -->
 
 <!-- Product Details Section Begin -->
+<p><%=product%></p>
 <section class="product-details spad">
   <div class="container">
     <div class="row">
       <div class="col-lg-6">
         <div class="product__details__pic">
           <div class="product__details__pic__left product__thumb nice-scroll">
-            <a class="pt active" href="#product-1">
-              <img src="img/product/details/thumb-1.jpg" alt="" />
-            </a>
-            <a class="pt" href="#product-2">
-              <img src="img/product/details/thumb-2.jpg" alt="" />
-            </a>
-            <a class="pt" href="#product-3">
-              <img src="img/product/details/thumb-3.jpg" alt="" />
-            </a>
-            <a class="pt" href="#product-4">
-              <img src="img/product/details/thumb-4.jpg" alt="" />
-            </a>
+
+            <% for (var i =0; i <= imageNum;  i++ ) { %>
+              <a class="pt active" href="#product-1">
+                <img src="/images/productImages/<%=product.image[i]%>" alt="" />
+              </a>
+              
+              <% } %>
+            
           </div>
-          <div class="product__details__slider__content">
+          <di
+          
+          
+          
+          
+          v class="product__details__slider__content">
             <div class="product__details__pic__slider owl-carousel">
-              <img
+
+              <% for (var i =0; i <= imageNum;  i++ ) { %>
+                <img
                 data-hash="product-1"
                 class="product__big__img"
-                src="img/product/details/product-1.jpg"
+                src="/images/productImages/<%=product.image[i]%>"
                 alt=""
               />
-              <img
-                data-hash="product-2"
-                class="product__big__img"
-                src="img/product/details/product-3.jpg"
-                alt=""
-              />
-              <img
-                data-hash="product-3"
-                class="product__big__img"
-                src="img/product/details/product-2.jpg"
-                alt=""
-              />
-              <img
-                data-hash="product-4"
-                class="product__big__img"
-                src="img/product/details/product-4.jpg"
-                alt=""
-              />
+                <% } %>
+
             </div>
           </div>
         </div>
@@ -69,8 +57,8 @@
       <div class="col-lg-6">
         <div class="product__details__text">
           <h3>
-            Essential structured blazer
-            <span>Brand: SKMEIMore Men Watches from SKMEI</span>
+            <%=product.name%>
+            <span>Brand: <%=product.brand%></span>
           </h3>
           <div class="rating">
             <i class="fa fa-star"></i>
@@ -80,11 +68,9 @@
             <i class="fa fa-star"></i>
             <span>( 138 reviews )</span>
           </div>
-          <div class="product__details__price">$ 75.0 <span>$ 83.0</span></div>
+          <div class="product__details__price">$ <%=product.price%> <span>$ 83.0</span></div>
           <p>
-            Nemo enim ipsam voluptatem quia aspernatur aut odit aut loret fugit,
-            sed quia consequuntur magni lores eos qui ratione voluptatem sequi
-            nesciunt.
+           <%=product.description%>
           </p>
           <div class="product__details__button">
             <div class="quantity">
@@ -93,7 +79,7 @@
                 <input type="text" value="1" />
               </div>
             </div>
-            <a href="#" class="cart-btn"
+            <a onclick="addTocart('<%=product.id%>','<%=product.name%>','<%=product.price%>')" class="cart-btn"
               ><span class="icon_bag_alt"></span> Add to cart</a
             >
             <ul>
@@ -117,7 +103,7 @@
                   </label>
                 </div>
               </li>
-              <li>
+              <!-- <li>
                 <span>Available color:</span>
                 <div class="color__checkbox">
                   <label for="red">
@@ -154,7 +140,7 @@
                     l
                   </label>
                 </div>
-              </li>
+              </li> -->
               <li>
                 <span>Promotions:</span>
                 <p>Free shipping</p>
@@ -258,7 +244,7 @@
         <div class="product__item">
           <div
             class="product__item__pic set-bg"
-            data-setbg="img/product/related/rp-1.jpg"
+            data-setbg="/img/product/related/rp-1.jpg"
           >
             <div class="label new">New</div>
             <ul class="product__hover">
@@ -292,11 +278,11 @@
         <div class="product__item">
           <div
             class="product__item__pic set-bg"
-            data-setbg="img/product/related/rp-2.jpg"
+            data-setbg="/img/product/related/rp-2.jpg"
           >
             <ul class="product__hover">
               <li>
-                <a href="img/product/related/rp-2.jpg" class="image-popup"
+                <a href="/img/product/related/rp-2.jpg" class="image-popup"
                   ><span class="arrow_expand"></span
                 ></a>
               </li>
@@ -325,12 +311,12 @@
         <div class="product__item">
           <div
             class="product__item__pic set-bg"
-            data-setbg="img/product/related/rp-3.jpg"
+            data-setbg="/img/product/related/rp-3.jpg"
           >
             <div class="label stockout">out of stock</div>
             <ul class="product__hover">
               <li>
-                <a href="img/product/related/rp-3.jpg" class="image-popup"
+                <a href="/img/product/related/rp-3.jpg" class="image-popup"
                   ><span class="arrow_expand"></span
                 ></a>
               </li>
@@ -359,7 +345,7 @@
         <div class="product__item">
           <div
             class="product__item__pic set-bg"
-            data-setbg="img/product/related/rp-4.jpg"
+            data-setbg="/img/product/related/rp-4.jpg"
           >
             <ul class="product__hover">
               <li>
@@ -400,7 +386,7 @@
       <div class="col-lg-2 col-md-4 col-sm-4 p-0">
         <div
           class="instagram__item set-bg"
-          data-setbg="img/instagram/insta-1.jpg"
+          data-setbg="/img/instagram/insta-1.jpg"
         >
           <div class="instagram__text">
             <i class="fa fa-instagram"></i>
@@ -411,7 +397,7 @@
       <div class="col-lg-2 col-md-4 col-sm-4 p-0">
         <div
           class="instagram__item set-bg"
-          data-setbg="img/instagram/insta-2.jpg"
+          data-setbg="/img/instagram/insta-2.jpg"
         >
           <div class="instagram__text">
             <i class="fa fa-instagram"></i>
@@ -422,7 +408,7 @@
       <div class="col-lg-2 col-md-4 col-sm-4 p-0">
         <div
           class="instagram__item set-bg"
-          data-setbg="img/instagram/insta-3.jpg"
+          data-setbg="/img/instagram/insta-3.jpg"
         >
           <div class="instagram__text">
             <i class="fa fa-instagram"></i>
@@ -433,7 +419,7 @@
       <div class="col-lg-2 col-md-4 col-sm-4 p-0">
         <div
           class="instagram__item set-bg"
-          data-setbg="img/instagram/insta-4.jpg"
+          data-setbg="/img/instagram/insta-4.jpg"
         >
           <div class="instagram__text">
             <i class="fa fa-instagram"></i>
@@ -444,7 +430,7 @@
       <div class="col-lg-2 col-md-4 col-sm-4 p-0">
         <div
           class="instagram__item set-bg"
-          data-setbg="img/instagram/insta-5.jpg"
+          data-setbg="/img/instagram/insta-5.jpg"
         >
           <div class="instagram__text">
             <i class="fa fa-instagram"></i>
@@ -455,7 +441,7 @@
       <div class="col-lg-2 col-md-4 col-sm-4 p-0">
         <div
           class="instagram__item set-bg"
-          data-setbg="img/instagram/insta-6.jpg"
+          data-setbg="/img/instagram/insta-6.jpg"
         >
           <div class="instagram__text">
             <i class="fa fa-instagram"></i>

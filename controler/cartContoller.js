@@ -36,7 +36,6 @@ module.exports = {
         await cart.save();
         res.redirect("/shoping-cart");
 
-        console.log(itemIndex, "itemindex");
       } else {
         const total = quantity * price;
         cart = new cartModel({
