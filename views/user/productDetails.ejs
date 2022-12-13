@@ -17,7 +17,6 @@
 <!-- Breadcrumb End -->
 
 <!-- Product Details Section Begin -->
-<p><%=product%></p>
 <section class="product-details spad">
   <div class="container">
     <div class="row">
@@ -33,21 +32,18 @@
               <% } %>
             
           </div>
-          <di
-          
-          
-          
-          
-          v class="product__details__slider__content">
+          <div class="product__details__slider__content">
             <div class="product__details__pic__slider owl-carousel">
 
               <% for (var i =0; i <= imageNum;  i++ ) { %>
-                <img
+                <!-- <img
                 data-hash="product-1"
                 class="product__big__img"
                 src="/images/productImages/<%=product.image[i]%>"
                 alt=""
-              />
+              /> -->
+              <a  href="/images/productImages/<%=product.image[i]%>" class="MagicZoom"><img src="/images/productImages/<%=product.image[i]%>" /></a>
+
                 <% } %>
 
             </div>
