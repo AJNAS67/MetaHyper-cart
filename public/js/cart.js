@@ -16,7 +16,6 @@ async function addTocart(prodId, prodName, ProdPrice) {
     title: "cart successfully Updated",
   });
 
-  
   try {
     const response = await axios({
       method: "post",
@@ -26,11 +25,11 @@ async function addTocart(prodId, prodName, ProdPrice) {
         price: Number.parseFloat(ProdPrice),
       },
     });
-    
-    console.log(response,'resaja');
+
+    console.log(response, "resaja");
     // if (response.status == 200) {
     //   console.log("working add to cart0000000000000000000000");
-      
+
     //   await Swal.fire({
     //     position: "top-end",
     //     icon: "success",
@@ -42,8 +41,22 @@ async function addTocart(prodId, prodName, ProdPrice) {
     // window.location.reload();
     // toastr.success('cart item quantity updated')
   } catch (err) {
-    console.log(err,'err');
+    console.log(err, "err");
 
     window.location = "/signin";
   }
+}
+function changeQuantity(prodId, count) {
+  console.log(prodId, "changeQuantity");
+  $.ajax({
+    url: "/change-product-quantity",
+    data: {
+      product: prodId,
+      count: count,
+    },
+    method: "post",
+    success: (response) => {
+      alert(response);
+    },
+  });
 }

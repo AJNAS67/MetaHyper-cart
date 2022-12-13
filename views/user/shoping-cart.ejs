@@ -32,11 +32,15 @@
               </tr>
             </thead>
             <tbody>
-            <% cartProducts.products.forEach((p) => { %>
+              <% cartProducts.products.forEach((p) => { %>
 
               <tr>
                 <td class="cart__product__item">
-                  <img src="/images/productImages/<%= p.ProductId?.image[0]%>" style="width: 30%;" alt="" />
+                  <img
+                    src="/images/productImages/<%= p.ProductId?.image[0]%>"
+                    style="width: 30%"
+                    alt=""
+                  />
                   <div class="cart__product__item__title">
                     <h6><%=p.name%></h6>
                     <div class="rating">
@@ -48,86 +52,75 @@
                     </div>
                   </div>
                 </td>
-                <td class="cart__price">$ <%=p.price%></td>
-                <td class="cart__quantity">
-                  <div class="pro-qty">
-                    <input type="text" value="<%p.quantity%>" />
-                  </div>
-                </td>
-                <td class="cart__total"><%= p.quantity*p.price %></td>
-                <td class="cart__close"><a href="/removeCart/<%=p._id%>"><span class="icon_close"></span></a></td>
-              </tr>
-            <% }) %>
 
-              <!-- <tr>
-                <td class="cart__product__item">
-                  <img src="img/shop-cart/cp-2.jpg" alt="" />
-                  <div class="cart__product__item__title">
-                    <h6>Zip-pockets pebbled tote briefcase</h6>
-                    <div class="rating">
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                    </div>
-                  </div>
-                </td>
-                <td class="cart__price">$ 170.0</td>
+                <!-- <td id="totalPrice"><%=p._id%></td> -->
+                <td id="price<%=p._id%>" class="cart__price"><%=p.price%></td>
+                <!-- <td>
+                  <button
+                    class="cart-item-count mr-3"
+                    onclick="changeQuantity('<%=p._id%>',-1)"
+                  >
+                    -</button
+                  ><span id="<%=p._id%>"><%=p.quantity%></span>
+                  <button
+                    class="cart-item-count mr-3"
+                    onclick="changeQuantity('<%=p._id%>',1)"
+                  >
+                    +
+                  </button>
+                </td> -->
+
+                <!-- <td>
+                  <button
+                    class="cart-item-count mr-3"
+                    onclick="QuantityInc('<%=p._id%>')"
+                  >
+                    -</button
+                  ><span id="<%=p._id%>"><%=p.quantity%></span>
+                  <button
+                    class="cart-item-count mr-3"
+                    onclick="QuantityDec('<%=p._id%>')"
+                  >
+                    +
+                  </button>
+                </td> -->
                 <td class="cart__quantity">
-                  <div class="pro-qty">
-                    <input type="text" value="1" />
+                  <div class="product_count">
+                    <input
+                      type="text"
+                      name="quantity"
+                      id="sst<%=p._id %>"
+                      maxlength="12"
+                      value="<%=p.quantity %>"
+                      title="Quantity:"
+                      class="input-text qty"
+                    />
+                    <button
+                      onclick="var result = document.getElementById('sst<%= p._id %>');QuantityInc('<%= p._id %>'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+                      class="increase items-count"
+                      type="button"
+                    >
+                      <i class="lnr lnr-chevron-up"></i>
+                    </button>
+                    <button
+                      onclick="var result = document.getElementById('sst<%= p._id %>');QuantityDec('<%= p._id %>',result.value); var sst = result.value; if( !isNaN( sst & sst > 1) ) result.value--;return false;"
+                      class="reduced items-count"
+                      type="button"
+                    >
+                      <i class="lnr lnr-chevron-down"></i>
+                    </button>
                   </div>
                 </td>
-                <td class="cart__total">$ 170.0</td>
-                <td class="cart__close"><span class="icon_close"></span></td>
+                <td class="cart__total" id="totalPrice<%= p._id %>">
+                  <%= p.quantity*p.price %>
+                </td>
+                <td class="cart__close">
+                  <a href="/removeCart/<%=p._id%>"
+                    ><span class="icon_close"></span
+                  ></a>
+                </td>
               </tr>
-              <tr>
-                <td class="cart__product__item">
-                  <img src="img/shop-cart/cp-3.jpg" alt="" />
-                  <div class="cart__product__item__title">
-                    <h6>Black jean</h6>
-                    <div class="rating">
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                    </div>
-                  </div>
-                </td>
-                <td class="cart__price">$ 85.0</td>
-                <td class="cart__quantity">
-                  <div class="pro-qty">
-                    <input type="text" value="1" />
-                  </div>
-                </td>
-                <td class="cart__total">$ 170.0</td>
-                <td class="cart__close"><span class="icon_close"></span></td>
-              </tr>
-              <tr>
-                <td class="cart__product__item">
-                  <img src="img/shop-cart/cp-4.jpg" alt="" />
-                  <div class="cart__product__item__title">
-                    <h6>Cotton Shirt</h6>
-                    <div class="rating">
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                    </div>
-                  </div>
-                </td>
-                <td class="cart__price">$ 55.0</td>
-                <td class="cart__quantity">
-                  <div class="pro-qty">
-                    <input type="text" value="1" />
-                  </div>
-                </td>
-                <td class="cart__total">$ 110.0</td>
-                <td class="cart__close"><span class="icon_close"></span></td>
-              </tr> -->
+              <% }) %>
             </tbody>
           </table>
         </div>
@@ -159,10 +152,12 @@
         <div class="cart__total__procced">
           <h6>Cart total</h6>
           <ul>
+            <h5>Subtotal</h5>
+            <h5>$<span id="subtotal"><%= cartProducts.total %></span></h5>
             <li>Subtotal <span>$ <%=cartProducts.total%></span></li>
             <li>Total <span>$ <%=cartProducts.total%></span></li>
           </ul>
-          <a href="/checkout"  class="primary-btn">Proceed to checkout</a>
+          <a href="/checkout" class="primary-btn">Proceed to checkout</a>
         </div>
       </div>
     </div>
@@ -170,72 +165,139 @@
 </section>
 <!-- Shop Cart Section End -->
 
-
 <% }else{ %>
-  <div class="container">
-    <div class="row text-center">
-      <div class="col-md-12 mt-5">
-        <div>
-          <img src="/images/product/emptycart.png" style="width: 44%;" alt="" />
-        </div>
-        <div class="">
-          <div class="cart__btn">
-            <a href="/">Continue Shopping</a>
-          </div>
+<div class="container">
+  <div class="row text-center">
+    <div class="col-md-12 mt-5">
+      <div>
+        <img src="/images/product/emptycart.png" style="width: 44%" alt="" />
+      </div>
+      <div class="">
+        <div class="cart__btn">
+          <a href="/">Continue Shopping</a>
         </div>
       </div>
     </div>
   </div>
-  <% } %> <% }else { %>
-  <div class="container">
-    <div class="row text-center">
-      <div class="col-md-12 mt-5">
-        <div>
-          <img src="/images/product/emptycart.png" style="width: 44%;" alt="" />
-        </div>
-        <div >
-          <div class="cart__btn">
-            <a href="/">Continue Shopping</a>
-          </div>
+</div>
+<% } %> <% }else { %>
+<div class="container">
+  <div class="row text-center">
+    <div class="col-md-12 mt-5">
+      <div>
+        <img src="/images/product/emptycart.png" style="width: 44%" alt="" />
+      </div>
+      <div>
+        <div class="cart__btn">
+          <a href="/">Continue Shopping</a>
         </div>
       </div>
     </div>
   </div>
-  <% } %>
+</div>
+<tr>
+  <td><p class="text-danger" id="stockCheck"></p></td>
+  <td></td>
+  <td>
+    <h5>Subtotal</h5>
+  </td>
+  <td>
+    <h5>$<span id="subtotal"><%= cartProducts.total %></span></h5>
+  </td>
+</tr>
+<% } %>
 
+<script>
+  function QuantityInc(ProductId) {
+    $.ajax({
+      url: "/quantityInc/" + ProductId,
+      method: "get",
+      success: (response) => {
+        if (response.status) {
+          console.log("susses");
+          let prodPrice = $(`#price${ProductId}`).html();
+          let productPrice = parseInt(prodPrice);
 
-  <script>
-    function checkStock(event) {
-      event.preventDefault()
-      console.log("ok 1");
+          console.log(`#totalPrice${ProductId}`, "`#totalPrice+${ProductId}`");
+          let price = $(`#totalPrice${ProductId}`).html();
+          let Price = parseInt(price);
+
+          let quantity = document.getElementById(`sst${ProductId}`).value;
+          let Quantity = parseInt(quantity);
+
+          document.getElementById(`totalPrice${ProductId}`).innerHTML =
+            Quantity * productPrice;
+
+          let subtotal = document.getElementById("subtotal").innerHTML;
+          subtotal = parseInt(subtotal);
+          document.getElementById("subtotal").innerHTML =
+            subtotal + productPrice;
+        }
+      },
+    });
+  }
+  function QuantityDec(ProductId, count) {
+    if (count > 1) {
       $.ajax({
-        url: "/checkStock",
+        url: "/quantityDec/" + ProductId,
         method: "get",
         success: (response) => {
-          console.log("ok 2");
-          if(response.result){
-            console.log(response,";;;;;;;;;;;;;");
-              alerts = response.result.results;
-          console.log(alerts);
-          if (alerts.length != 0) {
-            
-            let text = ''
-            for(i=0;i<alerts.length;i++){
-            text+= ` ${alerts[i]} <br>`
-            }
-            document.getElementById('stockCheck').innerHTML=text
-            
-          }
-          
-          }
-          else if(response.state==true){
-              console.log('ok 3');
-              window.location.href = '/checkout'
-              
+          if (response.status) {
+            let Quantity = document.getElementById("sst" + ProductId).value;
+            console.log(Quantity);
+            let Price = document.getElementById("price" + ProductId).innerHTML;
+            console.log(Price);
+            document.getElementById("totalPrice" + ProductId).innerHTML =
+              Quantity * Price;
+            let subtotal = document.getElementById("subtotal").innerHTML;
+            subtotal = parseInt(subtotal);
+            Price = parseInt(Price);
+            document.getElementById("subtotal").innerHTML = subtotal - Price;
           }
         },
       });
     }
-  </script>
+  }
+</script>
+
+<script>
+  function myFunction() {
+    var x = document.getElementById("ajnas").value;
+    console.log(x, "ggggg");
+  } // function quantyIncDec(event){
+  //   console.log(event,'event');
+  //   console.log('lllllllllllllllllllllllllllllllllllllllquality');
+
+  // }
+</script>
+
+<script>
+  function checkStock(event) {
+    event.preventDefault();
+    console.log("ok 1");
+    $.ajax({
+      url: "/checkStock",
+      method: "get",
+      success: (response) => {
+        console.log("ok 2");
+        if (response.result) {
+          console.log(response, ";;;;;;;;;;;;;");
+          alerts = response.result.results;
+          console.log(alerts);
+          if (alerts.length != 0) {
+            let text = "";
+            for (i = 0; i < alerts.length; i++) {
+              text += ` ${alerts[i]} <br>`;
+            }
+            document.getElementById("stockCheck").innerHTML = text;
+          }
+        } else if (response.state == true) {
+          console.log("ok 3");
+          window.location.href = "/checkout";
+        }
+      },
+    });
+  }
+</script>
 
 <%- include('./partials/userFooter.ejs') %>

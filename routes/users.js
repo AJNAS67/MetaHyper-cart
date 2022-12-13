@@ -61,4 +61,8 @@ router.post("/addtoWishlist/:prodId", wishlistControler.addtoWishlist);
 router.get("/product-details/:Id", userController.prodDetail);
 router.get('/addAddress',userController.addAddress)
 router.post('/addAddress',userController.doAddaddress)
+router.get('/quantityDec/:proid',cartController.QuantityDec)
+
+router.get('/quantityInc/:proid',cartController.QuantityInc)
+router.post('/change-product-quantity',cartController.changeProductQuantity)
 module.exports = router;

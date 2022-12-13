@@ -3,6 +3,7 @@ const productModel = require("../model/product");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const addressModel = require("../model/addressModel");
+const cartModel = require("../model/cart");
 
 var otp = Math.random();
 otp = otp * 1000000;
@@ -27,12 +28,20 @@ var Confirm;
 
 module.exports = {
   homeView: async (req, res) => {
+    let userId = req.session.userId;
+    const cartView = await cartModel.findOne({ userId });
+    const cartNum = cartView.products.length;
+    console.log(
+      cartView,
+      "cartViewcartViewcartViewcartViewcartViewcartViewcartView"
+    );
     const products = await productModel.find();
     if (req.session.userLogin) {
       res.render("user/home", {
         login: true,
         user: req.session.user,
         products,
+        cartNum,
       });
     } else {
       res.render("user/home", { login: false, products });
@@ -342,7 +351,6 @@ module.exports = {
     } catch (err) {
       res.status(429).render("admin/error-429");
     }
-
   },
   prodDetail: async (req, res) => {
     try {
@@ -371,9 +379,8 @@ module.exports = {
   },
   doAddaddress: async (req, res) => {
     console.log(req.body, "addre");
-    console.log(req.session.userId,'userId');
+    console.log(req.session.userId, "userId");
 
-    
     // try {
     //   const address = await User({
     //     firstName: req.body.firstName,
