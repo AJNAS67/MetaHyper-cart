@@ -2,7 +2,7 @@ const cartModel = require("../model/cart");
 const productModel = require("../model/product");
 const { login } = require("./userController");
 const express = require("express");
-const userHelpers=require('../helpers/user-helper')
+const userHelpers = require("../helpers/user-helper");
 
 const app = express();
 
@@ -102,13 +102,17 @@ module.exports = {
   },
   QuantityDec: async (req, res) => {
     let userCart = await cartModel.findOne({ userId: req.session.userId });
+    console.log(userCart, "userCart");
+
     let ProductIndex = userCart.products.findIndex(
       (Product) => Product._id == req.params.proid
     );
 
     let arr = [...userCart.products];
+    console.log(arr, "arrrrrrr");
 
     let productItem = arr[ProductIndex];
+    console.log(productItem, "productItem");
     userCart.total = userCart.total - productItem.price * productItem.quantity;
     productItem.quantity = productItem.quantity - 1;
     arr[ProductIndex] = productItem;
@@ -118,9 +122,7 @@ module.exports = {
     res.json({ status: true });
   },
   QuantityInc: async (req, res) => {
-    console.log("hi");
     let userCart = await cartModel.findOne({ userId: req.session.userId });
-    console.log(userCart, "userCart");
     let productIndex = userCart.products.findIndex(
       (product) => product._id == req.params.proid
     );
@@ -138,10 +140,9 @@ module.exports = {
   },
   changeProductQuantity: (req, res) => {
     let user = req.session.userId;
-    userHelpers.changeProductQuantity(req.body,user).then((aj)=>{
-      console.log(aj,'ajjjjjjjjjjjjjjjjjjjjjjjjjjj');
-      res.json(aj)
-
-    })
+    userHelpers.changeProductQuantity(req.body, user).then((aj) => {
+      console.log(aj, "ajjjjjjjjjjjjjjjjjjjjjjjjjjj");
+      res.json(aj);
+    });
   },
 };

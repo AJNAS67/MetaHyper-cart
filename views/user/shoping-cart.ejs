@@ -58,32 +58,23 @@
                 <!-- <td>
                   <button
                     class="cart-item-count mr-3"
-                    onclick="changeQuantity('<%=p._id%>',-1)"
+                    onclick="var result = document.getElementById('sst<%= p._id %>');QuantityDec('<%= p._id %>',result.value); var sst = result.value; if( !isNaN( sst & sst > 1) ) result.value--;return false;"
                   >
                     -</button
-                  ><span id="<%=p._id%>"><%=p.quantity%></span>
+                  ><span
+                    name="quantity"
+                    value="<%=p.quantity %>"
+                    id="sst<%=p._id %>"
+                    ><%=p.quantity%></span
+                  >
                   <button
                     class="cart-item-count mr-3"
-                    onclick="changeQuantity('<%=p._id%>',1)"
+                    onclick="var result = document.getElementById('sst<%= p._id %>');QuantityInc('<%= p._id %>'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
                   >
                     +
                   </button>
                 </td> -->
 
-                <!-- <td>
-                  <button
-                    class="cart-item-count mr-3"
-                    onclick="QuantityInc('<%=p._id%>')"
-                  >
-                    -</button
-                  ><span id="<%=p._id%>"><%=p.quantity%></span>
-                  <button
-                    class="cart-item-count mr-3"
-                    onclick="QuantityDec('<%=p._id%>')"
-                  >
-                    +
-                  </button>
-                </td> -->
                 <td class="cart__quantity">
                   <div class="product_count">
                     <input
@@ -100,17 +91,33 @@
                       class="increase items-count"
                       type="button"
                     >
-                      <i class="lnr lnr-chevron-up"></i>
+                      +
                     </button>
                     <button
                       onclick="var result = document.getElementById('sst<%= p._id %>');QuantityDec('<%= p._id %>',result.value); var sst = result.value; if( !isNaN( sst & sst > 1) ) result.value--;return false;"
                       class="reduced items-count"
                       type="button"
                     >
-                      <i class="lnr lnr-chevron-down"></i>
+                      -
                     </button>
                   </div>
                 </td>
+
+                <!-- <td>
+                  <button
+                    class="cart-item-count mr-3"
+                    onclick="QuantityInc('<%=p._id%>')"
+                  >
+                    -</button
+                  ><span id="<%=p._id%>"><%=p.quantity%></span>
+                  <button
+                    class="cart-item-count mr-3"
+                    onclick="QuantityDec('<%=p._id%>')"
+                  >
+                    +
+                  </button>
+                </td> -->
+
                 <td class="cart__total" id="totalPrice<%= p._id %>">
                   <%= p.quantity*p.price %>
                 </td>
@@ -218,7 +225,6 @@
           let prodPrice = $(`#price${ProductId}`).html();
           let productPrice = parseInt(prodPrice);
 
-          console.log(`#totalPrice${ProductId}`, "`#totalPrice+${ProductId}`");
           let price = $(`#totalPrice${ProductId}`).html();
           let Price = parseInt(price);
 
@@ -237,6 +243,7 @@
     });
   }
   function QuantityDec(ProductId, count) {
+    console.log(count, "count");
     if (count > 1) {
       $.ajax({
         url: "/quantityDec/" + ProductId,
@@ -254,6 +261,14 @@
             Price = parseInt(Price);
             document.getElementById("subtotal").innerHTML = subtotal - Price;
           }
+        },
+      });
+    } else {
+      $.ajax({
+        url: "/removeCart/" + ProductId,
+        method: "get",
+        success: (responce) => {
+          window.location = "/shoping-cart";
         },
       });
     }
