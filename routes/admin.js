@@ -31,6 +31,9 @@ router.post("/unblockUser/:id", adminController.unblockUser);
 router.post("/blockUser/:id", adminController.blockUser);
 router.post("/unblockDress/:id", productController.unblockDress);
 router.post("/blockDress/:id", productController.blockDress);
+router.get('/oders',productController.viewOrder)
+router.post('/order-status',productController.changeTrack)
+
 
 // router.get('/addproducts',productController.addProduct)
 

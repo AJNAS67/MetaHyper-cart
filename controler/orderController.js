@@ -43,6 +43,12 @@ module.exports = {
 
     let cart = await cartModel.findOne({ userId });
     let proId = cart.products;
+    function getNthDate(nthDate) {
+      let date = new Date();
+      return new Date(date.setDate(date.getDate() + nthDate));
+    }
+    var estimatedDate = getNthDate(6);
+    var estimatedDate = estimatedDate.toLocaleDateString();
 
     console.log(cart, "cart");
     const newOrder = new orderModel({
@@ -55,6 +61,7 @@ module.exports = {
       paymentStatus: "Payment Pending",
       orderStatus: "orderconfirmed",
       track: "orderconfirmed",
+      estimatedDate: estimatedDate,
     });
     newOrder.save().then((result) => {
       // console.log(result, "result");
@@ -84,7 +91,7 @@ module.exports = {
     try {
       let user = req.session.user;
       req.session.orderId = req.query.id;
-      let result = await orderModel.findById(req.query.id).populate("products");
+      let result = await orderModel.findById(req.query.id).populate("products").populate("deliveryAddress")
       console.log(result, "resultorder view");
       // result.products.map(result.products)
 

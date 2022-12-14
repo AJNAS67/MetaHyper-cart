@@ -33,7 +33,6 @@ module.exports = {
         cart.total = cart.products.reduce((acc, curr) => {
           return acc + curr.quantity * curr.price;
         }, 0);
-        console.log(cart.total, "cart.total ");
         await cart.save();
         res.redirect("/shoping-cart");
       } else {

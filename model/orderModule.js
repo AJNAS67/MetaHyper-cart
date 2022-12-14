@@ -45,7 +45,11 @@ const oderSchema = new mongoose.Schema(
     returnreason: {
       trpe: String,
     },
+    estimatedDate: {
+      type: String,
+    },
   },
+
   { timestamps: true }
 );
 

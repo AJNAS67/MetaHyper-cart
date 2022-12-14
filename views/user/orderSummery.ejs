@@ -5,59 +5,101 @@
   integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
   crossorigin="anonymous"
 />
+
+<style>
+  .order_d_inner .details_item h4 {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+    font-size: 18px;
+    color: #222222;
+    padding-left: 18px;
+  }
+  .order_d_inner .details_item .list {
+    padding-left: 18px;
+  }
+  @media (min-width: 767px) {
+    .order_d_inner .details_item .list {
+      margin-bottom: 30px;
+    }
+  }
+  .order_d_inner .details_item .list li {
+    margin-bottom: 8px;
+  }
+  .order_d_inner .details_item .list li:last-child {
+    margin-bottom: 0px;
+  }
+  .order_d_inner .details_item .list li a {
+    font-size: 14px;
+    color: #222222;
+    font-family: "Roboto", sans-serif;
+  }
+  .order_d_inner .details_item .list li a span {
+    width: 145px;
+    display: inline-block;
+    color: #777777;
+  }
+  ul {
+    list-style: none;
+  }
+
+  .order_details .title_confirmation {
+    text-align: center;
+    color: #28d500;
+    font-size: 18px;
+    margin-bottom: 80px;
+  }
+
+  .order_details_table {
+    background: #e5ecee;
+    padding: 30px;
+    margin-top: 75px;
+  }
+  @media (min-width: 767px) {
+    .order_details_table {
+      margin-top: 45px;
+    }
+  }
+  .order_details_table h2 {
+    color: #222222;
+    font-size: 18px;
+    padding-bottom: 15px;
+  }
+  .order_details_table .table {
+    margin-bottom: 0px;
+  }
+  .order_details_table .table thead tr th {
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    font-family: "Roboto", sans-serif;
+    font-weight: normal;
+  }
+  .order_details_table .table tbody tr td p {
+    margin-bottom: 0px;
+  }
+  .order_details_table .table tbody tr td h5 {
+    color: #222222;
+    margin-bottom: 0px;
+  }
+  .order_details_table .table tbody tr td h4 {
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 0px;
+    color: #222222;
+  }
+  .order_details_table .table tbody tr:last-child td {
+    border-top: 1px solid #ddd;
+  }
+  .order_details_table .table tbody tr:last-child td p {
+    color: #222222;
+  }
+</style>
 <%- include('./partials/userHeader.ejs') %>
 
-<!-- Start Banner Area -->
-<section class="banner-area organic-breadcrumb">
-  <div class="container">
-    <div
-      class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end"
-    >
-      <div class="col-first">
-        <h1>Order summary</h1>
-        <nav class="d-flex align-items-center">
-          <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
-          <a href="#">Order summary</a>
-        </nav>
-      </div>
-    </div>
-  </div>
-</section>
 <!-- End Banner Area -->
-
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>
 
 <!--================Order Details Area =================-->
 <section class="order_details section_gap">
-  <div class="container">
+  <div class="container mt-5">
     <% if (id.orderStatus=="Cancellede") { %>
     <h3 class="title_confirmation text-danger">
       Your order has been Cancelled.
@@ -70,6 +112,7 @@
     <% }else{ %>
     <h3 class="title_confirmation">Thank you. Your order has been recived.</h3>
     <% } %>
+
     <div class="row order_d_inner">
       <div class="col-lg-4">
         <div class="details_item">
@@ -104,9 +147,7 @@
               >
             </li>
             <li>
-              <a href="#"
-                ><span>City</span> :<%= id.deliveryAddress.district %></a
-              >
+              <a href="#"><span>City</span> : <%= id.deliveryAddress.city %></a>
             </li>
             <li>
               <a href="#"
@@ -126,12 +167,12 @@
           <h4>Shipping Address</h4>
           <ul class="list">
             <li>
-              <a href="#"><span>City</span> : <%= id.deliveryAddress.city %></a>
+              <a href="#"
+                ><span>State</span> : <%= id.deliveryAddress.state %></a
+              >
             </li>
             <li>
-              <a href="#"
-                ><span>District</span> : <%= id.deliveryAddress.district %></a
-              >
+              <a href="#"><span>City</span> : <%= id.deliveryAddress.city %></a>
             </li>
             <li>
               <a href="#"
@@ -190,8 +231,13 @@
     </div>
     <div class="container text-center mt-5">
       <% if(id.orderStatus != 'Cancellede' && id.orderStatus != 'Delivered'){ %>
-      <button onclick="cancelOrder('<%=id._id%>')" class="genric-btn danger">
-        Cancel Order
+
+      <button
+        onclick="cancelOrder('<%=id._id%>')"
+        type="button"
+        class="btn btn-danger"
+      >
+        Danger
       </button>
       <% } %>
       <a class="btn btn-outline-primary" href="/">Go back to Shopping</a>

@@ -1,5 +1,6 @@
 const ProductModel = require("../model/product");
 const CategoryModel = require("../model/category");
+const orderModel = require("../model/orderModule");
 var fs = require("fs");
 
 module.exports = {
@@ -111,7 +112,10 @@ module.exports = {
         const productImage = product.image;
         for (let i = 0; i < productImage.length; i++) {
           const imgPath = productImage[i];
-          console.log(`/public/images/productImages/" + ${imgPath}`,'img paaaaaaaaaaaaaaath');
+          console.log(
+            `/public/images/productImages/" + ${imgPath}`,
+            "img paaaaaaaaaaaaaaath"
+          );
 
           fs.unlink("./public/images/productImages/" + imgPath, () => {});
         }
@@ -227,5 +231,58 @@ module.exports = {
     let id = req.params.id;
     await CategoryModel.findByIdAndDelete({ _id: id });
     res.redirect("/admin/viewcategory");
+  },
+  viewOrder: async (req, res) => {
+    let order = await orderModel.find().sort({ Date: -1 });
+    console.log(order, "orderorder");
+    res.render("admin/oders", { result: order });
+  },
+
+  changeTrack: async (req, res) => {
+    try {
+      oid = req.body.oid;
+      value = req.body.value;
+
+      console.log(oid, value, "lllll");
+
+      if (value == "Delivered") {
+        await orderModel
+          .updateOne(
+            {
+              _id: oid,
+            },
+            {
+              $set: {
+                track: value,
+                orderStatus: value,
+                paymentStatus: "Payment Completed",
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res);
+          });
+      } else {
+        await orderModel
+          .updateOne(
+            {
+              _id: oid,
+            },
+            {
+              $set: {
+                track: value,
+                orderStatus: value,
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res);
+          });
+      }
+    } catch (error) {
+      app.use((req, res) => {
+        res.status(429).render("admin/error-429");
+      });
+    }
   },
 };
