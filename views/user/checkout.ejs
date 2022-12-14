@@ -26,93 +26,78 @@
         </h6>
       </div>
     </div>
-    <form action="#" class="checkout__form">
+    <form  id="checkout-form" class="checkout__form" novalidate="novalidate">
       <div class="row">
         <div class="col-lg-8">
-          <h5>Billing detail</h5>
-          <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6">
-              <div class="checkout__form__input">
-                <p>First Name <span>*</span></p>
-                <input type="text" />
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-              <div class="checkout__form__input">
-                <p>Last Name <span>*</span></p>
-                <input type="text" />
-              </div>
-            </div>
-            <div class="col-lg-12">
-              <div class="checkout__form__input">
-                <p>Country <span>*</span></p>
-                <input type="text" />
-              </div>
-              <div class="checkout__form__input">
-                <p>Address <span>*</span></p>
-                <input type="text" placeholder="Street Address" />
-                <input
-                  type="text"
-                  placeholder="Apartment. suite, unite ect ( optinal )"
-                />
-              </div>
-              <div class="checkout__form__input">
-                <p>Town/City <span>*</span></p>
-                <input type="text" />
-              </div>
-              <div class="checkout__form__input">
-                <p>Country/State <span>*</span></p>
-                <input type="text" />
-              </div>
-              <div class="checkout__form__input">
-                <p>Postcode/Zip <span>*</span></p>
-                <input type="text" />
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-              <div class="checkout__form__input">
-                <p>Phone <span>*</span></p>
-                <input type="text" />
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-              <div class="checkout__form__input">
-                <p>Email <span>*</span></p>
-                <input type="text" />
-              </div>
-            </div>
-            <div class="col-lg-12">
-              <div class="checkout__form__checkbox">
-                <label for="acc">
-                  Create an acount?
-                  <input type="checkbox" id="acc" />
-                  <span class="checkmark"></span>
-                </label>
-                <p>
-                  Create am acount by entering the information below. If you are
-                  a returing customer login at the <br />top of the page
-                </p>
-              </div>
-              <div class="checkout__form__input">
-                <p>Account Password <span>*</span></p>
-                <input type="text" />
-              </div>
-              <div class="checkout__form__checkbox">
-                <label for="note">
-                  Note about your order, e.g, special noe for delivery
-                  <input type="checkbox" id="note" />
-                  <span class="checkmark"></span>
-                </label>
-              </div>
-              <div class="checkout__form__input">
-                <p>Oder notes <span>*</span></p>
-                <input
-                  type="text"
-                  placeholder="Note about your order, e.g, special noe for delivery"
-                />
+          <% if(userDetail) {%>
+          <div class="row mt-2 mb-2" id="myAddress">
+            <div class="col-sm-12">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="d-flex align-items-center">My address</h5>
+                  <div class="row" id="addressList">
+                    <% userDetail.address.forEach((myAddress,index)=>{%>
+                      <p><%=myAddress%></p>
+                      <p>address-<%= index %></p>
+                    <div class="col-md-6 mb-2" id="address-<%= index %>">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">
+                            <i class="fa-solid fa-location-dot"></i> <%=
+                            myAddress.firstName %>
+                          </h5>
+                          <address class="card-text">
+                            <%= myAddress.firstName +' '+ myAddress.lastName %>,
+                            <%= myAddress.homeaddress %>, <%=myAddress.city %>,
+                            <%=myAddress.state %>, <br />
+                            pincode: <%= myAddress.zipcode %><br />
+                            ph:<%= myAddress.zipcode %>
+                          </address>
+                          <button class="btn btn-outline-dark">Edit</button>
+                          <button
+                            class="float-right btn btn-outline-secondary"
+                            onclick="removeAddress('<%=index%>')"
+                          >
+                            <i class="fa-solid fa-trash-can"></i>
+                          </button>
+                          <h3><%=index%></h3>
+                          <% if(index==0){ %>
+                            <input
+                              type="radio"
+                              class="addressSelector"
+                              name="address"
+                              checked
+                              id="<%=myAddress._id%>"
+                              value="<%=index%>"
+                            />
+                            <% }else{ %>
+                            <input
+                              type="radio"
+                              class="addressSelector"
+                              name="address"
+                              value="<%=myAddress._id%>"
+                              id="<%=index%>"
+                            />
+                            <% } %>
+                        </div>
+                      </div>
+                    </div>
+                    <%}) %>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          <div class="card">
+            <a href="/addAddress" class="btn btn-primary">Add New</a>
+          </div>
+          <%} else {%>
+
+          <div class="card">
+            <a href="/addAddress" class="btn btn-primary">Add New</a>
+          </div>
+
+          <%}%>
         </div>
         <div class="col-lg-4">
           <div class="checkout__order">
@@ -123,42 +108,45 @@
                   <span class="top__text">Product</span>
                   <span class="top__text__right">Total</span>
                 </li>
-                <li>01. Chain buck bag <span>$ 300.0</span></li>
+
+                <% cartDetail.products.forEach(function(product,i) { %>
                 <li>
+                  <%=i+1%>. <%=product.name%> <span>$ <%=product.price%></span>
+                </li>
+
+                <%}) %>
+
+                <!-- <li>
                   02. Zip-pockets pebbled<br />
                   tote briefcase <span>$ 170.0</span>
                 </li>
                 <li>03. Black jean <span>$ 170.0</span></li>
-                <li>04. Cotton shirt <span>$ 110.0</span></li>
+                <li>04. Cotton shirt <span>$ 110.0</span></li> -->
               </ul>
             </div>
             <div class="checkout__order__total">
               <ul>
-                <li>Subtotal <span>$ 750.0</span></li>
-                <li>Total <span>$ 750.0</span></li>
+                <li>Total <span><%=cartDetail.total%></span></li>
               </ul>
             </div>
-            <div class="checkout__order__widget">
-              <label for="o-acc">
-                Create an acount?
-                <input type="checkbox" id="o-acc" />
-                <span class="checkmark"></span>
-              </label>
-              <p>
-                Create am acount by entering the information below. If you are a
-                returing customer login at the top of the page.
-              </p>
-              <label for="check-payment">
-                Cheque payment
-                <input type="checkbox" id="check-payment" />
-                <span class="checkmark"></span>
-              </label>
-              <label for="paypal">
-                PayPal
-                <input type="checkbox" id="paypal" />
-                <span class="checkmark"></span>
-              </label>
-            </div>
+            <h2>Payment Method</h2>
+                <div class="mt-3 mb-3">
+                  <input
+                    type="radio"
+                    id="NET-BANKING"
+                    name="paymentMethod"
+                    value="Online Payment"
+                    checked
+                  />
+                  <label for="NET-BANKING">NET BANKING</label><br />
+                  <input
+                    type="radio"
+                    id="PAY-ON-DELIVERY"
+                    name="paymentMethod"
+                    value="Cash On Delivery"
+                  />
+                  <label for="PAY-ON-DELIVERY">PAY ON DELIVERY</label><br />
+                </div>
             <button type="submit" class="site-btn">Place oder</button>
           </div>
         </div>
@@ -167,5 +155,134 @@
   </div>
 </section>
 <!-- Checkout Section End -->
+<script>
+  let userOrderData
+  $("#checkout-form").submit((e) => {
+    e.preventDefault();
+    console.log("vannu >>>>>>>>>>>>>>>");
+    $.ajax({
+      url: "/checkout/<%= cartDetail._id %>",
+      method: "post",
+      data: $("#checkout-form").serialize(),
+      success: (response) => {
+        if (response.cashOnDelivery) {
+          Swal.fire({
+            title: "Order Placed Successfully",
+            icon: "success",
+            showDenyButton: true,
+            confirmButtonText: "View Order",
+            denyButtonText: `Continue Shopping`,
+            toast: true,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              location.href = "/confirm";
+            } else if (result.isDenied) {
+              location.href = "/";
+            }
+          });
+        } else if (response.onlinePayment) {
+          console.log("test ok");
+          let razorpayoderData = response.razorpayoderData;
+          userOrderData = response.userOrderData;
+          var options = {
+            key: "rzp_test_EsWfdOrXZua8KY", // Enter the Key ID generated from the Dashboard
+            amount: response.razorpayOrderData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            currency: "INR",
+            name: "Karma Shoes",
+            description: "Test Transaction",
+            image: "https://example.com/your_logo",
+            order_id: response.razorpayOrderData.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            handler: function (response) {
+              console.log(response, "????????????????????????????????????????");
+             // alert(response.razorpay_payment_id);
+              //alert(response.razorpay_order_id);
+              //alert(response.razorpay_signature);
+              verifyPayment(response, );
+            },
+            prefill: {
+              name: "Gaurav Kumar",
+              email: "gaurav.kumar@example.com",
+              contact: "9999999999",
+            },
+            notes: {
+              address: "Razorpay Corporate Office",
+            },
+            theme: {
+              color: "#3399cc",
+            },
+          };
+
+          var rzpl = new Razorpay(options);
+
+          rzpl.on("payment.failed", function (response) {
+            paymentFailed(response);
+          });
+          rzpl.open();
+        }
+      },
+    });
+  });
+
+  function verifyPayment(payment,razorpayOrderData) {
+    console.log(razorpayOrderData);
+   
+    $.ajax({
+      url: "/verifyPayment",
+      data: {
+        payment,
+        razorpayOrderData,
+        userOrderData,
+      },
+      method: "post",
+     
+      success: (response) => {
+        if (response.status) {
+          Swal.fire({
+            title: "Order Placed Successfully",
+            icon: "success",
+            showDenyButton: true,
+            confirmButtonText: "View Order",
+            denyButtonText: `Continue Shopping`,
+            toast: true,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              location.href = "/confirm";
+            } else if (result.isDenied) {
+              location.href = "/";
+            }
+          });
+        }
+      },
+    });
+  }
+
+  function paymentFailed(response) {
+    $.ajax({
+      url: "/paymentFailed",
+      data: response,
+      method: "post",
+      success: (response) => {
+        if (response.status) {
+          Swal.fire({
+            title: "Payment Failed !",
+            icon: "error",
+            showDenyButton: false,
+            toast: true,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              location.href = "/";
+            } else if (result.isDenied) {
+              location.href = "/";
+            }
+          });
+        }
+      },
+    });
+  }
+</script>
+
 
 <%- include('./partials/userFooter.ejs') %>

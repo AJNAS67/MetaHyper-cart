@@ -4,6 +4,7 @@ const userController = require("../controler/userController");
 const cartController = require("../controler/cartContoller");
 const wishlistControler = require("../controler/wishlistController");
 const authMiddleware = require("../auth/auth");
+const orderController = require("../controler/orderController");
 // const { otpVerification, getOtpForm, sendOtp } = require("../middleware/otp");
 
 router.get("/", userController.homeView);
@@ -59,10 +60,19 @@ router.post("/signin", userController.signUp);
 router.post("/addtocart/:prodId", cartController.addTocart);
 router.post("/addtoWishlist/:prodId", wishlistControler.addtoWishlist);
 router.get("/product-details/:Id", userController.prodDetail);
-router.get('/addAddress',userController.addAddress)
-router.post('/addAddress',userController.doAddaddress)
-router.get('/quantityDec/:proid',cartController.QuantityDec)
+router.get("/addAddress", userController.addAddress);
+router.post("/addAddress", userController.doAddaddress);
+router.get("/quantityDec/:proid", cartController.QuantityDec);
 
-router.get('/quantityInc/:proid',cartController.QuantityInc)
-router.post('/change-product-quantity',cartController.changeProductQuantity)
+router.get("/quantityInc/:proid", cartController.QuantityInc);
+router.post("/change-product-quantity", cartController.changeProductQuantity);
+router.get("/viewOrders", orderController.viewOrders);
+router.post("/checkout/:CartId", orderController.postCheckOut);
+router.get(
+  "/orderSummary",
+  authMiddleware.sessionchek,
+  orderController.postOderSuccess
+);
+router.get('/ordertracking',orderController.getTracking)
+
 module.exports = router;

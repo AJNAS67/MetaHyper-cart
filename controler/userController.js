@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const addressModel = require("../model/addressModel");
 const cartModel = require("../model/cart");
+const addressModule = require("../model/addressModel");
 
 var otp = Math.random();
 otp = otp * 1000000;
@@ -30,7 +31,7 @@ module.exports = {
   homeView: async (req, res) => {
     let userId = req.session.userId;
     const cartView = await cartModel.findOne({ userId });
-    const cartNum = cartView.products.length;
+    // const cartNum = cartView.products.length;
     console.log(
       cartView,
       "cartViewcartViewcartViewcartViewcartViewcartViewcartView"
@@ -41,7 +42,7 @@ module.exports = {
         login: true,
         user: req.session.user,
         products,
-        cartNum,
+        // cartNum,
       });
     } else {
       res.render("user/home", { login: false, products });
@@ -110,8 +111,24 @@ module.exports = {
     res.render("user/productDetails", { login: true, user: req.session.user });
   },
 
-  checkout: (req, res) => {
-    res.render("user/checkout", { login: true, user: req.session.user });
+  checkout: async (req, res) => {
+    try {
+      let user = req.session.user;
+      let userId = req.session.userId;
+      const userDetail = await User.findById(userId);
+
+      let cartDetail = await cartModel.findOne({ userId });
+      
+      
+      res.render("user/checkout", {
+        login: true,
+        user,
+        userDetail,
+        cartDetail,
+      });
+    } catch (error) {
+      res.status(429).render("admin/error-429");
+    }
 
     // if (req.session.userLogin) {
     //   res.render("user/checkout", { login: true, user: req.session.user });
@@ -337,17 +354,23 @@ module.exports = {
   //   })
 
   // }
-  profile: (req, res) => {
+  profile: async (req, res) => {
     try {
+      let userId = req.session.userId;
       let user = req.session.user;
-      addressModel.find({ userId: req.session.userId }).then((result) => {
-        res.render("user/userProfile", {
-          user,
-          session: req.session,
-          addresses: result,
-          login: true,
-        });
-      });
+
+      const userDetail = await User.findById(userId);
+
+      res.render("user/profile", { login: true, userDetail, user });
+
+      //   addressModel.find({ userId: req.session.userId }).then((result) => {
+      //     res.render("user/profile", {
+      //       user,
+      //       session: req.session,
+      //       addresses: result,
+      //       login: true,
+      //     });
+      //   });
     } catch (err) {
       res.status(429).render("admin/error-429");
     }
@@ -380,6 +403,27 @@ module.exports = {
   doAddaddress: async (req, res) => {
     console.log(req.body, "addre");
     console.log(req.session.userId, "userId");
+    const userModel = await User.findOne({ _id: req.session.userId });
+    console.log(userModel, "userModel");
+    try {
+      userModel.address.unshift({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        mobNumber: req.body.phone,
+        email: req.body.email,
+        appartment: req.body.appartment,
+        homeaddress: req.body.address,
+        city: req.body.city,
+        state: req.body.state,
+        country: req.body.country,
+        zipcode: req.body.zipcode,
+      });
+      userModel.save().then(() => {
+        res.redirect("/userProfile");
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
 
     // try {
     //   const address = await User({

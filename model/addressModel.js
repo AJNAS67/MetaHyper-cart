@@ -41,11 +41,11 @@ const addressSchema = new mongoose.Schema({
     required: true,
   },
 
-  userId: {
-    type: mongoose.Schema.Types.String,
-    ref: "User",
-    required: true,
-  },
+  // userId: {
+  //   type: mongoose.Schema.Types.String,
+  //   ref: "User",
+  //   required: true,
+  // },
 });
 
 const Address = mongoose.model("address", addressSchema);
