@@ -10,7 +10,6 @@ module.exports = {
   addTocart: async (req, res) => {
     try {
       let User = req.session.user;
-      console.log(User, "user");
       let quantity = 1;
       let name = req.body.name;
       let price = req.body.price;
@@ -18,7 +17,6 @@ module.exports = {
       const findProduct = await productModel.findById(ProductId);
       const userId = req.session.userId;
       let cart = await cartModel.findOne({ userId });
-      console.log(cart, "cart");
 
       if (cart) {
         let itemIndex = cart.products.findIndex(
@@ -83,7 +81,6 @@ module.exports = {
     let productIndex = userCart.products.findIndex(
       (product) => product._id == req.params.cartId
     );
-    console.log(productIndex, "productIndex");
     let productItem = userCart.products[productIndex];
     if (productIndex != null) {
       userCart.total =
@@ -101,17 +98,14 @@ module.exports = {
   },
   QuantityDec: async (req, res) => {
     let userCart = await cartModel.findOne({ userId: req.session.userId });
-    console.log(userCart, "userCart");
 
     let ProductIndex = userCart.products.findIndex(
       (Product) => Product._id == req.params.proid
     );
 
     let arr = [...userCart.products];
-    console.log(arr, "arrrrrrr");
 
     let productItem = arr[ProductIndex];
-    console.log(productItem, "productItem");
     userCart.total = userCart.total - productItem.price * productItem.quantity;
     productItem.quantity = productItem.quantity - 1;
     arr[ProductIndex] = productItem;
@@ -127,12 +121,10 @@ module.exports = {
     );
 
     let productItem = userCart.products[productIndex];
-    console.log(productItem, "productItem");
     userCart.total = userCart.total - productItem.price * productItem.quantity;
     productItem.quantity = productItem.quantity + 1;
     userCart.products[productIndex] = productItem;
     userCart.total = userCart.total + productItem.price * productItem.quantity;
-    console.log(userCart, "userCartLs");
 
     await userCart.save();
     res.json({ status: true });
@@ -140,7 +132,6 @@ module.exports = {
   changeProductQuantity: (req, res) => {
     let user = req.session.userId;
     userHelpers.changeProductQuantity(req.body, user).then((aj) => {
-      console.log(aj, "ajjjjjjjjjjjjjjjjjjjjjjjjjjj");
       res.json(aj);
     });
   },

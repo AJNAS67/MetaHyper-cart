@@ -50,7 +50,6 @@ module.exports = {
     var estimatedDate = getNthDate(6);
     var estimatedDate = estimatedDate.toLocaleDateString();
 
-    console.log(cart, "cart");
     const newOrder = new orderModel({
       userId: userId,
       deliveryAddress: deliveryAddress,
@@ -91,8 +90,10 @@ module.exports = {
     try {
       let user = req.session.user;
       req.session.orderId = req.query.id;
-      let result = await orderModel.findById(req.query.id).populate("products").populate("deliveryAddress")
-      console.log(result, "resultorder view");
+      let result = await orderModel
+        .findById(req.query.id)
+        .populate("products")
+        .populate("deliveryAddress");
       // result.products.map(result.products)
 
       res.render("user/orderSummery", {
