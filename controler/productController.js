@@ -195,11 +195,9 @@ module.exports = {
   editproductpage: async (req, res) => {
     // if (req.session.adminLogin) {
     const { Id } = req.params;
-    console.log(Id, "iddfgbnm");
     let category = await CategoryModel.find();
 
     let product = await ProductModel.findById({ _id: Id }).populate("category");
-
     res.render("admin/edit-product", { product, category: category });
     // } else {
     //   res.redirect("/admin");

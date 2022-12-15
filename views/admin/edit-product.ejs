@@ -1,3 +1,23 @@
+<style>
+  
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
+  }
+  .card .img{
+    flex: 0 0 200px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+    text-align: center;
+  }
+  .container img {
+    max-width: 100%;
+  }
+ 
+</style>
 <%- include('./partials/admin-dash.ejs') %>
 
 <div class="col-lg">
@@ -48,12 +68,12 @@
         <div class="form-group">
           <label for="input-1">Category </label>
           <select class="group input-group form-control" name="category" id="">
-            <% category.forEach(function(x){ %> <% if
-            (x.category==product.category){ %>
-            <option selected value="<%= x._id %>"><%= x.category %></option>
-            <% } else { %>
-            <option value="<%= x?._id %>"><%= x?.category %></option>
-            <% } %> <% }) %>
+            <option value="<%= product.category._id %>" selected>
+              <%= product.category.category %>
+            </option>
+            <% category.forEach(el => { %>
+            <option value="<%= el._id %>"><%= el.category %></option>
+            <% }) %>
           </select>
         </div>
 
@@ -69,7 +89,9 @@
         <label for="">brand</label>
 
         <select class="group input-group form-control" name="brand" id="">
-          <option value="<%=product.brand%>" selected><%=product.brand%></option>
+          <option value="<%=product.brand%>" selected>
+            <%=product.brand%>
+          </option>
           <option value="Indian Terrain">Indian Terrain</option>
           <option value="Peter England">Peter England</option>
           <option value="Allen Solly">Allen Solly</option>
@@ -80,11 +102,18 @@
 
         <label for="input-5">image</label>
 
-        <img
-          src="/images/productImages/<%= product.image[0] %>"
-          alt=""
-          style="width: 300px; height: 160px"
-        />
+        <main class="container">
+          <% for(var i=0; i < product.image.length; i++) { %>
+          <section class="card img">
+            <img
+              src="/images/productImages/<%= product.image[i] %>"
+              alt="products image"
+            />
+          </section>
+          <% } %>
+        </main>
+
+        
         <input
           type="file"
           class="form-control"
