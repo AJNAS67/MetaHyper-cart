@@ -34,11 +34,10 @@
             <div class="col-sm-12">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="d-flex align-items-center">My address</h5>
+                  <h5 class="d-flex align-items-center">Delivery Address</h5>
                   <div class="row" id="addressList">
                     <% userDetail.address.forEach((myAddress,index)=>{%>
-                    <p><%=myAddress%></p>
-                    <p>address-<%= index %></p>
+                    
                     <div class="col-md-6 mb-2" id="address-<%= index %>">
                       <div class="card">
                         <div class="card-body">
@@ -53,14 +52,7 @@
                             pincode: <%= myAddress.zipcode %><br />
                             ph:<%= myAddress.zipcode %>
                           </address>
-                          <button class="btn btn-outline-dark">Edit</button>
-                          <button
-                            class="float-right btn btn-outline-secondary"
-                            onclick="removeAddress('<%=index%>')"
-                          >
-                            <i class="fa-solid fa-trash-can"></i>
-                          </button>
-                          <h3><%=index%></h3>
+                          
                           <% if(index==0){ %>
                           <input
                             type="radio"

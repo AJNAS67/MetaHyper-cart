@@ -110,7 +110,10 @@
                 </td> -->
 
                 <td class="cart__quantity">
-                  <div class="product_count" style="margin-bottom:2px !important ;">
+                  <div
+                    class="product_count"
+                    style="margin-bottom: 2px !important "
+                  >
                     <input
                       type="text"
                       maxlength="12"
@@ -216,6 +219,16 @@
     </div>
   </div>
 </div>
+<tr>
+  <td><p class="text-danger" id="stockCheck"></p></td>
+  <td></td>
+  <td>
+    <h5>Subtotal</h5>
+  </td>
+  <td>
+    <h5>$<span id="subtotal"><%= cartProducts.total %></span></h5>
+  </td>
+</tr>
 <% } %> <% }else { %>
 <div class="container">
   <div class="row text-center">
@@ -231,16 +244,7 @@
     </div>
   </div>
 </div>
-<tr>
-  <td><p class="text-danger" id="stockCheck"></p></td>
-  <td></td>
-  <td>
-    <h5>Subtotal</h5>
-  </td>
-  <td>
-    <h5>$<span id="subtotal"><%= cartProducts.total %></span></h5>
-  </td>
-</tr>
+
 <% } %>
 
 <script>

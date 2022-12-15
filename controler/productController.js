@@ -35,7 +35,6 @@ module.exports = {
       brand,
       image,
     });
-    console.log(newProduct, "newProduct");
 
     await newProduct
       .save()
@@ -77,9 +76,22 @@ module.exports = {
 
   // Delete Product
   deleteproduct: async (req, res) => {
-    let id = req.params.id;
-    await ProductModel.findByIdAndDelete({ _id: id });
-    res.redirect("/admin/adminProducts");
+    // let proId = req.params.id;
+    // await ProductModel.findByIdAndDelete({ _id: id });
+    // res.redirect("/admin/adminProducts");
+
+    try {
+      let proId = req.params.id;
+
+      ProductModel.deleteOne({ _id: proId }).then(() => {
+        res.json({ status: true });
+      });
+    } catch (error) {
+      res.json({ status: false });
+      app.use((req, res) => {
+        res.status(429).render("admin/error-429");
+      });
+    }
   },
 
   // Update Product

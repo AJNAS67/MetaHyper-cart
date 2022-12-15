@@ -50,9 +50,7 @@
                   ><i class="bx bx-edit me-1"></i> Edit</a
                 >
 
-                <a
-                  class="dropdown-item"
-                  onclick="alert('<%= product._id %>')"
+                <a class="dropdown-item" onclick="alert('<%= product._id %>')"
                   ><i class="bx bx-trash me-1"></i> Delete</a
                 >
               </div>
@@ -67,8 +65,30 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+  swal(
+    {
+      title: "Are you sure?",
+      text: "You will not be able to recover this imaginary file!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonClass: "btn-danger",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel plx!",
+      closeOnConfirm: false,
+      closeOnCancel: false,
+    },
+    function (isConfirm) {
+      if (isConfirm) {
+        swal("Deleted!", "Your imaginary file has been deleted.", "success");
+      } else {
+        swal("Cancelled", "Your imaginary file is safe :)", "error");
+      }
+    }
+  );
+</script>
+
+<script>
   function alert(proId) {
-    console.log('hi');
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -78,35 +98,39 @@
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
-      $.ajax({
-        url: "/admin/deleteproduct/" + proId,
-        method: "post",
-        success: (response) => {
-          if (result.isConfirmed) {
-            Swal.fire({
-              title: "Deleted!",
-              text: "Your file has been deleted.",
-              icon: "success",
-              showConfirmButton: false,
-            });
-            setTimeout(() => {
-              location.reload();
-            }, 1000);
-          } else {
-            Swal.fire({
-              title: "Lookout!!!",
-              text: "Some thing Went Wrong",
-              icon: "error",
-            }).then(() => {
-              location.reload();
-            });
-          }
-        },
-      });
+
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "/admin/deleteproduct/" + proId,
+          method: "post",
+        });
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+          showConfirmButton: false,
+        });
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+      } else {
+        Swal.fire({
+          title: "Lookout!!!",
+          text: "Some thing Went Wrong",
+          icon: "error",
+        }).then(() => {
+          location.reload();
+        });
+      }
     });
   }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+  integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
 
 <!--/ Bootstrap Table with Header Dark -->
 
