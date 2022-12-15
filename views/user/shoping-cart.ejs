@@ -1,3 +1,24 @@
+<style>
+  .product_count {
+    display: inline-block;
+    position: relative;
+    margin-bottom: 24px;
+  }
+  .product_count label {
+    font-size: 14px;
+    color: #777777;
+    font-family: "Roboto", sans-serif;
+    font-weight: normal;
+    padding-right: 10px;
+  }
+  .product_count input {
+    width: 76px;
+    border: 1px solid #eeeeee;
+    border-radius: 3px;
+    padding-left: 10px;
+  }
+</style>
+
 <%- include('./partials/userHeader.ejs') %>
 <!-- Breadcrumb Begin -->
 <div class="breadcrumb-option">
@@ -42,7 +63,7 @@
                     alt=""
                   />
                   <div class="cart__product__item__title">
-                    <h6><%=p.name%></h6>
+                    <h6 style="margin-top: 75px"><%=p.name%></h6>
                     <div class="rating">
                       <i class="fa fa-star"></i>
                       <i class="fa fa-star"></i>
@@ -89,9 +110,10 @@
                 </td> -->
 
                 <td class="cart__quantity">
-                  <div class="product_count">
+                  <div class="product_count" style="margin-bottom:2px !important ;">
                     <input
                       type="text"
+                      maxlength="12"
                       value="<%=p.quantity %>"
                       name="quantity"
                       id="sst<%=p._id %>"

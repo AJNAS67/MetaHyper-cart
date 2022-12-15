@@ -36,10 +36,10 @@
                   <img
                     src="/images/productImages/<%=p.ProductId.image[0]%>"
                     style="width: 30%"
-                    alt=""
+                    alt="wishlist image"
                   />
                   <div class="cart__product__item__title">
-                    <h6><%=p.name%></h6>
+                    <h6 style="margin-top: 75px"><%=p.name%></h6>
                     <div class="rating">
                       <i class="fa fa-star"></i>
                       <i class="fa fa-star"></i>
@@ -51,8 +51,8 @@
                 </td>
                 <td class="cart__price">$ <%=p.ProductId.price%></td>
 
-                <td class="cart__total">
-                  <div class="cart__btn">
+                <td class="cart__total" style="width:161px !important ;">
+                  <div class="cart__btn" style="margin-top: 45px;">
                     <a
                       href="/"
                       onclick="addTocart('<%p.ProductId._id%>','<%=p.name%>','<%=p.ProductId.price%>')"
