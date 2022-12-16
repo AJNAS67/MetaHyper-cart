@@ -77,19 +77,25 @@ module.exports = {
   },
 
   removeCart: async (req, res) => {
-    let userCart = await cartModel.findOne({ userId: req.session.userId });
-    let productIndex = userCart.products.findIndex(
-      (product) => product._id == req.params.cartId
-    );
-    let productItem = userCart.products[productIndex];
-    if (productIndex != null) {
-      userCart.total =
-        userCart.total - productItem.price * productItem.quantity;
-      userCart.products.splice(productIndex, 1);
-      await userCart.save();
-      res.redirect("/shoping-cart");
-    } else {
-      res.redirect("/");
+    try {
+      let userCart = await cartModel.findOne({ userId: req.session.userId });
+      let productIndex = userCart.products.findIndex(
+        (product) => product._id == req.params.cartId
+      );
+      let productItem = userCart.products[productIndex];
+      if (productIndex != null) {
+        userCart.total =
+          userCart.total - productItem.price * productItem.quantity;
+        userCart.products.splice(productIndex, 1);
+        await userCart.save().then((aj) => {
+          res.json({ status: true });
+        });
+        // res.redirect("/shoping-cart");
+      } else {
+        res.json({ status: true });
+      }
+    } catch (error) {
+      res.json({ status: false });
     }
   },
   ajnas: (req, res) => {

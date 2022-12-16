@@ -55,8 +55,6 @@ module.exports = {
     // const { Email, password } = req.body;
     const Email = req.body.email;
     const password = req.body.password;
-    console.log(req.body, "login");
-    console.log(Email, "email");
 
     const user = await User.findOne({
       $and: [{ email: Email }, { status: "Unblocked" }],

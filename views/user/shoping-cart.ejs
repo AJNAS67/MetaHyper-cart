@@ -112,7 +112,7 @@
                 <td class="cart__quantity">
                   <div
                     class="product_count"
-                    style="margin-bottom: 2px !important "
+                    style="margin-bottom: 2px !important"
                   >
                     <input
                       type="text"
@@ -157,7 +157,7 @@
                   <%= p.quantity*p.price %>
                 </td>
                 <td class="cart__close">
-                  <a href="/removeCart/<%=p._id%>"
+                  <a onclick="removeCart('<%=p._id%>')"
                     ><span class="icon_close"></span
                   ></a>
                 </td>
@@ -303,14 +303,85 @@
         },
       });
     } else {
-      $.ajax({
-        url: "/removeCart/" + ProductId,
-        method: "get",
-        success: (responce) => {
-          window.location = "/shoping-cart";
-        },
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: "/removeCart/" + ProductId,
+            method: "get",
+          });
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+            showConfirmButton: false,
+          });
+          setTimeout(() => {
+            location.reload();
+          }, 1000);
+        } else {
+          Swal.fire({
+            title: "Lookout!!!",
+            text: "Some thing Went Wrong",
+            icon: "error",
+          }).then(() => {
+            // location.reload();
+          });
+        }
       });
+
+      // $.ajax({
+      //   url: "/removeCart/" + ProductId,
+      //   method: "get",
+      //   success: (responce) => {
+      //     window.location = "/shoping-cart";
+      //   },
+      // });
     }
+  }
+</script>
+<script>
+  function removeCart(proId) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "/removeCart/" + proId,
+          method: "get",
+        });
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+          showConfirmButton: false,
+        });
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+      } else {
+        Swal.fire({
+          title: "Lookout!!!",
+          text: "Some thing Went Wrong",
+          icon: "error",
+        }).then(() => {
+          location.reload();
+        });
+      }
+    });
   }
 </script>
 
