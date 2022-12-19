@@ -107,13 +107,6 @@
                 </li>
 
                 <%}) %>
-
-                <!-- <li>
-                  02. Zip-pockets pebbled<br />
-                  tote briefcase <span>$ 170.0</span>
-                </li>
-                <li>03. Black jean <span>$ 170.0</span></li>
-                <li>04. Cotton shirt <span>$ 110.0</span></li> -->
               </ul>
             </div>
             <div class="checkout__order__total">
@@ -153,7 +146,6 @@
     let razorpayoderData;
     let userOrderData;
     e.preventDefault();
-    console.log("vannu >>>>>>>>>>>>>>>");
     $.ajax({
       url: "/checkout/<%= cartDetail._id %>",
       method: "post",
@@ -162,18 +154,16 @@
         console.log(response, "responseresponseresponse");
         if (response.cashOnDelivery) {
           Swal.fire({
-            title: "Order Placed Successfully",
-            icon: "success",
-            showDenyButton: true,
-            confirmButtonText: "View Order",
-            denyButtonText: `Continue Shopping`,
-            toast: true,
+            title: "Are you sure?",
+            text: "Are you sure to order this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, oder it!",
           }).then((result) => {
-            console.log(result, "resultresultresultresult");
-            /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-              location.href = "/confirm";
-            } else if (result.isDenied) {
+              Swal.fire("Odered!", "Thank you for ordered.", "success");
               location.href = "/";
             }
           });
@@ -211,7 +201,7 @@
           var rzpl = new Razorpay(options);
 
           rzpl.on("payment.failed", function (response) {
-            paymentFailed(response);
+            paymentFailed(response, userOrderData);
           });
           rzpl.open();
         }
@@ -233,8 +223,7 @@
       method: "post",
 
       success: (response) => {
-        console.log(response,'responsajjjjje');
-        if (response.status==true) {
+        if (response.status == true) {
           Swal.fire({
             title: "Order Placed Successfully",
             icon: "success",
@@ -245,7 +234,7 @@
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-              location.href = "/confirm";
+              location.href = "/viewOrders";
             } else if (result.isDenied) {
               location.href = "/";
             }
@@ -255,14 +244,15 @@
     });
   }
 
-  function paymentFailed(response) {
-    console.log('payment failed',response);
+  function paymentFailed(response, userOrderData) {
     $.ajax({
       url: "/paymentFailed",
-      data: response,
+      data: {
+        response,
+        userOrderData,
+      },
       method: "post",
       success: (response) => {
-        console.log('ajnas',response);
         if (response.status) {
           Swal.fire({
             title: "Payment Failed !",

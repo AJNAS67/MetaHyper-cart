@@ -41,8 +41,7 @@ module.exports = {
   },
   postCheckOut: async (req, res) => {
     const { address, paymentMethod } = req.body;
-    console.log(address, "address");
-    console.log(paymentMethod, "paymentmethord");
+
     // let user=req.session.user;
 
     userId = req.session.userId;
@@ -134,18 +133,55 @@ module.exports = {
       });
     }
   },
-  postPaymentFailed: (req, res) => {
+  postPaymentFailed: async (req, res) => {
+    let id = req.body.userOrderData._id;
+
+    await orderModel.updateOne(
+      {
+        _id: id,
+      },
+      {
+        $set: {
+          orderStatus: "Pending",
+          paymentStatus: "Payment Failed",
+          track: "Payment Error",
+        },
+      }
+    );
+
     res.json({ status: true });
   },
-  doVerifyPayment: (req, res) => {
+  doVerifyPayment: async (req, res) => {
+    let orderdata = req.body;
+
+    // const order = await orderModel.find({ _id: orderdata.userOrderData._id });
     userHelpers
-      .veryfiyPayment(req.body)
+      .veryfiyPayment(orderdata)
       .then(() => {
-        console.log("stat");
         res.json({ status: true });
       })
-      .catch((err) => {
-        res.json({ status: "Payment Failed" });
+      .catch(async (err) => {
+        await orderModel
+          .updateOne(
+            {
+              _id: orderdata.userOrderData._id,
+            },
+            {
+              $set: {
+                orderStatus: "Pending",
+                paymentStatus: "Payment Failed",
+              },
+            }
+          )
+          .then((rk) => {
+            console.log(rk, "payment status");
+            res.json({ status: "Payment Failed" });
+          });
+        // order.paymentStatus = "Payment Failed ";
+        // order.orderStatus = "Pending";
+
+        // order.save();
+        // res.json({ status: "Payment Failed" });
       });
   },
   postOderSuccess: async (req, res) => {
