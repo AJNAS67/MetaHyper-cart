@@ -74,5 +74,7 @@ router.get(
   orderController.postOderSuccess
 );
 router.get('/ordertracking',orderController.getTracking)
+router.post('/verifyPayment',orderController.doVerifyPayment)
+router.post('/paymentFailed',orderController.postPaymentFailed)
 
 module.exports = router;

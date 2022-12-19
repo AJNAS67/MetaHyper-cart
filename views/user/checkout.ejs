@@ -37,7 +37,7 @@
                   <h5 class="d-flex align-items-center">Delivery Address</h5>
                   <div class="row" id="addressList">
                     <% userDetail.address.forEach((myAddress,index)=>{%>
-                    
+
                     <div class="col-md-6 mb-2" id="address-<%= index %>">
                       <div class="card">
                         <div class="card-body">
@@ -52,7 +52,7 @@
                             pincode: <%= myAddress.zipcode %><br />
                             ph:<%= myAddress.zipcode %>
                           </address>
-                          
+
                           <% if(index==0){ %>
                           <input
                             type="radio"
@@ -147,9 +147,11 @@
   </div>
 </section>
 <!-- Checkout Section End -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-  let userOrderData;
   $("#checkout-form").submit((e) => {
+    let razorpayoderData;
+    let userOrderData;
     e.preventDefault();
     console.log("vannu >>>>>>>>>>>>>>>");
     $.ajax({
@@ -157,6 +159,7 @@
       method: "post",
       data: $("#checkout-form").serialize(),
       success: (response) => {
+        console.log(response, "responseresponseresponse");
         if (response.cashOnDelivery) {
           Swal.fire({
             title: "Order Placed Successfully",
@@ -166,6 +169,7 @@
             denyButtonText: `Continue Shopping`,
             toast: true,
           }).then((result) => {
+            console.log(result, "resultresultresultresult");
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
               location.href = "/confirm";
@@ -174,26 +178,25 @@
             }
           });
         } else if (response.onlinePayment) {
-          console.log("test ok");
-          let razorpayoderData = response.razorpayoderData;
+          console.log(response, "responseresponseonline");
+          console.log("test ooooooooooooooooooooooooook");
+          razorpayoderData = response.razorpayOrderData;
           userOrderData = response.userOrderData;
           var options = {
-            key: "rzp_test_EsWfdOrXZua8KY", // Enter the Key ID generated from the Dashboard
+            key: "rzp_test_NMcDXbybMYWLne", // Enter the Key ID generated from the Dashboard
             amount: response.razorpayOrderData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             currency: "INR",
-            name: "Karma Shoes",
+            name: " Meta Hyprt mart",
             description: "Test Transaction",
             image: "https://example.com/your_logo",
             order_id: response.razorpayOrderData.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             handler: function (response) {
               console.log(response, "????????????????????????????????????????");
-              // alert(response.razorpay_payment_id);
-              //alert(response.razorpay_order_id);
-              //alert(response.razorpay_signature);
-              verifyPayment(response);
+
+              verifyPayment(response, razorpayoderData, userOrderData);
             },
             prefill: {
-              name: "Gaurav Kumar",
+              name: "Muhammed Ajnas",
               email: "gaurav.kumar@example.com",
               contact: "9999999999",
             },
@@ -216,8 +219,9 @@
     });
   });
 
-  function verifyPayment(payment, razorpayOrderData) {
-    console.log(razorpayOrderData);
+  function verifyPayment(payment, razorpayOrderData, userOrderData) {
+    console.log(payment, "paymentpayment");
+    console.log(razorpayOrderData, "razorpayOrderData");
 
     $.ajax({
       url: "/verifyPayment",
@@ -229,7 +233,8 @@
       method: "post",
 
       success: (response) => {
-        if (response.status) {
+        console.log(response,'responsajjjjje');
+        if (response.status==true) {
           Swal.fire({
             title: "Order Placed Successfully",
             icon: "success",
@@ -251,11 +256,13 @@
   }
 
   function paymentFailed(response) {
+    console.log('payment failed',response);
     $.ajax({
       url: "/paymentFailed",
       data: response,
       method: "post",
       success: (response) => {
+        console.log('ajnas',response);
         if (response.status) {
           Swal.fire({
             title: "Payment Failed !",

@@ -1,5 +1,7 @@
 const cartModel = require("../model/cart");
 
+var crypto = require("crypto");
+
 module.exports = {
   changeProductQuantity: async (productDetails, user) => {
     const productId = productDetails.product;
@@ -13,10 +15,29 @@ module.exports = {
     console.log(userProducts, "cart");
 
     return new Promise(async (resolve, reject) => {
-      await userProducts.updateOne(
-        { productId: productId },
-        { $inc: { $quantity: count } }
-      ).then(() => resolve(true));
-    })
+      await userProducts
+        .updateOne({ productId: productId }, { $inc: { $quantity: count } })
+        .then(() => resolve(true));
+    });
+  },
+  veryfiyPayment: (detail) => {
+    console.log(detail, "detaildetail");
+    console.log(detail.payment.razorpay_payment_id,'detail.payment.razorpay_order_iddetail.payment.razorpay_order_id');
+    return new Promise((resolve, reject) => {
+      var hmac = crypto
+        .createHmac("sha256", "nDdPik0bxue6f3gjqtDGIykW")
+        .update(
+          `${detail.payment.razorpay_order_id +'|'+ detail.payment.razorpay_payment_id}`
+        ).digest("hex")
+      console.log(hmac, "hmachmac");
+      if (hmac == detail.payment.razorpay_signature) {
+        console.log("fghjk");
+        resolve();
+      } else {
+        console.log("reject");
+        reject();
+      }
+    });
+    console.log(detail);
   },
 };
