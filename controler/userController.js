@@ -32,11 +32,14 @@ module.exports = {
     let userId = req.session.userId;
     const cartView = await cartModel.findOne({ userId });
     // const cartNum = cartView.products.length;
-    console.log(
-      cartView,
-      "cartViewcartViewcartViewcartViewcartViewcartViewcartView"
-    );
-    const products = await productModel.find();
+    // console.log(
+    //   cartView,
+    //   "cartViewcartViewcartViewcartViewcartViewcartViewcartView"
+    // );
+
+    let products = await productModel.find();
+
+    // let aj=products.find()
     if (req.session.userLogin) {
       res.render("user/home", {
         login: true,
@@ -116,8 +119,7 @@ module.exports = {
       const userDetail = await User.findById(userId);
 
       let cartDetail = await cartModel.findOne({ userId });
-      
-      
+
       res.render("user/checkout", {
         login: true,
         user,
@@ -134,9 +136,18 @@ module.exports = {
     //   res.render("user/userlogin", { login: false });
     // }
   },
-  mens: (req, res) => {
-    res.render("user/mens", { login: true, user: req.session.user });
+  mens: async (req, res) => {
+    try {
+      let products = await productModel
+        .find({ category: "639acfd61006ac4c0f1e4822" })
+        .populate("category");
 
+      res.render("user/mens", {
+        login: true,
+        user: req.session.user,
+        products,
+      });
+    } catch (error) {}
     // if (req.session.userLogin) {
 
     //   res.render("user/mens", { login: true, user: req.session.user });
@@ -144,12 +155,18 @@ module.exports = {
     //   res.render("user/mens", { login: false });
     // }
   },
-  womens: (req, res) => {
-    if (req.session.userLogin) {
-      res.render("user/womens", { login: true, user: req.session.user });
-    } else {
-      res.render("user/womens", { login: false });
-    }
+  womens: async (req, res) => {
+    try {
+      let products = await productModel
+        .find({ category: "6392b46240ab9bd84d9f22f2" })
+        .populate("category");
+
+      if (req.session.userLogin) {
+        res.render("user/womens", { login: true, user: req.session.user,products });
+      } else {
+        res.render("user/womens", { login: false ,products});
+      }
+    } catch (error) {}
   },
   contact: (req, res) => {
     if (req.session.userLogin) {
