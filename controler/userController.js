@@ -28,6 +28,8 @@ var Password;
 var Confirm;
 
 module.exports = {
+ 
+
   homeView: async (req, res) => {
     let userId = req.session.userId;
     const cartView = await cartModel.findOne({ userId });
@@ -162,9 +164,13 @@ module.exports = {
         .populate("category");
 
       if (req.session.userLogin) {
-        res.render("user/womens", { login: true, user: req.session.user,products });
+        res.render("user/womens", {
+          login: true,
+          user: req.session.user,
+          products,
+        });
       } else {
-        res.render("user/womens", { login: false ,products});
+        res.render("user/womens", { login: false, products });
       }
     } catch (error) {}
   },
@@ -459,5 +465,51 @@ module.exports = {
     // } catch (error) {
     //   res.status(429).render("admin/error-429");
     // }
+  },
+  editprofile: async (req, res) => {
+    console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+    console.log(req.body, "boduuuuuuuuuuuuu");
+    let addressId = req.params.id;
+    console.log(addressId, "addressId");
+    let userId = req.session.userId;
+    const userModel = await User.updateOne(
+      { userId, address: { $elemMatch: { _id: addressId } } },
+      {
+        $set: {
+          "address.$.firstName": req.body.firstName,
+          "address.$.lastName": req.body.lastName,
+          "address.$.mobNumber": req.body.phone,
+          "address.$.city": req.body.city,
+          "address.$.homeaddress": req.body.address,
+          "address.$.zipcode": req.body.zipcode,
+          "address.$.email": req.body.email,
+          "address.$.country": req.body.country,
+          "address.$.state": req.body.state,
+          "address.$.appartment": req.body.appartment,
+        },
+      }
+    )
+      .then((rk) => {
+        console.log(rk, "res update");
+        res.redirect("/userProfile");
+      })
+      .catch((err) => {
+        console.log(err.message);
+        res.redirect("/userProfile");
+      });
+  },
+
+  deleteAdress: async (req, res) => {
+    try {
+      let userId = req.session.userId;
+      let index = req.params.index;
+      const user = await User.findById(userId);
+      user.address.splice(index, 1);
+      user.save();
+      res.redirect("/userProfile");
+    } catch (error) {
+      console.log(error.message);
+      res.redirect("/userProfile");
+    }
   },
 };

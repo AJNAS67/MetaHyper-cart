@@ -46,7 +46,6 @@ router.get("/register", userController.doRegister);
 
 // router.get('/otp',userController.otpget)
 
-router.post("/addtocart", cartController.ajnas);
 router.post("/otp", userController.otp);
 router.post("/login", userController.login);
 
@@ -73,8 +72,10 @@ router.get(
   authMiddleware.sessionchek,
   orderController.postOderSuccess
 );
-router.get('/ordertracking',orderController.getTracking)
-router.post('/verifyPayment',orderController.doVerifyPayment)
-router.post('/paymentFailed',orderController.postPaymentFailed)
+router.get("/ordertracking", orderController.getTracking);
+router.post("/verifyPayment", orderController.doVerifyPayment);
+router.post("/paymentFailed", orderController.postPaymentFailed);
+router.post("/editAddress/:id", userController.editprofile);
+router.get("/deleteAddress/:index", userController.deleteAdress);
 
 module.exports = router;
