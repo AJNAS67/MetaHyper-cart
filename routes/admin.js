@@ -4,6 +4,8 @@ const adminController = require("../controler/adminController");
 const productController = require("../controler/productController");
 const categoryController = require("../controler/categoryController");
 const store = require("../middleware/multer");
+const couponModel = require("../controler/couponController");
+const cartContoller = require("../controler/cartContoller");
 
 router.get("/", adminController.admin);
 router.get("/adminlog", adminController.adminHome);
@@ -48,6 +50,11 @@ router.post("/unblockDress/:id", productController.unblockDress);
 router.post("/blockDress/:id", productController.blockDress);
 router.get("/oders", productController.viewOrder);
 router.post("/order-status", productController.changeTrack);
+
+
+router.get("/admin_coupon",couponModel.adminCoupon);
+router.post('/add_coupon',couponModel.addCoupon)
+router.get('/delete_coupon',couponModel.deleteCoupon)
 
 // router.get('/addproducts',productController.addProduct)
 
