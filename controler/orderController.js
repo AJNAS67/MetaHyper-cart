@@ -63,7 +63,7 @@ module.exports = {
         deliveryAddress: deliveryAddress,
         products: cart.products,
         quantity: cart.products.length,
-        total: cart.total,
+        total: cart.subTotal,
         paymentMethod: paymentMethod,
         paymentStatus: "Payment Pending",
         orderStatus: "orderconfirmed",
@@ -109,6 +109,7 @@ module.exports = {
         let userOrderData = result;
         console.log(result, "result");
         let orderId = result._id.toString();
+        
 
         instance.orders.create(
           {

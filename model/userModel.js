@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 // const Schema = mongoose.Schema;
 
 const addressSchema = new mongoose.Schema({
-
   firstName: {
     type: String,
     required: true,
@@ -24,7 +23,7 @@ const addressSchema = new mongoose.Schema({
   },
   appartment: {
     type: String,
-      },
+  },
   homeaddress: {
     type: String,
     required: true,
@@ -45,41 +44,51 @@ const addressSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-})
-
-
-
-const UserSchema = new mongoose.Schema({
-  user_name: {
-    type: String,
-    required: true,
-  },
-
-  email: {
-    required: true,
-    type: String,
-  },
-  password: {
-    required: true,
-    type: String,
-  },
-  confirm: {
-    required: true,
-    type: String,
-  },
-  address: {
-    type:Array
-  },
-
-  status: {
-    type: String,
-    default: "Unblocked",
-  },
-  address:{
-    type:[addressSchema]
-  }
 });
 
+const UserSchema = new mongoose.Schema(
+  {
+    user_name: {
+      type: String,
+      required: true,
+    },
+
+    email: {
+      required: true,
+      type: String,
+    },
+    password: {
+      required: true,
+      type: String,
+    },
+    confirm: {
+      required: true,
+      type: String,
+    },
+    address: {
+      type: Array,
+    },
+
+    status: {
+      type: String,
+      default: "Unblocked",
+    },
+    address: {
+      type: [addressSchema],
+    },
+    coupon: {
+      type: Array,
+    },
+    applyCoupon: {
+      type: Boolean,
+      default: false,
+    },
+    usedCoupon: {
+      type: Array,
+    },
+  },
+  { timestamps: true }
+);
 
 const User = mongoose.model("Userdata", UserSchema);
 module.exports = User;

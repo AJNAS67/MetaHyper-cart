@@ -5,6 +5,7 @@ const cartController = require("../controler/cartContoller");
 const wishlistControler = require("../controler/wishlistController");
 const authMiddleware = require("../auth/auth");
 const orderController = require("../controler/orderController");
+const couponController = require("../controler/couponController");
 // const { otpVerification, getOtpForm, sendOtp } = require("../middleware/otp");
 
 router.get("/", userController.homeView);
@@ -77,5 +78,8 @@ router.post("/verifyPayment", orderController.doVerifyPayment);
 router.post("/paymentFailed", orderController.postPaymentFailed);
 router.post("/editAddress/:id", userController.editprofile);
 router.get("/deleteAddress/:index", userController.deleteAdress);
+// coupen
+
+router.post("/coupon_verify", couponController.couponVerify);
 
 module.exports = router;

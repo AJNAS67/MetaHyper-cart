@@ -28,11 +28,9 @@ var Password;
 var Confirm;
 
 module.exports = {
- 
-
   homeView: async (req, res) => {
     let userId = req.session.userId;
-    const cartView = await cartModel.findOne({ userId });
+
     // const cartNum = cartView.products.length;
     // console.log(
     //   cartView,
@@ -43,20 +41,25 @@ module.exports = {
 
     // let aj=products.find()
     if (req.session.userLogin) {
+      let userDetail = await User.findById(userId);
+      let applycoupen = userDetail.applyCoupon;
+      const cartView = await cartModel.findOne({ userId });
       res.render("user/home", {
         login: true,
         user: req.session.user,
         products,
+        applycoupen
         // cartNum,
       });
     } else {
-      res.render("user/home", { login: false, products });
+      res.render("user/home", { login: false, products,applycoupen:false });
     }
   },
   // otpget: (req, res) => {
   //   res.render("user.otp");
   // },
   login: async (req, res) => {
+    console.log(req.body);
     // const { Email, password } = req.body;
     const Email = req.body.email;
     const password = req.body.password;

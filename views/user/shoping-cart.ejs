@@ -74,46 +74,39 @@
                   </div>
                 </td>
 
-                <!-- <td id="totalPrice"><%=p._id%></td> -->
                 <td id="price<%=p._id%>" class="cart__price"><%=p.price%></td>
-                <!-- <td>
-                  <button
-                    class="cart-item-count mr-3"
-                    onclick="var result = document.getElementById('sst<%= p._id %>');QuantityDec('<%= p._id %>',result.value); var sst = result.value; if( !isNaN( sst & sst > 1) ) result.value--;return false;"
-                  >
-                    -</button
-                  ><span
-                    name="quantity"
-                    value="<%=p.quantity %>"
-                    id="sst<%=p._id %>"
-                    ><%=p.quantity%></span
-                  >
-                  <button
-                    class="cart-item-count mr-3"
-                    onclick="var result = document.getElementById('sst<%= p._id %>');QuantityInc('<%= p._id %>'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
-                  >
-                    +
-                  </button>
-                </td> -->
-                <!-- <td class="cart__quantity">
-                  <div
-                    class="pro-qty"
-                    onclick="var result = document.getElementById('sst<%= p._id %>');QuantityInc('<%= p._id %>',result.value);"
-                  >
-                    <input
-                      type="text"
-                      value="<%=p.quantity %>"
-                      name="quantity"
-                      id="sst<%=p._id %>"
-                    />
-                  </div>
-                </td> -->
 
                 <td class="cart__quantity">
                   <div
                     class="product_count"
                     style="margin-bottom: 2px !important"
                   >
+                    <% if(applyCoupon){ %>
+
+                    <input
+                      type="text"
+                      maxlength="12"
+                      value="<%=p.quantity %>"
+                      name="quantity"
+                      id="sst<%=p._id %>"
+                    />
+                    <button
+                      onclick="var result = document.getElementById('sst<%= p._id %>');QuantityInc('<%= p._id %>'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+                      class="increase items-count"
+                      type="button"
+                      disabled
+                    >
+                      +
+                    </button>
+                    <button
+                      onclick="var result = document.getElementById('sst<%= p._id %>');QuantityDec('<%= p._id %>',result.value); var sst = result.value; if( !isNaN( sst & sst > 1) ) result.value--;return false;"
+                      class="reduced items-count"
+                      type="button"
+                      disabled
+                    >
+                      -
+                    </button>
+                    <% } else{ %>
                     <input
                       type="text"
                       maxlength="12"
@@ -135,6 +128,7 @@
                     >
                       -
                     </button>
+                    <% } %>
                   </div>
                 </td>
 
@@ -157,9 +151,18 @@
                   <%= p.quantity*p.price %>
                 </td>
                 <td class="cart__close">
+                  <% if(applyCoupon){ %>
+                  <a
+                    onclick="removeCart('<%=p._id%>')"
+                    style="pointer-events: none"
+                    ><span class="icon_close"></span
+                  ></a>
+                  <% } else{ %>
+
                   <a onclick="removeCart('<%=p._id%>')"
                     ><span class="icon_close"></span
                   ></a>
+                  <% } %>
                 </td>
               </tr>
               <% }) %>
@@ -183,10 +186,30 @@
     <div class="row">
       <div class="col-lg-6">
         <div class="discount__content">
-          <h6>Discount codes</h6>
-          <form action="#">
-            <input type="text" placeholder="Enter your coupon code" />
+          <h6 class="mb-4">Discount codes</h6>
+          <form method="post" id="verify-coupon">
+            <% if(applyCoupon){ %>
+            <input
+              name="coupon"
+              type="text"
+              placeholder="<%=usedCoupon.code%>"
+              value="<%=usedCoupon.code%>"
+            />
+            <button type="submit" class="site-btn">Remove</button>
+            <% } else{ %>
+            <input
+              name="coupon"
+              type="text"
+              placeholder="Enter your coupon code"
+            />
             <button type="submit" class="site-btn">Apply</button>
+            <% } %>
+            <!-- <input
+              name="coupon"
+              type="text"
+              placeholder="Enter your coupon code"
+            />
+            <button type="submit" class="site-btn">Apply</button> -->
           </form>
         </div>
       </div>
@@ -194,8 +217,18 @@
         <div class="cart__total__procced">
           <h6>Cart total</h6>
           <ul>
-            <li>Subtotal <span id="subtotal"><%=cartProducts.total%></span></li>
+            <li>Total Price <span id="total"><%=cartProducts.total%></span></li>
+            <li>
+              Discout
+              <span id="discout"><%=cartProducts.couponDiscount %></span>
+            </li>
+
+            <li>
+              Subtotal Price
+              <span id="subtotal"><%=cartProducts.subTotal%></span>
+            </li>
           </ul>
+
           <a href="/checkout" class="primary-btn">Proceed to checkout</a>
         </div>
       </div>
@@ -226,7 +259,7 @@
     <h5>Subtotal</h5>
   </td>
   <td>
-    <h5>$<span id="subtotal"><%= cartProducts.total %></span></h5>
+    <h5>$<span id="total"><%= cartProducts.total %></span></h5>
   </td>
 </tr>
 <% } %> <% }else { %>
@@ -246,8 +279,63 @@
 </div>
 
 <% } %>
-
-
+<script>
+  $("#verify-coupon").submit((e) => {
+    e.preventDefault();
+    const total = document.getElementById("total").innerHTML;
+    console.log(total, "totel");
+    $.ajax({
+      url: "/coupon_verify",
+      method: "post",
+      data: $("#verify-coupon").serialize() + "&amountTotal=" + total,
+      success: (response) => {
+        if (response.success) {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Received the Coupon",
+            customClass: "swal-wide",
+            showConfirmButton: false,
+            timer: 1000,
+          }).then((result) => {
+            location.reload();
+          });
+        } else if (response.maxRadeem) {
+          console.log(response.maxRadeem);
+          Swal.fire(
+            "Sorry!",
+            `Maximum radeem amount is ${response.maxRadeem}`,
+            "error"
+          );
+        } else if (response.minCart) {
+          console.log(response.minCart);
+          Swal.fire(
+            "Sorry!",
+            `Minimum cart amount is ${response.minCart}`,
+            "error"
+          );
+        } else if (response.minCart) {
+          Swal.fire("Sorry!", "This coupon date is expired", "error");
+        } else if (response.exist) {
+          Swal.fire("Sorry!", "This coupon already used", "error");
+        } else if (response.removeCoupon) {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Coupon Code Removed",
+            customClass: "swal-wide",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then((result) => {
+            location.reload();
+          });
+        } else {
+          Swal.fire("Sorry!", "This coupon Invalid", "error");
+        }
+      },
+    });
+  });
+</script>
 
 <script>
   function QuantityInc(ProductId, count) {
@@ -275,10 +363,16 @@
           document.getElementById(`totalPrice${ProductId}`).innerHTML =
             Quantity * productPrice;
 
-          let subtotal = document.getElementById("subtotal").innerHTML;
-          subtotal = parseInt(subtotal);
+          let totalPrice = document.getElementById("total").innerHTML;
+          totalPrice = parseInt(totalPrice);
+          let subTotalPrice = document.getElementById("subtotal").innerHTML;
+          totalPrice = parseInt(totalPrice);
+          subTotalPrice = parseInt(subTotalPrice);
+
+          document.getElementById("total").innerHTML =
+            totalPrice + productPrice;
           document.getElementById("subtotal").innerHTML =
-            subtotal + productPrice;
+            subTotalPrice + productPrice;
         }
       },
     });
@@ -297,10 +391,14 @@
             console.log(Price);
             document.getElementById("totalPrice" + ProductId).innerHTML =
               Quantity * Price;
-            let subtotal = document.getElementById("subtotal").innerHTML;
-            subtotal = parseInt(subtotal);
+            let totalPrice = document.getElementById("total").innerHTML;
+            totalPrice = parseInt(totalPrice);
+            let subTotalPrice = document.getElementById("subtotal").innerHTML;
+            subTotalPrice = parseInt(subTotalPrice);
             Price = parseInt(Price);
-            document.getElementById("subtotal").innerHTML = subtotal - Price;
+            document.getElementById("total").innerHTML = totalPrice - Price;
+            document.getElementById("subtotal").innerHTML =
+              subTotalPrice - Price;
           }
         },
       });

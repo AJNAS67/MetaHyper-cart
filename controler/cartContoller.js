@@ -3,13 +3,14 @@ const productModel = require("../model/product");
 const { login } = require("./userController");
 const express = require("express");
 const userHelpers = require("../helpers/user-helper");
+const User = require("../model/userModel");
 
 const app = express();
 
 module.exports = {
   addTocart: async (req, res) => {
     try {
-      let User = req.session.user;
+      let user = req.session.user;
       let quantity = 1;
       let name = req.body.name;
       let price = req.body.price;
@@ -17,31 +18,49 @@ module.exports = {
       const findProduct = await productModel.findById(ProductId);
       const userId = req.session.userId;
       let cart = await cartModel.findOne({ userId });
+      let userdetails = await User.findById(userId);
 
-      if (cart) {
-        let itemIndex = cart.products.findIndex(
-          (p) => p.ProductId == ProductId
-        );
-        if (itemIndex > -1) {
-          let productItem = cart.products[itemIndex];
-          productItem.quantity += quantity;
+      if (user) {
+        if (userdetails.applyCoupon == false) {
+          if (cart) {
+            let itemIndex = cart.products.findIndex(
+              (p) => p.ProductId == ProductId
+            );
+            if (itemIndex > -1) {
+              let productItem = cart.products[itemIndex];
+              productItem.quantity += quantity;
+            } else {
+              cart.products.push({ ProductId, quantity, name, price });
+            }
+            cart.total = cart.products.reduce((acc, curr) => {
+              return acc + curr.quantity * curr.price;
+            }, 0);
+            cart.subTotal = cart.products.reduce((acc, curr) => {
+              return acc + curr.quantity * curr.price;
+            }, 0);
+            await cart.save();
+            // res.json({ cart: true });
+            res.json({ exist: true });
+
+            // res.redirect("/shoping-cart");
+          } else {
+            const total = quantity * price;
+            const subTotal = quantity * price;
+            cart = new cartModel({
+              userId: userId,
+              products: [{ ProductId, quantity, name, price }],
+              total: total,
+              subTotal: subTotal,
+            });
+            await cart.save();
+            // res.redirect("/shoping-cart");
+            res.json({ cart: true });
+          }
         } else {
-          cart.products.push({ ProductId, quantity, name, price });
+          res.json({ applyCoupon: true });
         }
-        cart.total = cart.products.reduce((acc, curr) => {
-          return acc + curr.quantity * curr.price;
-        }, 0);
-        await cart.save();
-        res.redirect("/shoping-cart");
       } else {
-        const total = quantity * price;
-        cart = new cartModel({
-          userId: userId,
-          products: [{ ProductId, quantity, name, price }],
-          total: total,
-        });
-        await cart.save();
-        res.redirect("/shoping-cart");
+        res.json({ login: true });
       }
     } catch (error) {
       console.log(error.message, "erro");
@@ -56,6 +75,10 @@ module.exports = {
 
     try {
       let userId = req.session.userId;
+      const userDetails = await User.findById(userId);
+      console.log(userDetails.applyCoupon);
+      let applyCoupon = userDetails.applyCoupon;
+      console.log(applyCoupon, "applyCouponapplyCoupon");
       const cartView = await cartModel
         .findOne({ userId })
         .populate("products.ProductId")
@@ -64,13 +87,32 @@ module.exports = {
       if (cartView) {
         req.session.cartNum = cartView.products.length;
       }
-      cartNum = req.session.cartNum;
-      res.render("user/shoping-cart", {
-        login: true,
-        user,
-        cartNum,
-        cartProducts: cartView,
-      });
+      let cartNum = req.session.cartNum;
+
+      if (applyCoupon) {
+        let usedCouponlen = userDetails.usedCoupon.length - 1;
+        const usedCoupon = userDetails.usedCoupon[usedCouponlen];
+        console.log(usedCoupon, "usedCouponusedCoupon");
+        res.render("user/shoping-cart", {
+          login: true,
+          user,
+          cartNum,
+          cartProducts: cartView,
+          userDetails,
+          applyCoupon,
+          usedCoupon,
+        });
+      } else {
+        res.render("user/shoping-cart", {
+          login: true,
+          user,
+          cartNum,
+          cartProducts: cartView,
+          userDetails,
+          applyCoupon,
+          usedCoupon: null,
+        });
+      }
     } catch (error) {
       console.log(error.message);
     }
@@ -78,16 +120,31 @@ module.exports = {
 
   removeCart: async (req, res) => {
     try {
-      let userCart = await cartModel.findOne({ userId: req.session.userId });
+      let userId = req.session.userId;
+      await cartModel.updateOne(
+        { userId: userId },
+        {
+          $set: {
+            couponDiscount: 0,
+          },
+        }
+      );
+      let userCart = await cartModel.findOne({ userId: userId });
+
+      console.log(userCart, "userCartuserCartuserCart");
       let productIndex = userCart.products.findIndex(
         (product) => product._id == req.params.cartId
       );
+      console.log(productIndex, "productIndexproductIndex");
       let productItem = userCart.products[productIndex];
       if (productIndex != null) {
         userCart.total =
           userCart.total - productItem.price * productItem.quantity;
+        userCart.subTotal =
+          userCart.subTotal - productItem.price * productItem.quantity;
         userCart.products.splice(productIndex, 1);
-        await userCart.save().then((aj) => {
+
+        await userCart.save().then(() => {
           res.json({ status: true });
         });
         // res.redirect("/shoping-cart");
@@ -111,13 +168,19 @@ module.exports = {
 
     let arr = [...userCart.products];
 
+    console.log(arr, "aaaaaaaaaaaaaaaaaaa");
     let productItem = arr[ProductIndex];
+    console.log(userCart, "userCartuserCart");
     userCart.total = userCart.total - productItem.price * productItem.quantity;
+    userCart.subTotal =
+      userCart.subTotal - productItem.price * productItem.quantity;
     productItem.quantity = productItem.quantity - 1;
     arr[ProductIndex] = productItem;
     userCart.total = userCart.total + productItem.price * productItem.quantity;
+    userCart.subTotal =
+      userCart.subTotal + productItem.price * productItem.quantity;
 
-    userCart.save();
+    await userCart.save();
     res.json({ status: true });
   },
   QuantityInc: async (req, res) => {
@@ -131,6 +194,7 @@ module.exports = {
     productItem.quantity = productItem.quantity + 1;
     userCart.products[productIndex] = productItem;
     userCart.total = userCart.total + productItem.price * productItem.quantity;
+    userCart.subTotal = userCart.total - userCart.couponDiscount;
 
     await userCart.save();
     res.json({ status: true });
