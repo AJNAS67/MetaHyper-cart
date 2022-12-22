@@ -109,7 +109,6 @@ module.exports = {
         let userOrderData = result;
         console.log(result, "result");
         let orderId = result._id.toString();
-        
 
         instance.orders.create(
           {
@@ -212,5 +211,23 @@ module.exports = {
       let order = await orderModel.findById({ _id: orderId });
       res.render("user/orderTracking", { login: true, user, order });
     } catch (error) {}
+  },
+  getCancelOrder: async (req, res) => {
+    res.send("hi");
+    try {
+      let orderId = req.query.id;
+      console.log(orderId, "orderId");
+
+      let order = await orderModel
+        .findByIdAndUpdate(orderId, {
+          orderStatus: "Cancellede",
+          track: "Cancellede",
+        })
+        .then((re) => {
+          console.log(re, "uuuuuuuuuuuuuuu");
+        });
+    } catch (error) {
+      res.status(429).render("admin/error-429");
+    }
   },
 };

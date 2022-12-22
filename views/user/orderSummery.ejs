@@ -337,7 +337,6 @@
       cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(orderId);
         $.ajax({
           url: "/cancelOrder/?id=" + orderId,
           method: "get",
@@ -347,7 +346,7 @@
           "Your orderd has been Cancelled.",
           "success"
         ).then(() => {
-          window.location = "/myOrders";
+          window.location = "/viewOrders";
         });
       }
     });

@@ -82,4 +82,6 @@ router.get("/deleteAddress/:index", userController.deleteAdress);
 
 router.post("/coupon_verify", couponController.couponVerify);
 
+router.get("/cancelOrder", orderController.getCancelOrder);
+
 module.exports = router;
