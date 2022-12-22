@@ -123,108 +123,56 @@
                     >
                       Order Details
                     </h5>
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
+                    
                   </div>
-                  <div class="modal-body" id="invoice">
+                  <div class="modal-body col-lg-12" id="invoice">
                     <div class="row order_d_inner">
-                      <div class="col-lg-4">
-                        <div class="details_item" style="color: black">
-                          <h4>Order Info</h4>
-                          <ul class="list">
-                            <li>
-                              <a href="#" style="color: black"
-                                ><span>Order number</span> : 60235</a
-                              >
-                            </li>
-                            <li>
-                              <a href="#" style="color: black"
-                                ><span>Date</span> :<%=result[i].createdAt%>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#" style="color: black"
-                                ><span>Total</span> : Rs<%= result[i].total
-                                %></a
-                              >
-                            </li>
-                            <li>
-                              <a href="#" style="color: black"
-                                ><span>Payment method</span> : <%=
-                                result[i].paymentMethod %></a
-                              >
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="details_item" style="color: black">
-                          <h4>Billing Address</h4>
-                          <ul class="list">
-                            <li>
-                              <a href="#" style="color: black"
-                                ><span>Street</span> : <%=
-                                result[i].deliveryAddress.city %></a
-                              >
-                            </li>
-                            <li>
-                              <a href="#" style="color: black"
-                                ><span>City</span> :<%=
-                                result[i].deliveryAddress.district %></a
-                              >
-                            </li>
-                            <li>
-                              <a href="#" style="color: black"
-                                ><span>Country</span> : <%=
-                                result[i].deliveryAddress.country %></a
-                              >
-                            </li>
-                            <li>
-                              <a href="#" style="color: black"
-                                ><span>Postcode </span> : <%=
-                                result[i].deliveryAddress.zipcode %></a
-                              >
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="details_item" style="color: black">
-                          <h4>Shipping Address</h4>
-                          <ul class="list">
-                            <li>
-                              <a href="#" style="color: black"
-                                ><span>City</span> : <%=
-                                result[i].deliveryAddress.city %></a
-                              >
-                            </li>
-                            <li>
-                              <a href="#" style="color: black"
-                                ><span>District</span> : <%=
-                                result[i].deliveryAddress.district %></a
-                              >
-                            </li>
-                            <li>
-                              <a href="#" style="color: black"
-                                ><span>Country</span> : <%=
-                                result[i].deliveryAddress.country %></a
-                              >
-                            </li>
-                            <li>
-                              <a href="#" style="color: black"
-                                ><span>Postcode </span> : <%=
-                                result[i].deliveryAddress.zipcode %></a
-                              >
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
+
+                      <table class="table table-borderless">
+                        <thead>
+                          <tr>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Ordered Date</td>
+                            <td><%=result[i].createdAt%></td>
+                          </tr>
+
+                          <tr>
+                            <td>User Deyails</td>
+                            <td>
+                              Name - <%=result[i].deliveryAddress.firstName%>
+                              ;Mob.Number -
+                              <%=result[i].deliveryAddress.mobNumber%>
+                              <br />Address -
+                              <%=result[i].deliveryAddress.homeaddress%>
+                              <br />state - <%=result[i].deliveryAddress.state%>
+                              ;city - <%=result[i].deliveryAddress.city%>
+                            </td>
+                          </tr>
+                          <tr>
+                            
+                          </tr>
+                          <tr>
+                            <td>Product Details</td>
+
+                          <% for (var j =1; j <=result[i].products.length; j++ )
+                          { %>
+                          
+                            <td>
+                              Name -<%=result[i].products[j-1].name%> ; Price
+                              -<%=result[i].products[j-1].price%> ; Quantity
+                              -<%=result[i].products[j-1].quantity%>
+                            </td>
+                            <% } %>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                     
                     </div>
                   </div>
                   <div class="modal-footer">
