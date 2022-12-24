@@ -49,6 +49,7 @@ module.exports = {
     let deliveryAddress = user.address[address];
 
     let cart = await cartModel.findOne({ userId });
+    console.log(cart,'cartcartcart');
     
     let proId = cart.products;
     function getNthDate(nthDate) {
@@ -57,7 +58,7 @@ module.exports = {
     }
     var estimatedDate = getNthDate(6);
     var estimatedDate = estimatedDate.toLocaleDateString();
-    var amount = parseInt(cart.total);
+    var amount = parseInt(cart.subTotal);
     if (paymentMethod == "Cash On Delivery") {
       const newOrder = new orderModel({
         userId: userId,
@@ -117,12 +118,11 @@ module.exports = {
             currency: "INR",
             receipt: orderId,
             notes: {
-              key1: "value3",
+              key1: process.env.YOUR_KEY_ID,
               key2: "value2",
             },
           },
           (err, order) => {
-            console.log(order, "orer");
             let response = {
               onlinePayment: true,
               razorpayOrderData: order,

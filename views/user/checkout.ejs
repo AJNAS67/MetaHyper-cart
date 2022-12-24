@@ -174,7 +174,7 @@
           razorpayoderData = response.razorpayOrderData;
           userOrderData = response.userOrderData;
           var options = {
-            key: process.env.YOUR_KEY_SECRET, // Enter the Key ID generated from the Dashboard
+            key: response.razorpayOrderData.notes.key1, // Enter the Key ID generated from the Dashboard
             amount: response.razorpayOrderData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             currency: "INR",
             name: " Meta Hyprt mart",

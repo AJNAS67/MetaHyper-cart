@@ -21,8 +21,6 @@ module.exports = {
     });
   },
   veryfiyPayment: (detail) => {
-    console.log(detail, "detaildetail");
-    console.log(detail.payment.razorpay_payment_id,'detail.payment.razorpay_order_iddetail.payment.razorpay_order_id');
     return new Promise((resolve, reject) => {
       var hmac = crypto
         .createHmac("sha256", "nDdPik0bxue6f3gjqtDGIykW")
@@ -31,13 +29,10 @@ module.exports = {
         ).digest("hex")
       console.log(hmac, "hmachmac");
       if (hmac == detail.payment.razorpay_signature) {
-        console.log("fghjk");
         resolve();
       } else {
-        console.log("reject");
         reject();
       }
     });
-    console.log(detail);
   },
 };
