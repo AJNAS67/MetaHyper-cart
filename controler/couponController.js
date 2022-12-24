@@ -54,11 +54,12 @@ module.exports = {
   //   res.send('hi')
   // },
   couponVerify: async (req, res) => {
-    console.log(req.body, "hhhhhhhhhhhhhhhhhhhh");
+    console.log("ajas");
 
     try {
       const CoupenCode = req.body.coupon;
       const amoutTotal = req.body.amountTotal;
+      const cartId = req.body.cartId;
       let userId = req.session.userId;
       const user = await User.findById(userId);
       console.log(user, "useruser");
@@ -66,7 +67,10 @@ module.exports = {
       console.log(amoutTotal, "amoutTotal");
       let coupon = await couponModule.findOne({ couponCode: CoupenCode });
       // let coupon = await couponModule.find();
-
+      let crt = await cartModel.findById(cartId);
+      let cartTotal = crt.total;
+      let subTotal = cartTotal;
+      console.log(crt, "crtcrt");
       let date = new Date();
       console.log(coupon, "coupon");
       if (user.applyCoupon) {
@@ -94,12 +98,24 @@ module.exports = {
         ).then((e) => {
           console.log(e, "eeeeeeee");
         });
+        await cartModel
+          .updateOne(
+            { _id: cartId },
+            { $set: { couponDiscount: 0, subTotal: subTotal } }
+          )
+          .then((r) => {
+            console.log(r, "upadated copen discout");
+          });
         res.json({ removeCoupon: true });
         console.log(user.applyCoupon, "applaycopon");
       } else {
         if (CoupenCode == "") {
           res.json(false);
         } else {
+          if (!coupon) {
+            res.json({ invalid: true });
+          }
+          console.log("problom");
           let existCoupon = await User.findOne({
             _id: userId,
             "usedCoupon.couponId": coupon._id,

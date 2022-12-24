@@ -113,5 +113,6 @@ app.use(bodyParser.json());
 app.use("/", usersRouter);
 app.use("/admin", adminRouter);
 
-const PORT = 3000;
+const PORT = process.env.PORT;
+console.log(PORT,'port');
 app.listen(PORT, console.log("Server don start for port: " + PORT));

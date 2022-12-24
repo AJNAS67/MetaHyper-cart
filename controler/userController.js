@@ -190,7 +190,6 @@ module.exports = {
     Email = req.body.email;
     Password = req.body.password;
     Confirm = req.body.confirm;
-    console.log(req.body, "ajnas");
     // const { user_name, email, password, confirm } = req.body;
     const user = await User.findOne({ email: Email });
     // const user = false;
@@ -470,10 +469,7 @@ module.exports = {
     // }
   },
   editprofile: async (req, res) => {
-    console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-    console.log(req.body, "boduuuuuuuuuuuuu");
     let addressId = req.params.id;
-    console.log(addressId, "addressId");
     let userId = req.session.userId;
     const userModel = await User.updateOne(
       { userId, address: { $elemMatch: { _id: addressId } } },

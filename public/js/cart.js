@@ -18,9 +18,6 @@ async function addTocart(prodId, prodName, ProdPrice, applycoupen) {
           showConfirmButton: false,
           timer: 1000,
         });
-        // let count = $("#cart-count").html();
-        // count = parseInt(count) + 1;
-        // $("#cart-count").html(count);
       } else if (response.exist) {
         Swal.fire({
           position: "center",
@@ -52,10 +49,8 @@ async function addTocart(prodId, prodName, ProdPrice, applycoupen) {
           timer: 1000,
         });
       } else {
-        // window.location = "/user_login";
         window.location = "/signin";
       }
     },
   });
-
 }

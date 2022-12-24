@@ -78,7 +78,6 @@ module.exports = {
       const userDetails = await User.findById(userId);
       console.log(userDetails.applyCoupon);
       let applyCoupon = userDetails.applyCoupon;
-      console.log(applyCoupon, "applyCouponapplyCoupon");
       const cartView = await cartModel
         .findOne({ userId })
         .populate("products.ProductId")

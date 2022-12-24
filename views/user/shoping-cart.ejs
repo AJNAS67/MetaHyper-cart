@@ -35,6 +35,8 @@
 </div>
 <!-- Breadcrumb End -->
 <% if (cartProducts) { %> <% if (cartProducts.products.length > 0 ) { %>
+<p style="color: white;" id="cartId" value="<%=cartProducts._id%>"><%=cartProducts._id%></p>
+
 
 <!-- Shop Cart Section Begin -->
 <section class="shop-cart spad">
@@ -262,6 +264,7 @@
     <h5>$<span id="total"><%= cartProducts.total %></span></h5>
   </td>
 </tr>
+
 <% } %> <% }else { %>
 <div class="container">
   <div class="row text-center">
@@ -279,15 +282,23 @@
 </div>
 
 <% } %>
+
+
 <script>
   $("#verify-coupon").submit((e) => {
     e.preventDefault();
     const total = document.getElementById("total").innerHTML;
-    console.log(total, "totel");
+    const cartId = document.getElementById("cartId").innerHTML;
+
     $.ajax({
       url: "/coupon_verify",
       method: "post",
-      data: $("#verify-coupon").serialize() + "&amountTotal=" + total,
+      data:
+        $("#verify-coupon").serialize() +
+        "&amountTotal=" +
+        total +
+        "&cartId=" +
+        cartId,
       success: (response) => {
         if (response.success) {
           Swal.fire({
@@ -329,7 +340,14 @@
           }).then((result) => {
             location.reload();
           });
-        } else {
+        }
+        
+        
+        else if (response.invalid) {
+           Swal.fire("Sorry!", "This coupon Invalid", "error");
+        } 
+        
+        else {
           Swal.fire("Sorry!", "This coupon Invalid", "error");
         }
       },

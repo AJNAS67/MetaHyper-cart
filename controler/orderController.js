@@ -7,8 +7,8 @@ const Razorpay = require("razorpay");
 const userHelpers = require("../helpers/user-helper");
 
 var instance = new Razorpay({
-  key_id: "rzp_test_NMcDXbybMYWLne",
-  key_secret: "nDdPik0bxue6f3gjqtDGIykW",
+  key_id: process.env.YOUR_KEY_ID,
+  key_secret: process.env.YOUR_KEY_SECRET,
 });
 
 module.exports = {
@@ -49,6 +49,7 @@ module.exports = {
     let deliveryAddress = user.address[address];
 
     let cart = await cartModel.findOne({ userId });
+    
     let proId = cart.products;
     function getNthDate(nthDate) {
       let date = new Date();
@@ -97,7 +98,7 @@ module.exports = {
         deliveryAddress: deliveryAddress,
         products: cart.products,
         quantity: cart.products.length,
-        total: cart.total,
+        total: cart.subTotal,
         paymentMethod: paymentMethod,
         paymentStatus: "Payment Completed",
         orderStatus: "orderconfirmed",

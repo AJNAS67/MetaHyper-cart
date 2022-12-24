@@ -1,1 +1,9 @@
-GET http://localhost:3000/addtocart/
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "sufiyanakkode@gmail.com",
+    "password": "najwa"
+}
+###
+
