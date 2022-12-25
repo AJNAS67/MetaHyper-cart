@@ -1,5 +1,4 @@
 <%- include('./partials/userHeader.ejs') %>
-
 <!-- Breadcrumb Begin -->
 <div class="breadcrumb-option">
   <div class="container">
@@ -151,7 +150,7 @@
               <div
                 class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
                 data-min="33"
-                data-max="99"
+                data-max="6000"
               ></div>
               <div class="range-slider">
                 <div class="price-input">
@@ -161,7 +160,8 @@
                 </div>
               </div>
             </div>
-            <a href="#">Filter</a>
+            <br>
+            <a onclick="priceFilter()">Filter</a>
           </div>
           <div class="sidebar__sizes">
             <div class="section-title">
@@ -259,8 +259,63 @@
           </div>
         </div>
       </div>
+
       <div class="col-lg-9 col-md-9">
+        <% if(products.length){ %>
+
         <div class="row">
+          <% products.forEach(function(product,index) { %>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="product__item">
+              <div
+                class="product__item__pic set-bg"
+                data-setbg="/images/productImages/<%=product.image[0]%>"
+              >
+                <% if(product.quantity >20 ){ %>
+                <div class="label new">New</div>
+                <% } %>
+                <% if(product.quantity<1 ) {%>
+                <div class="label stockout stockblue">Out Of Stock</div>
+
+                <% } %>
+
+                <ul class="product__hover">
+                  <li>
+                    <a href="/product-details/<%=product.id%>"
+                      ><span class="arrow_expand"></span
+                    ></a>
+                  </li>
+                  <li>
+                    <a
+                      onclick="addToWishlist('<%=product.id%>','<%=product.name%>')"
+                      ><span class="icon_heart_alt"></span
+                    ></a>
+                  </li>
+                  <li>
+                    <a
+                      onclick="addTocart('<%=product.id%>','<%=product.name%>','<%=product.price%>')"
+                      ><span class="icon_bag_alt"></span
+                    ></a>
+                  </li>
+                </ul>
+              </div>
+              <div class="product__item__text">
+                <h6><a href="#"><%=product.name%></a></h6>
+                <div class="rating">
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                </div>
+                <div class="product__price">$ <%=product.price%></div>
+              </div>
+            </div>
+          </div>
+
+          <% }); %>
+
           <div class="col-lg-4 col-md-6">
             <div class="product__item">
               <div
@@ -571,12 +626,24 @@
             </div>
           </div>
         </div>
+
+        <% } else{ %>
+        <h1>No product Available</h1>
+        <% } %>
       </div>
     </div>
   </div>
 </section>
 <!-- Shop Section End -->
+<script>
+  function priceFilter() {
+    
 
+    const minPrice = document.getElementById("minamount").value.split("$").join("")
+    const maxPrice = document.getElementById("maxamount").value.split("$").join("")
+    window.location =`/shop/categoryKid/?minPrice=${minPrice}&maxPrice=${maxPrice}`
 
+  }
+</script>
 
 <%- include('./partials/userFooter.ejs') %>

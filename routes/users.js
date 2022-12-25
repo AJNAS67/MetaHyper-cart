@@ -11,7 +11,6 @@ const couponController = require("../controler/couponController");
 router.get("/", userController.homeView);
 
 router.get("/home", userController.homeView);
-router.get("/shop", userController.shop);
 router.get("/signin", userController.userlogin);
 router.get("/logout", userController.logout);
 router.get("/otp", userController.optPage);
@@ -41,8 +40,14 @@ router.get(
   authMiddleware.sessionchekDirectLogin,
   userController.checkout
 );
-router.get("/mens", authMiddleware.sessionchek, userController.mens);
+router.get("/mens", userController.mens);
 router.get("/womens", userController.womens);
+router.get("/kids", userController.kids);
+
+
+router.get('/cosmetics',userController.cosmetics)
+router.get('/accessories',userController.Accessories)
+
 router.get("/register", userController.doRegister);
 
 // router.get('/otp',userController.otpget)
@@ -83,5 +88,9 @@ router.get("/deleteAddress/:index", userController.deleteAdress);
 router.post("/coupon_verify", couponController.couponVerify);
 
 router.get('/cancelOrder',orderController.getCancelOrder)
+// price filter
 
+router.get('/shop/category',userController.getShopByCategory)
+router.get('/shop/categoryMen',userController.getMenPriceFilter)
+router.get('/shop/categoryKid',userController.getKidsPriceFilter)
 module.exports = router;

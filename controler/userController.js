@@ -5,6 +5,7 @@ const nodemailer = require("nodemailer");
 const addressModel = require("../model/addressModel");
 const cartModel = require("../model/cart");
 const addressModule = require("../model/addressModel");
+const categoryModel = require("../model/category");
 
 var otp = Math.random();
 otp = otp * 1000000;
@@ -28,6 +29,103 @@ var Password;
 var Confirm;
 
 module.exports = {
+  getShopByCategory: async (req, res) => {
+    const minPrice = req.query.minPrice || 100;
+    const maxPrice = req.query.maxPrice || 5000;
+    console.log(minPrice, "minPriceminPrice");
+    var query = await productModel.find().populate({
+      path: "category",
+      match: {
+        category: { $eq: "Women" },
+      },
+    });
+
+    var product = query.filter(function (el) {
+      return el.price >= minPrice && el.price <= maxPrice;
+    });
+
+    var products = [];
+    product.forEach((elements) => {
+      if (elements.category !== null) {
+        products.push(elements);
+      }
+    });
+
+    if (req.session.userLogin) {
+      res.render("user/womens", {
+        login: true,
+        user: req.session.user,
+        products,
+      });
+    } else {
+      res.render("user/womens", { login: false, products });
+    }
+  },
+  getMenPriceFilter: async (req, res) => {
+    const minPrice = req.query.minPrice || 100;
+    const maxPrice = req.query.maxPrice || 5000;
+    console.log(minPrice, "minPriceminPrice");
+    var query = await productModel.find().populate({
+      path: "category",
+      match: {
+        category: { $eq: "Men" },
+      },
+    });
+
+    var product = query.filter(function (el) {
+      return el.price >= minPrice && el.price <= maxPrice;
+    });
+
+    var products = [];
+    product.forEach((elements) => {
+      if (elements.category !== null) {
+        products.push(elements);
+      }
+    });
+    if (req.session.userLogin) {
+      res.render("user/mens", {
+        login: true,
+        user: req.session.user,
+        products,
+      });
+    } else {
+      res.render("user/mens", { login: false, products });
+    }
+  },
+
+  getKidsPriceFilter:async(req,res)=>{
+    const minPrice = req.query.minPrice || 100;
+    const maxPrice = req.query.maxPrice || 5000;
+    console.log(minPrice, "minPriceminPrice");
+    var query = await productModel.find().populate({
+      path: "category",
+      match: {
+        category: { $eq: "Kids" },
+      },
+    });
+
+    var product = query.filter(function (el) {
+      return el.price >= minPrice && el.price <= maxPrice;
+    });
+
+    var products = [];
+    product.forEach((elements) => {
+      if (elements.category !== null) {
+        products.push(elements);
+      }
+    });
+    if (req.session.userLogin) {
+      res.render("user/kids", {
+        login: true,
+        user: req.session.user,
+        products,
+      });
+    } else {
+      res.render("user/kids", { login: false, products });
+    }
+
+  },
+
   homeView: async (req, res) => {
     let userId = req.session.userId;
 
@@ -37,9 +135,11 @@ module.exports = {
     //   "cartViewcartViewcartViewcartViewcartViewcartViewcartView"
     // );
 
+    
+    // let catogoey = await categoryModel.find();
     let products = await productModel.find();
 
-    // let aj=products.find()
+
     if (req.session.userLogin) {
       let userDetail = await User.findById(userId);
       let applycoupen = userDetail.applyCoupon;
@@ -48,11 +148,11 @@ module.exports = {
         login: true,
         user: req.session.user,
         products,
-        applycoupen
+        applycoupen,
         // cartNum,
       });
     } else {
-      res.render("user/home", { login: false, products,applycoupen:false });
+      res.render("user/home", { login: false, products, applycoupen: false });
     }
   },
   // otpget: (req, res) => {
@@ -134,36 +234,31 @@ module.exports = {
     } catch (error) {
       res.status(429).render("admin/error-429");
     }
-
-    // if (req.session.userLogin) {
-    //   res.render("user/checkout", { login: true, user: req.session.user });
-    // } else {
-    //   res.render("user/userlogin", { login: false });
-    // }
   },
   mens: async (req, res) => {
     try {
       let products = await productModel
         .find({ category: "639acfd61006ac4c0f1e4822" })
         .populate("category");
+      console.log(products, "productsproducts");
 
-      res.render("user/mens", {
-        login: true,
-        user: req.session.user,
-        products,
-      });
-    } catch (error) {}
-    // if (req.session.userLogin) {
-
-    //   res.render("user/mens", { login: true, user: req.session.user });
-    // } else {
-    //   res.render("user/mens", { login: false });
-    // }
+      if (req.session.userLogin) {
+        res.render("user/mens", {
+          login: true,
+          user: req.session.user,
+          products,
+        });
+      } else {
+        res.render("user/mens", { login: false, products });
+      }
+    } catch (error) {
+      res.redirect("/");
+    }
   },
   womens: async (req, res) => {
     try {
       let products = await productModel
-        .find({ category: "6392b46240ab9bd84d9f22f2" })
+        .find({ category: "639acfe51006ac4c0f1e4825" })
         .populate("category");
 
       if (req.session.userLogin) {
@@ -175,7 +270,72 @@ module.exports = {
       } else {
         res.render("user/womens", { login: false, products });
       }
-    } catch (error) {}
+    } catch (error) {
+      res.redirect("/");
+    }
+  },
+  kids: async(req, res) => {
+
+    try {
+      let products = await productModel
+        .find({ category: "6392b46240ab9bd84d9f22f2" })
+        .populate("category");
+
+      if (req.session.userLogin) {
+        res.render("user/kids", {
+          login: true,
+          user: req.session.user,
+          products,
+        });
+      } else {
+        res.render("user/kids", { login: false, products });
+      }
+    } catch (error) {
+      res.redirect("/");
+    }
+
+
+
+
+    
+  },
+  cosmetics: async (req, res) => {
+    try {
+      let products = await productModel
+        .find({ category: "63a68cb5b45a69b23404fd10" })
+        .populate("category");
+
+      if (req.session.userLogin) {
+        res.render("user/cosmetics", {
+          login: true,
+          user: req.session.user,
+          products,
+        });
+      } else {
+        res.render("user/cosmetics", { login: false, products });
+      }
+    } catch (error) {
+      res.redirect("/");
+    }
+  },
+  Accessories: async (req, res) => {
+    try {
+      let products = await productModel
+        .find({ category: "63a68966b45a69b23404fd01" })
+        .populate("category");
+
+      if (req.session.userLogin) {
+        res.render("user/accessories", {
+          login: true,
+          user: req.session.user,
+          products,
+        });
+      } else {
+        res.render("user/accessories", { login: false, products });
+      }
+    } catch (error) {
+      res.redirect("/");
+    }
   },
   contact: (req, res) => {
     if (req.session.userLogin) {

@@ -14,7 +14,7 @@
               Sitamet, consectetur adipiscing elit, sed do eiusmod tempor
               incidid-unt labore edolore magna aliquapendisse ultrices gravida.
             </p>
-            <a href="#">Shop now</a>
+            <a href="/womens">Shop now</a>
           </div>
         </div>
       </div>
@@ -28,7 +28,7 @@
               <div class="categories__text">
                 <h4>Men’s fashion</h4>
                 <p>358 items</p>
-                <a href="#">Shop now</a>
+                <a href="/mens">Shop now</a>
               </div>
             </div>
           </div>
@@ -52,7 +52,7 @@
               <div class="categories__text">
                 <h4>Cosmetics</h4>
                 <p>159 items</p>
-                <a href="#">Shop now</a>
+                <a href="/cosmetics">Shop now</a>
               </div>
             </div>
           </div>
@@ -64,7 +64,7 @@
               <div class="categories__text">
                 <h4>Accessories</h4>
                 <p>792 items</p>
-                <a href="#">Shop now</a>
+                <a href="/accessories">Shop now</a>
               </div>
             </div>
           </div>
@@ -94,9 +94,11 @@
           <li data-filter=".cosmetic">Cosmetics</li>
         </ul>
       </div>
+      
     </div>
     <div class="row property__gallery">
       <% products.forEach(function(product) { %>
+      <p><%=product.category%></p>
 
       <div class="col-lg-3 col-md-4 col-sm-6 mix women">
         <div class="product__item">
@@ -104,7 +106,13 @@
             class="product__item__pic set-bg"
             data-setbg="/images/productImages/<%=product.image[0]%>"
           >
+            <% if(product.quantity >20 ){ %>
             <div class="label new">New</div>
+            <% } %> <% if(product.quantity<1 ) {%>
+            <div class="label stockout stockblue">Out Of Stock</div>
+
+            <% } %>
+
             <ul class="product__hover">
               <li>
                 <a href="/product-details/<%=product.id%>"
