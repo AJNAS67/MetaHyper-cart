@@ -93,4 +93,6 @@ router.get('/cancelOrder',orderController.getCancelOrder)
 router.get('/shop/category',userController.getShopByCategory)
 router.get('/shop/categoryMen',userController.getMenPriceFilter)
 router.get('/shop/categoryKid',userController.getKidsPriceFilter)
+router.get('/shop/categoryCosmetics',userController.getCosmeticsFilter)
+router.get('/shop/categoryAccessories',userController.getAccessoriesFilter)
 module.exports = router;

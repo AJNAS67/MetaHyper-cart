@@ -94,13 +94,13 @@
           <li data-filter=".cosmetic">Cosmetics</li>
         </ul>
       </div>
-      
     </div>
     <div class="row property__gallery">
       <% products.forEach(function(product) { %>
-      <p><%=product.category%></p>
 
-      <div class="col-lg-3 col-md-4 col-sm-6 mix women">
+      <div
+        class="col-lg-3 col-md-4 col-sm-6 mix <% if (product.category.category =='Men') { %> men<% } %> <% if (product.category.category =='Women') { %> women<% } %> <% if (product.category.category =='Accessories') { %> accessories<% } %> <% if (product.category.category =='Cosmetics') { %> cosmetic<% } %>  <% if (product.category.category =='Kids') { %> kid<% } %>"
+      >
         <div class="product__item">
           <div
             class="product__item__pic set-bg"
@@ -149,7 +149,7 @@
 
       <% }); %>
 
-      <div class="col-lg-3 col-md-4 col-sm-6 mix men">
+      <!-- <div class="col-lg-3 col-md-4 col-sm-6 mix men">
         <div class="product__item">
           <div
             class="product__item__pic set-bg"
@@ -317,8 +317,8 @@
             <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
           </div>
         </div>
-      </div>
-      <div
+      </div> -->
+      <!-- <div
         class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic"
       >
         <div class="product__item">
@@ -352,8 +352,8 @@
             <div class="product__price">$ 59.0</div>
           </div>
         </div>
-      </div>
-      <div
+      </div> -->
+      <!-- <div
         class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic"
       >
         <div class="product__item sale">
@@ -388,7 +388,7 @@
             <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </section>
