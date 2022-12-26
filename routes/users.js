@@ -63,7 +63,7 @@ router.post("/resendotp", userController.resentOpt);
 // router.post("/login", userController.doLogin);
 router.post("/signin", userController.signUp);
 router.post("/addtocart/:prodId", cartController.addTocart);
-router.post("/addtoWishlist/:prodId", wishlistControler.addtoWishlist);
+router.post("/addtoWishlist/:prodId", authMiddleware.sessionchekDirectLogin,wishlistControler.addtoWishlist);
 router.get("/product-details/:Id", userController.prodDetail);
 router.get("/addAddress", userController.addAddress);
 router.post("/addAddress", userController.doAddaddress);

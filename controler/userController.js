@@ -93,10 +93,9 @@ module.exports = {
     }
   },
 
-  getKidsPriceFilter:async(req,res)=>{
+  getKidsPriceFilter: async (req, res) => {
     const minPrice = req.query.minPrice || 100;
     const maxPrice = req.query.maxPrice || 5000;
-    console.log(minPrice, "minPriceminPrice");
     var query = await productModel.find().populate({
       path: "category",
       match: {
@@ -123,7 +122,67 @@ module.exports = {
     } else {
       res.render("user/kids", { login: false, products });
     }
+  },
+  getCosmeticsFilter: async (req, res) => {
+    const minPrice = req.query.minPrice || 100;
+    const maxPrice = req.query.maxPrice || 5000;
+    var query = await productModel.find().populate({
+      path: "category",
+      match: {
+        category: { $eq: "Cosmetics" },
+      },
+    });
 
+    var product = query.filter(function (el) {
+      return el.price >= minPrice && el.price <= maxPrice;
+    });
+
+    var products = [];
+    product.forEach((elements) => {
+      if (elements.category !== null) {
+        products.push(elements);
+      }
+    });
+    if (req.session.userLogin) {
+      res.render("user/cosmetics", {
+        login: true,
+        user: req.session.user,
+        products,
+      });
+    } else {
+      res.render("user/cosmetics", { login: false, products });
+    }
+  },
+
+  getAccessoriesFilter: async (req, res) => {
+    const minPrice = req.query.minPrice || 100;
+    const maxPrice = req.query.maxPrice || 5000;
+    var query = await productModel.find().populate({
+      path: "category",
+      match: {
+        category: { $eq: "Accessories" },
+      },
+    });
+
+    var product = query.filter(function (el) {
+      return el.price >= minPrice && el.price <= maxPrice;
+    });
+
+    var products = [];
+    product.forEach((elements) => {
+      if (elements.category !== null) {
+        products.push(elements);
+      }
+    });
+    if (req.session.userLogin) {
+      res.render("user/accessories", {
+        login: true,
+        user: req.session.user,
+        products,
+      });
+    } else {
+      res.render("user/accessories", { login: false, products });
+    }
   },
 
   homeView: async (req, res) => {
@@ -135,10 +194,8 @@ module.exports = {
     //   "cartViewcartViewcartViewcartViewcartViewcartViewcartView"
     // );
 
-    
     // let catogoey = await categoryModel.find();
-    let products = await productModel.find();
-
+    let products = await productModel.find().populate("category");
 
     if (req.session.userLogin) {
       let userDetail = await User.findById(userId);
@@ -152,7 +209,13 @@ module.exports = {
         // cartNum,
       });
     } else {
-      res.render("user/home", { login: false, products, applycoupen: false });
+      res.render("user/home", {
+        login: false,
+        products,
+        applycoupen: false,
+        aj: true,
+        user: null,
+      });
     }
   },
   // otpget: (req, res) => {
@@ -214,7 +277,20 @@ module.exports = {
   },
 
   productDetails: (req, res) => {
-    res.render("user/productDetails", { login: true, user: req.session.user });
+    try {
+      let user = req.session.user;
+      if (user) {
+        res.render("user/productDetails", { login: true, user });
+      } else {
+        res.render("user/productDetails", {
+          login: false,
+          user: null,
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+      res.redirect("/");
+    }
   },
 
   checkout: async (req, res) => {
@@ -240,7 +316,6 @@ module.exports = {
       let products = await productModel
         .find({ category: "639acfd61006ac4c0f1e4822" })
         .populate("category");
-      console.log(products, "productsproducts");
 
       if (req.session.userLogin) {
         res.render("user/mens", {
@@ -249,7 +324,7 @@ module.exports = {
           products,
         });
       } else {
-        res.render("user/mens", { login: false, products });
+        res.render("user/mens", { login: false, products, user: null });
       }
     } catch (error) {
       res.redirect("/");
@@ -268,14 +343,13 @@ module.exports = {
           products,
         });
       } else {
-        res.render("user/womens", { login: false, products });
+        res.render("user/womens", { login: false, products, user: null });
       }
     } catch (error) {
       res.redirect("/");
     }
   },
-  kids: async(req, res) => {
-
+  kids: async (req, res) => {
     try {
       let products = await productModel
         .find({ category: "6392b46240ab9bd84d9f22f2" })
@@ -288,16 +362,11 @@ module.exports = {
           products,
         });
       } else {
-        res.render("user/kids", { login: false, products });
+        res.render("user/kids", { login: false, products, user: null });
       }
     } catch (error) {
       res.redirect("/");
     }
-
-
-
-
-    
   },
   cosmetics: async (req, res) => {
     try {
@@ -312,7 +381,7 @@ module.exports = {
           products,
         });
       } else {
-        res.render("user/cosmetics", { login: false, products });
+        res.render("user/cosmetics", { login: false, productsm, user: null });
       }
     } catch (error) {
       res.redirect("/");
@@ -331,7 +400,7 @@ module.exports = {
           products,
         });
       } else {
-        res.render("user/accessories", { login: false, products });
+        res.render("user/accessories", { login: false, products, user: null });
       }
     } catch (error) {
       res.redirect("/");
@@ -560,19 +629,26 @@ module.exports = {
   },
   prodDetail: async (req, res) => {
     try {
-      let prodId = req.params.Id;
       let user = req.session.user;
-      console.log(prodId, "sdfghjkl");
+      let prodId = req.params.Id;
       let product = await productModel.findOne({ _id: prodId });
       let imageNum = product.image.length;
-      console.log(imageNum, "imageNum");
 
-      res.render("user/productDetails", {
-        login: true,
-        user,
-        product,
-        imageNum,
-      });
+      if (user) {
+        res.render("user/productDetails", {
+          login: true,
+          user,
+          product,
+          imageNum,
+        });
+      } else {
+        res.render("user/productDetails", {
+          login: false,
+          user: null,
+          product,
+          imageNum,
+        });
+      }
     } catch (error) {}
   },
   addAddress: (req, res) => {

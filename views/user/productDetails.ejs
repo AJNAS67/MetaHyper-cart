@@ -25,7 +25,9 @@
           <div class="product__details__pic__left product__thumb nice-scroll">
 
             <% for (var i =0; i <= imageNum;  i++ ) { %>
-              <a class="pt active" href="#product-1">
+              
+
+              <a class="pt active" href="#product-<%=i+1%>">
                 <img src="/images/productImages/<%=product.image[i]%>" alt="" />
               </a>
               
@@ -36,13 +38,8 @@
             <div class="product__details__pic__slider owl-carousel">
 
               <% for (var i =0; i <= imageNum;  i++ ) { %>
-                <!-- <img
-                data-hash="product-1"
-                class="product__big__img"
-                src="/images/productImages/<%=product.image[i]%>"
-                alt=""
-              /> -->
-              <a  href="/images/productImages/<%=product.image[i]%>" class="MagicZoom"><img src="/images/productImages/<%=product.image[i]%>" /></a>
+               
+              <a data-hash="product-<%=i+1%>"  href="/images/productImages/<%=product.image[i]%>" class="MagicZoom"><img src="/images/productImages/<%=product.image[i]%>" /></a>
 
                 <% } %>
 
@@ -64,23 +61,23 @@
             <i class="fa fa-star"></i>
             <span>( 138 reviews )</span>
           </div>
-          <div class="product__details__price">$ <%=product.price%> <span>$ 83.0</span></div>
+          <div class="product__details__price">$ <%=product.price%></div>
           <p>
            <%=product.description%>
           </p>
           <div class="product__details__button">
-            <div class="quantity">
+            <!-- <div class="quantity">
               <span>Quantity:</span>
               <div class="pro-qty">
                 <input type="text" value="1" />
               </div>
-            </div>
+            </div> -->
             <a onclick="addTocart('<%=product.id%>','<%=product.name%>','<%=product.price%>')" class="cart-btn"
               ><span class="icon_bag_alt"></span> Add to cart</a
             >
             <ul>
               <li>
-                <a href="#"><span class="icon_heart_alt"></span></a>
+                <a onclick="addToWishlist('<%=product.id%>','<%=product.name%>','<%=user%>')"><span class="icon_heart_alt"></span></a>
               </li>
               <li>
                 <a href="#"><span class="icon_adjust-horiz"></span></a>
