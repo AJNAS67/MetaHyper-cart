@@ -186,8 +186,8 @@ module.exports = {
   },
 
   homeView: async (req, res) => {
+    
     let userId = req.session.userId;
-   
 
     // const cartNum = cartView.products.length;
     // console.log(
@@ -219,7 +219,7 @@ module.exports = {
       });
     }
   },
-  
+
   login: async (req, res) => {
     const Email = req.body.email;
     const password = req.body.password;
@@ -584,7 +584,7 @@ module.exports = {
   doRegister: (req, res) => {
     res.render("user/usersignup");
   },
-  
+
   profile: async (req, res) => {
     try {
       let userId = req.session.userId;
