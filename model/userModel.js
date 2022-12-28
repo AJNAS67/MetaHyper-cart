@@ -86,6 +86,9 @@ const UserSchema = new mongoose.Schema(
     usedCoupon: {
       type: Array,
     },
+    useWallet:{
+      type:Number,
+    },  
   },
   { timestamps: true }
 );

@@ -95,4 +95,6 @@ router.get('/shop/categoryMen',userController.getMenPriceFilter)
 router.get('/shop/categoryKid',userController.getKidsPriceFilter)
 router.get('/shop/categoryCosmetics',userController.getCosmeticsFilter)
 router.get('/shop/categoryAccessories',userController.getAccessoriesFilter)
+router.post('/returnOrder', authMiddleware.sessionchekDirectLogin,orderController.returnOrder)
+
 module.exports = router;

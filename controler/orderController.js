@@ -2,6 +2,7 @@ const userModule = require("../model/userModel");
 const cartModel = require("../model/cart");
 const orderModel = require("../model/orderModule");
 const productModel = require("../model/product");
+const { default: mongoose } = require("mongoose");
 
 const Razorpay = require("razorpay");
 const userHelpers = require("../helpers/user-helper");
@@ -22,8 +23,6 @@ module.exports = {
         let result = await orderModel
           .find({ userId: req.session.userId })
           .sort({ createdAt: -1 });
-        console.log(result, "resultresultresult");
-        // let result =await orderModel.find()
         res.render("user/view-orders", {
           login: true,
           user,
@@ -41,57 +40,68 @@ module.exports = {
   },
   postCheckOut: async (req, res) => {
     const { address, paymentMethod } = req.body;
+    let userId = req.session.userId;
+    const user = await userModule.findById(userId);
+
+    if (user.applyCoupon) {
+      console.log("have copen");
+      await userModule
+        .updateOne(
+          { _id: userId },
+          {
+            $set: {
+              applyCoupon: false,
+            },
+          }
+        )
+        .then((rss) => {
+          console.log(rss, "rss");
+        });
+    }
 
     // let user=req.session.user;
 
-    userId = req.session.userId;
-    const user = await userModule.findById(userId);
     let deliveryAddress = user.address[address];
 
     let cart = await cartModel.findOne({ userId });
-    console.log(cart,'cartcartcart');
-    
-    let proId = cart.products;
+    let subtotal = cart.subTotal;
+
     function getNthDate(nthDate) {
       let date = new Date();
       return new Date(date.setDate(date.getDate() + nthDate));
     }
     var estimatedDate = getNthDate(6);
     var estimatedDate = estimatedDate.toLocaleDateString();
-    var amount = parseInt(cart.subTotal);
+    var amount = parseInt(subtotal);
     if (paymentMethod == "Cash On Delivery") {
       const newOrder = new orderModel({
         userId: userId,
         deliveryAddress: deliveryAddress,
         products: cart.products,
         quantity: cart.products.length,
-        total: cart.subTotal,
+        total: subtotal,
         paymentMethod: paymentMethod,
         paymentStatus: "Payment Pending",
         orderStatus: "orderconfirmed",
         track: "orderconfirmed",
         estimatedDate: estimatedDate,
       });
-      newOrder.save().then((result) => {
+      newOrder.save().then(async (result) => {
         req.session.orderId = result._id;
-        productModel
-          .updateOne(
-            {
-              _id: proId,
-            },
-            {
-              $inc: {
-                quantity: -1,
-              },
-            }
-          )
-          .then((res) => {
-            console.log(res);
-          });
 
-        cartModel.findOneAndRemove({ userId: result.userId }).then((result) => {
-          res.json({ cashOnDelivery: true });
+        let order = await orderModel.findOne({ _id: result._id });
+        const findProductId = order.products;
+        findProductId.forEach(async (el) => {
+          let removeQuantity = await productModel.findOneAndUpdate(
+            { _id: el.ProductId },
+            { $inc: { quantity: -el.quantity } }
+          );
         });
+        res.json({ cashOnDelivery: true });
+
+        // cartModel.findOneAndRemove({ userId: result.userId }).then((result) => {
+        //   res.json({ cashOnDelivery: true });
+        // });
       });
     } else if (paymentMethod == "Online Payment") {
       const newOrder = new orderModel({
@@ -99,7 +109,7 @@ module.exports = {
         deliveryAddress: deliveryAddress,
         products: cart.products,
         quantity: cart.products.length,
-        total: cart.subTotal,
+        total: subtotal,
         paymentMethod: paymentMethod,
         paymentStatus: "Payment Completed",
         orderStatus: "orderconfirmed",
@@ -109,7 +119,7 @@ module.exports = {
       await cart.remove();
       newOrder.save().then((result) => {
         let userOrderData = result;
-        console.log(result, "result");
+        // console.log(result, "result");
         let orderId = result._id.toString();
 
         instance.orders.create(
@@ -127,11 +137,100 @@ module.exports = {
               onlinePayment: true,
               razorpayOrderData: order,
               userOrderData: userOrderData,
+              amount: amount,
             };
             res.json(response);
           }
         );
       });
+    } else {
+
+      const walletBlance = user.useWallet;
+      if (walletBlance == 0) {
+        res.json({ noBalane: true });
+      } else {
+        if (walletBlance < subtotal) {
+          const balancePayment = subtotal - walletBlance;
+          const newOrder = new orderModel({
+            userId: userId,
+            deliveryAddress: deliveryAddress,
+            products: cart.products,
+            quantity: cart.products.length,
+            total: subtotal,
+            paymentMethod: paymentMethod,
+            paymentStatus: "Payment Completed",
+            orderStatus: "orderconfirmed",
+            track: "orderconfirmed",
+            estimatedDate: estimatedDate,
+          });
+
+          newOrder.save().then((result) => {
+            let userOrderData = result;
+            console.log(result, "result");
+            let orderId = result._id.toString();
+
+            instance.orders.create(
+              {
+                amount: balancePayment * 100,
+                currency: "INR",
+                receipt: orderId,
+                notes: {
+                  key1: process.env.YOUR_KEY_ID,
+                  key2: "value2",
+                },
+              },
+              (err, order) => {
+                let response = {
+                  onlinePayment: true,
+                  razorpayOrderData: order,
+                  userOrderData: userOrderData,
+                  walletBalance: walletBlance,
+                  amount: amount,
+                };
+                res.json(response);
+              }
+            );
+          });
+        } else {
+          const newOrder = new orderModel({
+            userId: userId,
+            deliveryAddress: deliveryAddress,
+            products: cart.products,
+            quantity: cart.products.length,
+            total: subtotal,
+            paymentMethod: paymentMethod,
+            paymentStatus: "Payment Completed",
+            orderStatus: "orderconfirmed",
+            track: "orderconfirmed",
+            estimatedDate: estimatedDate,
+          });
+          newOrder.save().then(async (result) => {
+            req.session.orderId = result._id;
+
+            // quantity check
+            let order = await orderModel.findOne({ _id: result._id });
+            const findProductId = order.products;
+
+            findProductId.forEach(async (el) => {
+              let removeQuantity = await productModel.findOneAndUpdate(
+                { _id: el.ProductId },
+                { $inc: { quantity: -el.quantity } }
+              );
+            });
+            let walletAmount = await userModule.findOneAndUpdate(
+              { _id: userId },
+              { $inc: { useWallet: -subtotal } }
+            );
+
+            // remove chart
+            await cartModel
+              .findOneAndRemove({ userId: result.userId })
+              .then((result) => {
+                res.json({ wallet: true });
+              });
+          });
+        }
+      }
     }
   },
   postPaymentFailed: async (req, res) => {
@@ -154,11 +253,29 @@ module.exports = {
   },
   doVerifyPayment: async (req, res) => {
     let orderdata = req.body;
+    let walletBalance = parseInt(orderdata.walletBalance);
 
-    // const order = await orderModel.find({ _id: orderdata.userOrderData._id });
     userHelpers
       .veryfiyPayment(orderdata)
-      .then(() => {
+      .then(async (rs) => {
+        if (orderdata.userOrderData.paymentMethod == "Wallet") {
+        
+          let walletAmount = await userModule.findOneAndUpdate(
+            { _id: req.session.userId },
+            { $inc: { useWallet: -walletBalance } }
+          );
+          const findProductId = orderdata.userOrderData.products;
+          findProductId.forEach(async (el) => {
+            await productModel.findOneAndUpdate(
+              { _id: el.ProductId },
+              { $inc: { quantity: -el.quantity } }
+            );
+          });
+
+          // cart remove
+          await cartModel.findOneAndRemove({ userId: req.session.userId });
+        }
+        
         res.json({ status: true });
       })
       .catch(async (err) => {
@@ -214,7 +331,6 @@ module.exports = {
     } catch (error) {}
   },
   getCancelOrder: async (req, res) => {
-    res.send("hi");
     try {
       let orderId = req.query.id;
       console.log(orderId, "orderId");
@@ -226,6 +342,34 @@ module.exports = {
         })
         .then((re) => {
           console.log(re, "uuuuuuuuuuuuuuu");
+        });
+    } catch (error) {
+      res.status(429).render("admin/error-429");
+    }
+  },
+
+  returnOrder: async (req, res) => {
+    let userId = req.session.userId;
+    try {
+      let oid = mongoose.Types.ObjectId(req.body.oid.trim());
+      const order = await orderModel.findById(oid);
+      var prodPrice = order.total;
+      var prodPrice = parseInt(prodPrice);
+      let value = req.body.value;
+      await userModule
+        .updateOne({ _id: userId }, { $set: { useWallet: prodPrice } })
+        .then((rr) => {
+          console.log(rr, "set wallet price");
+        });
+
+      await orderModel
+        .findByIdAndUpdate(oid, {
+          track: "Returnd",
+          orderStatus: "Returnd",
+          returnreason: value,
+        })
+        .then((response) => {
+          res.json({ status: true });
         });
     } catch (error) {
       res.status(429).render("admin/error-429");

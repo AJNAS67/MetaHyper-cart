@@ -132,6 +132,13 @@
                 value="Cash On Delivery"
               />
               <label for="PAY-ON-DELIVERY">PAY ON DELIVERY</label><br />
+              <input
+                type="radio"
+                id="Wallet"
+                name="paymentMethod"
+                value="Wallet"
+              />
+              <label for="Wallet">WALLET</label><br />
             </div>
             <button type="submit" class="site-btn">Place oder</button>
           </div>
@@ -153,7 +160,7 @@
       data: $("#checkout-form").serialize(),
       success: (response) => {
         console.log(response, "responseresponseresponse");
-        if (response.cashOnDelivery) {
+        if (response.cashOnDelivery || response.wallet) {
           Swal.fire({
             title: "Are you sure?",
             text: "Are you sure to order this!",
@@ -173,6 +180,7 @@
           console.log("test ooooooooooooooooooooooooook");
           razorpayoderData = response.razorpayOrderData;
           userOrderData = response.userOrderData;
+          walletBalance = response.walletBalance;
           var options = {
             key: response.razorpayOrderData.notes.key1, // Enter the Key ID generated from the Dashboard
             amount: response.razorpayOrderData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -184,12 +192,17 @@
             handler: function (response) {
               console.log(response, "????????????????????????????????????????");
 
-              verifyPayment(response, razorpayoderData, userOrderData);
+              verifyPayment(
+                response,
+                razorpayoderData,
+                userOrderData,
+                walletBalance
+              );
             },
             prefill: {
               name: "Muhammed Ajnas",
-              email: "gaurav.kumar@example.com",
-              contact: "9999999999",
+              email: "ajnas67@gmail.com",
+              contact: "9633752202",
             },
             notes: {
               address: "Razorpay Corporate Office",
@@ -210,9 +223,13 @@
     });
   });
 
-  function verifyPayment(payment, razorpayOrderData, userOrderData) {
-    console.log(payment, "paymentpayment");
-    console.log(razorpayOrderData, "razorpayOrderData");
+  function verifyPayment(
+    payment,
+    razorpayOrderData,
+    userOrderData,
+    walletBalance
+  ) {
+    
 
     $.ajax({
       url: "/verifyPayment",
@@ -220,6 +237,7 @@
         payment,
         razorpayOrderData,
         userOrderData,
+        walletBalance,
       },
       method: "post",
 
@@ -236,6 +254,22 @@
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
               location.href = "/viewOrders";
+            } else if (result.isDenied) {
+              location.href = "/";
+            }
+          });
+        } else {
+          Swal.fire({
+            title: "paymenSomethings is wrong t failed !! ",
+            icon: "error",
+            showDenyButton: true,
+            confirmButtonText: "Shoping Cart",
+            denyButtonText: `Continue Shopping`,
+            toast: true,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              location.href = "/shoping-cart";
             } else if (result.isDenied) {
               location.href = "/";
             }

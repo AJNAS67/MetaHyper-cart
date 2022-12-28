@@ -244,7 +244,6 @@ module.exports = {
   },
   viewOrder: async (req, res) => {
     let order = await orderModel.find().sort({ Date: -1 });
-    console.log(order, "orderorder");
     res.render("admin/oders", { result: order });
   },
 

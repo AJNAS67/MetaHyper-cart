@@ -54,8 +54,6 @@ module.exports = {
   //   res.send('hi')
   // },
   couponVerify: async (req, res) => {
-    console.log("ajas");
-
     try {
       const CoupenCode = req.body.coupon;
       const amoutTotal = req.body.amountTotal;

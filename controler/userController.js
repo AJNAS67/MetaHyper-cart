@@ -187,6 +187,7 @@ module.exports = {
 
   homeView: async (req, res) => {
     let userId = req.session.userId;
+   
 
     // const cartNum = cartView.products.length;
     // console.log(
@@ -218,12 +219,8 @@ module.exports = {
       });
     }
   },
-  // otpget: (req, res) => {
-  //   res.render("user.otp");
-  // },
+  
   login: async (req, res) => {
-    console.log(req.body);
-    // const { Email, password } = req.body;
     const Email = req.body.email;
     const password = req.body.password;
 
@@ -262,7 +259,6 @@ module.exports = {
     } else {
       res.redirect("/");
     }
-    // res.render("user/userlogin", { login: false });
   },
 
   userSignup: (req, res) => {
@@ -588,24 +584,7 @@ module.exports = {
   doRegister: (req, res) => {
     res.render("user/usersignup");
   },
-  // doReg:async(req,res)=>{
-  //   console.log(req.body,'req.body');
-  //   let email=req.body.email;
-  //   let password=req.body.password;
-  //   const  adminData=new AdminModel({
-  //     email,
-  //     password
-
-  //   })
-  //   await adminData.save().then(()=>{
-  //     console.log('adminsaved');
-  //     res.send('hiiii')
-  //   }).catch((err)=>{
-  //     console.log(err,'errin adminlogion');
-  //     res.send('errrrrrrrr')
-  //   })
-
-  // }
+  
   profile: async (req, res) => {
     try {
       let userId = req.session.userId;

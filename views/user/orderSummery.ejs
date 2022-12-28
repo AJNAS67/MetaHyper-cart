@@ -109,7 +109,12 @@
     <h3 class="title_confirmation">
       Thank you. Your order has been Delivered.
     </h3>
-    <% }else{ %>
+    <% } else if(id.orderStatus == 'Returnd'){%>
+
+    <h3 class="title_confirmation text-danger">
+       !! Your order has been Returnd.
+    </h3>
+    <% } else{ %>
     <h3 class="title_confirmation">Thank you. Your order has been recived.</h3>
     <% } %>
 
@@ -230,14 +235,15 @@
       </div>
     </div>
     <div class="container text-center mt-5">
-      <% if(id.orderStatus != 'Cancellede' && id.orderStatus != 'Delivered'){ %>
+      <% if(id.orderStatus != 'Cancellede' && id.orderStatus != 'Delivered' &&
+      id.orderStatus!='Returnd'){ %>
 
       <button
         onclick="cancelOrder('<%=id._id%>')"
         type="button"
         class="btn btn-danger"
       >
-        Danger
+        Cancell order
       </button>
       <% } %>
       <a class="btn btn-outline-primary" href="/">Go back to Shopping</a>
@@ -357,8 +363,6 @@
   function orderStatus(e) {
     const oid = $("#track").data("oid");
     const value = $("#track").find(":selected").val();
-    alert(`oid = ${oid}`);
-    alert(`value = ${value}`);
 
     $.ajax({
       url: "/returnOrder",
