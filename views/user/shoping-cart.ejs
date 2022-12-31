@@ -325,8 +325,6 @@
             `Minimum cart amount is ${response.minCart}`,
             "error"
           );
-        } else if (response.minCart) {
-          Swal.fire("Sorry!", "This coupon date is expired", "error");
         } else if (response.exist) {
           Swal.fire("Sorry!", "This coupon already used", "error");
         } else if (response.removeCoupon) {

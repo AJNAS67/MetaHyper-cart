@@ -29,8 +29,10 @@ module.exports = {
             if (itemIndex > -1) {
               let productItem = cart.products[itemIndex];
               productItem.quantity += quantity;
+              res.json({ exist: true });
             } else {
               cart.products.push({ ProductId, quantity, name, price });
+              res.json({ cart: true });
             }
             cart.total = cart.products.reduce((acc, curr) => {
               return acc + curr.quantity * curr.price;
@@ -40,7 +42,7 @@ module.exports = {
             }, 0);
             await cart.save();
             // res.json({ cart: true });
-            res.json({ exist: true });
+            // res.json({ exist: true });
 
             // res.redirect("/shoping-cart");
           } else {

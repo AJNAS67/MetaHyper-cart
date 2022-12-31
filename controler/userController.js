@@ -6,6 +6,7 @@ const addressModel = require("../model/addressModel");
 const cartModel = require("../model/cart");
 const addressModule = require("../model/addressModel");
 const categoryModel = require("../model/category");
+const orderModule = require("../model/orderModule");
 
 var otp = Math.random();
 otp = otp * 1000000;
@@ -186,7 +187,112 @@ module.exports = {
   },
 
   homeView: async (req, res) => {
-    
+  
+    let currentDate = new Date();
+    let endDate = currentDate.setDate(currentDate.getDate() - 5);
+    console.log(endDate, "endDate");
+
+    let today = currentDate.getDate();
+    let startdate;
+    if (today <= 7) {
+      startdate = 1;
+    } else {
+      startdate = today - 7;
+    }
+    console.log(today, "today");
+    console.log(startdate, "current dat");
+    let month = currentDate.getMonth();
+    console.log(month, "month");
+    let year = currentDate.getFullYear();
+    console.log(year, "year");
+
+    console.log(currentDate.getDate(), "pppppppppppp");
+
+    // var DateSpan = [];
+    // for (let i = 0; i < 7; i++) {
+    //   var currentDate = new Date();
+    //   currentDate.setDate(currentDate.getDate() - i);
+    //   var $dd = currentDate.getDate();
+    //   console.log($dd, "kkkkkkkkkkkkkkkkkkkkkkkk");
+    //   var $mm = currentDate.getMonth() + 1; //January is 0!
+    //   var $yyyy = currentDate.getFullYear();
+    //   if ($dd < 10) {
+    //     $dd = "0" + $dd;
+    //   }
+    //   if ($mm < 10) {
+    //     $mm = "0" + $mm;
+    //   }
+    //   currentDate = $dd + "-" + $mm + "-" + $yyyy;
+    //   DateSpan.push(currentDate);
+    // }
+    // console.log(DateSpan, "DateSpanDateSpan");
+    // console.log(new Date(2022, 10, 14), "aaaaaaaaaa");
+
+    // let aj = await orderModule.find({
+    //   //query today up to tonight
+    //   createdAt: {
+    //     $gte: new Date(2022, 10, 14),
+    //     $lt: new Date(2022, 11, 25),
+    //   },
+    // });
+    // console.log(aj, "ssssssssssssssssss");
+
+    // let ord=await orderModule.find()
+    // console.log(ord,'ordord');
+    console.log(
+      new Date(new Date(currentDate).setHours(00, 00, 00)),
+      "llllllllllllllllllllllll"
+    );
+    console.log(new Date(2022, 10, 14), "lllllllllllllpppppppppppppppp");
+    console.log(
+      new Date(new Date(year, month, 24).setHours(00, 00, 00)),
+      "new Date(new Date(year, month, 24).setHours(00, 00, 00)"
+    );
+    let or = await orderModule.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gt: new Date(new Date(year, month, startdate).setHours(00, 00, 00)),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$total" },
+        },
+      },
+    ]);
+    // console.log(or, "ororororororororororororororororororororor");
+
+    // await orderModule
+    //   .aggregate([
+    //     {
+    //       paymentStatus: "Payment Completed",
+    //       // },
+
+    //       $match: {
+    //         createdAt: {
+    //           $gt: new Date(new Date(year, month, 24).setHours(00, 00, 00)),
+    //           $lt: new Date(new Date(year, month, today).setHours(23, 59, 59)),
+    //         },
+    //       },
+    //     },
+    //     {
+    //       $group: {
+    //         _id: null,
+    //         total: { $sum: "$total" },
+    //       },
+    //     },
+    //   ])
+    //   .then((result) => {
+    //     console.log(result, "resultresultresult");
+    //     console.log(result[0].total, "pppppwwwwww");
+    //     if (result.length != 0) {
+    //       totalEarnings = result[0].Amount;
+    //     }
+    //   });
+
     let userId = req.session.userId;
 
     // const cartNum = cartView.products.length;

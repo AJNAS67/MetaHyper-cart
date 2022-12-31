@@ -26,7 +26,6 @@ module.exports = {
     if (req.session.userLogin) {
       next();
     } else {
-      //   res.redirect('/login');
       res.render("user/userlogin", { login: false });
     }
   },

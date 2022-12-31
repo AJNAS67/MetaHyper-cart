@@ -60,6 +60,7 @@
         <% for( let i = 0; i < result.length; i++ ) { %>
 
         <tr>
+
           <th scope="row"><%= result[i]._id %></th>
           <td><%= result[i].deliveryAddress.firstName %></td>
           <td>₹ <%= result[i].total %></td>
@@ -158,6 +159,7 @@
                           </tr>
                           <tr>
                             <td>Product Details</td>
+                            
 
                           <% for (var j =1; j <=result[i].products.length; j++ )
                           { %>

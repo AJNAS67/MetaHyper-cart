@@ -112,7 +112,7 @@
     <% } else if(id.orderStatus == 'Returnd'){%>
 
     <h3 class="title_confirmation text-danger">
-       !! Your order has been Returnd.
+      !! Your order has been Returnd.
     </h3>
     <% } else{ %>
     <h3 class="title_confirmation">Thank you. Your order has been recived.</h3>
@@ -380,6 +380,7 @@
             showConfirmButton: false,
             timer: 1000,
           });
+          window.location = "/viewOrders";
         }
       },
     });

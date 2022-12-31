@@ -2,7 +2,9 @@
  * Dashboard Analytics
  */
 
-'use strict';
+'use strict'; 
+
+
 
 (function () {
   let cardColor, headingColor, axisColor, shadeColor, borderColor;
@@ -18,11 +20,11 @@
     totalRevenueChartOptions = {
       series: [
         {
-          name: '2021',
+          name: '2022',
           data: [18, 7, 15, 29, 18, 12, 9]
         },
         {
-          name: '2020',
+          name: '2021',
           data: [-13, -18, -9, -14, -5, -17, -15]
         }
       ],
@@ -427,8 +429,8 @@
         width: 130,
         type: 'donut'
       },
-      labels: ['Electronic', 'Sports', 'Decor', 'Fashion'],
-      series: [85, 15, 50, 50],
+      labels: ['Men', 'Women', 'Kids', 'Cosmetics'],
+      series: [85, 5, 55, 50],
       colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
       stroke: {
         width: 5,

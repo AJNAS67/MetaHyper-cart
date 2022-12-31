@@ -7,6 +7,7 @@ const store = require("../middleware/multer");
 const couponController = require("../controler/couponController");
 const cartContoller = require("../controler/cartContoller");
 
+
 router.get("/", adminController.admin);
 router.get("/adminlog", adminController.adminHome);
 // router.get('/adminProducts',adminController.adminProductsView);
