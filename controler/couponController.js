@@ -175,4 +175,21 @@ module.exports = {
       console.log(error.message);
     }
   },
+  myCoupons:async(req,res)=>{
+    try {
+      let user=req.session.user;
+      const coupons=await couponModule.find()
+      const formattedOrders = coupons.map((el) => {
+        let newEl = { ...el._doc };
+        newEl.expiryDate = moment(newEl.expiryDate).format("DD MMMM , YYYY");
+        return newEl;
+      });
+      res.render('user/my-coupon',{user,login:true,coupons:formattedOrders})
+
+      
+    } catch (error) {
+      
+    }
+   
+  }
 };

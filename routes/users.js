@@ -96,5 +96,6 @@ router.get('/shop/categoryKid',userController.getKidsPriceFilter)
 router.get('/shop/categoryCosmetics',userController.getCosmeticsFilter)
 router.get('/shop/categoryAccessories',userController.getAccessoriesFilter)
 router.post('/returnOrder', authMiddleware.sessionchekDirectLogin,orderController.returnOrder)
+router.get('/myCoupon',authMiddleware.sessionchekDirectLogin,couponController.myCoupons)
 
 module.exports = router;
