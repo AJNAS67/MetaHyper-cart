@@ -48,6 +48,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(cookieParser());
 app.use(nocache());
+app.use(flash());
+
 
 // Multer (file upload setup)
 // const storage = multer.diskStorage({

@@ -8,10 +8,18 @@ const addressModule = require("../model/addressModel");
 const categoryModel = require("../model/category");
 const orderModule = require("../model/orderModule");
 
-var otp = Math.random();
-otp = otp * 1000000;
-otp = parseInt(otp);
-console.log(otp);
+const flash = require("connect-flash");
+function otpCreation() {
+  var otp = Math.random();
+  var otp = otp * 1000000;
+  otp = parseInt(otp);
+
+  return otp;
+}
+// var otp = Math.random();
+// otp = otp * 1000000;
+// otp = parseInt(otp);
+// console.log(otp);
 let transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
@@ -187,7 +195,6 @@ module.exports = {
   },
 
   homeView: async (req, res) => {
-  
     let currentDate = new Date();
     let endDate = currentDate.setDate(currentDate.getDate() - 5);
     console.log(endDate, "endDate");
@@ -252,7 +259,9 @@ module.exports = {
       {
         $match: {
           createdAt: {
-            $gt: new Date(new Date(year, month, startdate).setHours(00, 00, 00)),
+            $gt: new Date(
+              new Date(year, month, startdate).setHours(00, 00, 00)
+            ),
           },
         },
       },
@@ -336,11 +345,16 @@ module.exports = {
 
     if (!user) {
       console.log("notUser");
+
+      const error = "User Email not found";
+      req.flash("user", error);
       return res.redirect("/signin");
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      const error = "password incorrect";
+      req.flash("user", error);
       return res.redirect("/signin");
     }
     req.session.user = user.user_name;
@@ -349,7 +363,9 @@ module.exports = {
     res.redirect("/");
   },
   optPage: (req, res) => {
-    res.render("user/otp", { login: false });
+    const otpError = req.flash("message");
+
+    res.render("user/otpPage", { login: false, otpError });
   },
 
   shop: (req, res) => {
@@ -361,14 +377,17 @@ module.exports = {
   },
   userlogin: (req, res) => {
     if (!req.session.userLogin) {
-      res.render("user/userlogin", { login: false });
+      const loginError = req.flash("user");
+      res.render("user/userlogin", { login: false, loginError });
     } else {
       res.redirect("/");
     }
   },
 
   userSignup: (req, res) => {
-    res.render("user/usersignup", { login: false });
+    const userExistError = req.flash("user");
+
+    res.render("user/usersignup", { login: false, userExistError });
   },
   shopView: (req, res) => {
     if (req.session.userLogin) {
@@ -516,6 +535,72 @@ module.exports = {
     }
   },
 
+  forgetPassword: (req, res) => {
+    const usernotfindError = req.flash("message");
+
+    res.render("user/forgot-password", { login: false, usernotfindError });
+  },
+
+  otpForForget: async (req, res) => {
+    Email = req.body.email;
+    const user = await User.findOne({ email: Email });
+    // const user = false;
+    if (user) {
+      otp = otpCreation();
+      var mailOptions = {
+        to: Email,
+        subject: "Otp for registration is: ",
+        html:
+          "<h3>OTP for account verification is </h3>" +
+          "<h1 style='font-weight:bold;'>" +
+          otp +
+          "</h1>", // html body
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return console.log(error), "otp errorrrrrrrrrr";
+        }
+        console.log("Message sent: %s", info.messageId);
+        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        // const otpError = req.flash("message");
+
+        res.redirect("/otp");
+      });
+    } else {
+      const error = "Invalid email !!Please check your Email address ";
+      req.flash("message", error);
+
+      res.redirect("/forgetPassword");
+    }
+  },
+  getResetPassword: (req, res) => {
+    const userInvalid = req.flash("message");
+
+    res.render("user/reset-password", { login: false, userInvalid });
+  },
+  resetPassword: async (req, res) => {
+    let password1 = req.body.password;
+    let email = req.body.email;
+
+    try {
+      const user = await User.findOne({ email: req.body.email });
+
+      if (user) {
+        let password = await bcrypt.hash(password1, 10);
+        await User.findOneAndUpdate(
+          { email: email },
+          { $set: { password: password } }
+        );
+        res.redirect("/signin");
+      } else {
+        req.flash("message", "Sorry ! Your Email Not Found !!");
+
+        res.redirect("/resetPassword");
+      }
+    } catch (error) {}
+  },
+
   otp: async (req, res) => {
     UserName = req.body.user_name;
     Email = req.body.email;
@@ -527,6 +612,8 @@ module.exports = {
     if (!user) {
       console.log("not find");
       // send mail with defined transport object
+      otp = otpCreation();
+
       var mailOptions = {
         to: Email,
         subject: "Otp for registration is: ",
@@ -544,56 +631,65 @@ module.exports = {
         console.log("Message sent: %s", info.messageId);
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 
-        res.render("user/otp", { login: false });
+        res.redirect("/otp");
       });
     } else {
-      res.redirect("/signin", { login: false });
-    }
+      const error = "Existing emial!! user can login using email address ";
+      req.flash("user", error);
 
-    // res.render("user/otp");
+      res.redirect("/signup");
+    }
   },
   otpVerifi: (req, res) => {
-    console.log(otp, "otp");
     var userOtp = [];
-    console.log(req.body, "otp");
     for (let value of Object.values(req.body)) {
       console.log(value);
       userOtp.push(value);
     }
     var userOtp = userOtp.join("");
     console.log(userOtp, "userOtpp");
+    console.log(UserName, "UserNameUserName");
     if (otp == userOtp) {
-      const newUser = new User({
-        user_name: UserName,
-        email: Email,
-        password: Password,
-        confirm: Confirm,
-      });
-
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err;
-          newUser.password = hash;
-
-          newUser
-            .save()
-            .then(() => {
-              res.redirect("/signin");
-            })
-            .catch((err) => {
-              console.log(err);
-              res.redirect("/signin");
-            });
+      if (UserName) {
+        const newUser = new User({
+          user_name: UserName,
+          email: Email,
+          password: Password,
+          confirm: Confirm,
         });
-      });
+
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) throw err;
+            newUser.password = hash;
+
+            newUser
+              .save()
+              .then(() => {
+                res.redirect("/signin");
+              })
+              .catch((err) => {
+                console.log(err);
+                res.redirect("/signin");
+              });
+          });
+        });
+      } else {
+        res.redirect("/resetPassword");
+      }
     } else {
-      res.render("user/otp", { msg: "otp is incorrect", login: false });
+      const error = "Invalid OTP ! Please Enter valid OTP";
+      req.flash("message", error);
+
+      res.redirect("/otp");
     }
 
     console.log(req.body, "body");
     // res.render("user/userlogin");
   },
   resentOpt: (req, res) => {
+    otp = otpCreation();
+
     var mailOptions = {
       to: Email,
       subject: "Otp for registration is: ",
@@ -611,7 +707,7 @@ module.exports = {
       console.log("Message sent: %s", info.messageId);
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 
-      res.render("user/otp", { login: false });
+      res.render("user/otpPage", { login: false });
     });
   },
 

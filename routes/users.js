@@ -34,6 +34,9 @@ router.get(
   authMiddleware.sessionchekDirectLogin,
   cartController.shopingCart
 );
+
+router.get('/forgetPassword',userController.forgetPassword)
+
 router.get("/removeCart/:cartId", cartController.removeCart);
 router.get(
   "/checkout",
@@ -53,6 +56,10 @@ router.get("/register", userController.doRegister);
 // router.get('/otp',userController.otpget)
 
 router.post("/otp", userController.otp);
+router.post('/forgoet-password-otp',userController.otpForForget)
+// router.post('/resetPassword',userController.resetPassword )
+router.route('/resetPassword').post(userController.resetPassword).get(userController.getResetPassword)
+
 router.post("/login", userController.login);
 
 router.post("/verifyotp", userController.otpVerifi);

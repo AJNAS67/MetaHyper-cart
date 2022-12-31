@@ -9,7 +9,7 @@
         <div class="card p-4" style="border-radius: 15px">
           <div class="errorMessages" id="errorMessages"></div>
           <div class="card-body">
-            <form action="otp" method="post" id="myForm">
+            <form action="/otp" method="post" id="myForm">
               <div class="form-outline mb-4">
                 <label class="form-label">Name</label>
                 <input
@@ -58,12 +58,18 @@
                 />
               </div>
 
+              <% if (userExistError!= '') { %>
+              <div class="alert alert-danger mt-3" role="alert">
+                <p class="text-danger"><%=userExistError %></p>
+              </div>
+              <% } %>
+
               <button id="btn-submit" class="btn btn-dark btn-lg" type="submit">
                 Register
               </button>
               <p class="mt-3">
                 I already have an account?
-                <a href="/login" class="text-dark"><u>Login here</u></a>
+                <a href="/signin" class="text-dark"><u>Login here</u></a>
               </p>
             </form>
             <div class="card-body">
