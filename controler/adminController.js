@@ -5,6 +5,8 @@ const categoryModel = require("../model/category");
 const adminData = require("../model/adminModel");
 const orderModule = require("../model/orderModule");
 const productModel = require("../model/product");
+const moment = require("moment");
+
 
 // const AdminModel = require("../model/AdminModel");
 
@@ -34,7 +36,6 @@ module.exports = {
       let year = currentDate.getFullYear();
       console.log(year, "year");
 
-
       const TodaySalesT = await orderModule.aggregate([
         {
           $match: {
@@ -53,12 +54,11 @@ module.exports = {
         },
       ]);
 
-
       const weaklySalesT = await orderModule.aggregate([
         {
           $match: {
             createdAt: {
-              $gt: new Date(
+              $gte: new Date(
                 new Date(year, month, startdate).setHours(00, 00, 00)
               ),
             },
@@ -71,11 +71,12 @@ module.exports = {
           },
         },
       ]);
+      console.log(weaklySalesT, "weaklySalesTweaklySalesT");
       const monthlySalesT = await orderModule.aggregate([
         {
           $match: {
             createdAt: {
-              $gt: new Date(new Date(year, month, 1).setHours(00, 00, 00)),
+              $gte: new Date(new Date(year, month, 1).setHours(00, 00, 00)),
             },
           },
         },
@@ -157,10 +158,27 @@ module.exports = {
           CosmeticsCount.push(elements);
         }
       });
-
-      let TodaySales = TodaySalesT.total;
-      let weaklySales = weaklySalesT[0].total;
-      let monthlySales = monthlySalesT[0].total;
+      let weaklySales;
+      let TodaySales;
+      let monthlySales;
+      if (weaklySalesT == "") {
+        weaklySales = 0;
+      } else {
+        weaklySales = weaklySalesT[0].total;
+      }
+      console.log(weaklySales, "weaklySalesweaklySalesweaklySales");
+      if (TodaySalesT == "") {
+        TodaySales = 0;
+      } else {
+        TodaySales = TodaySalesT.total;
+      }
+      if (monthlySalesT == "") {
+        monthlySales = 0;
+      } else {
+        let monthlySales = monthlySalesT[0].total;
+      }
+      // let weaklySales = weaklySalesT[0].total;
+      // let monthlySales = monthlySalesT[0].total;
       var WomenCount = WomenCount.length;
       var AccessoriesCount = AccessoriesCount.length;
       var KidsCount = KidsCount.length;
@@ -245,7 +263,6 @@ module.exports = {
       let year = currentDate.getFullYear();
       console.log(year, "year");
 
-
       const TodaySalesT = await orderModule.aggregate([
         {
           $match: {
@@ -268,7 +285,7 @@ module.exports = {
         {
           $match: {
             createdAt: {
-              $gt: new Date(
+              $gte: new Date(
                 new Date(year, month, startdate).setHours(00, 00, 00)
               ),
             },
@@ -285,7 +302,7 @@ module.exports = {
         {
           $match: {
             createdAt: {
-              $gt: new Date(new Date(year, month, 1).setHours(00, 00, 00)),
+              $gte: new Date(new Date(year, month, 1).setHours(00, 00, 00)),
             },
           },
         },
@@ -367,10 +384,30 @@ module.exports = {
         }
       });
 
+      let weaklySales;
+      let TodaySales;
+      let monthlySales;
+      if (weaklySalesT == "") {
+        weaklySales = 0;
+      } else {
+        weaklySales = weaklySalesT[0].total;
+      }
+      console.log(weaklySales, "weaklySalesweaklySalesweaklySales");
+      if (TodaySalesT == "") {
+        TodaySales = 0;
+      } else {
+        TodaySales = TodaySalesT.total;
+      }
+      if (monthlySalesT == "") {
+        monthlySales = 0;
+      } else {
+        let monthlySales = monthlySalesT[0].total;
+      }
+
       console.log(monthlySalesT, "monthlySalesmonthlySales");
-      let TodaySales = TodaySalesT.total;
-      let weaklySales = weaklySalesT[0].total;
-      let monthlySales = monthlySalesT[0].total;
+      // let TodaySales = TodaySalesT.total;
+      // let weaklySales = weaklySalesT[0].total;
+      // let monthlySales = monthlySalesT[0].total;
       var WomenCount = WomenCount.length;
       var AccessoriesCount = AccessoriesCount.length;
       var KidsCount = KidsCount.length;
@@ -410,5 +447,61 @@ module.exports = {
     ).then(() => {
       res.redirect("/admin/viewUser");
     });
+  },
+  viewOrderDetails: async (req, res) => {
+    let orderId = req.query.id;
+    console.log(orderId, "orderIdorderId");
+    let orders = await orderModule.findById(orderId);
+    console.log(orders, "ooooooooooooooo");
+    res.render("admin/viewOrder", { orders });
+  },
+  salesReport: async (req, res) => {
+    // res.render('admin/salesReport')
+
+    let orders;
+    let total;
+    let sort = req.query;
+    console.log(sort, "sort");
+    if (sort.no == 1) {
+      console.log("jij");
+      const today = moment().startOf("day");
+
+      console.log(today, "today");
+      orders = await orderModule.find({
+        orderStatus: "Placed",
+        createdAt: {
+          $gte: today.toDate(),
+          $lte: moment(today).endOf("day").toDate(),
+        },
+      });
+      total = orders.reduce((acc, cur) => acc + cur.total, 0);
+      console.log(total, "total");
+    } else if (sort.no == 2) {
+      const month = moment().startOf("month");
+      orders = await orderModule.find({
+        orderStatus: "Placed",
+        createdAt: {
+          $gte: month.toDate(),
+          $lte: moment(month).endOf("month").toDate(),
+        },
+      });
+      total = orders.reduce((acc, cur) => acc + cur.total, 0);
+      console.log(total, "total");
+    } else if (sort.no == 3) {
+      const year = moment().startOf("year");
+      orders = await orderModule.find({
+        orderStatus: "Placed",
+        createdAt: {
+          $gte: year.toDate(),
+          $lte: moment(year).endOf("year").toDate(),
+        },
+      });
+      total = orders.reduce((acc, cur) => acc + cur.total, 0);
+    } else {
+      orders = await orderModule.find();
+      total = orders.reduce((acc, cur) => acc + cur.total, 0);
+    }
+
+    res.render("admin/salesReport", { orders, total, number: req.query.no });
   },
 };

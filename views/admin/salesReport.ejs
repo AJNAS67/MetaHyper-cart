@@ -1,0 +1,131 @@
+<%- include('./partials/admin-dash.ejs') %>
+
+<div class="dropdown text-center">
+    <div class="btn-group">
+        <% if(number==1){ %>
+            <button
+          type="button"
+          class="btn btn-outline-secondary dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+        Today Sales Report
+        </button>
+        <% }  %>
+        <% if(number==2){ %>
+            <button
+          type="button"
+          class="btn btn-outline-secondary dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+        Monthly Sales Report
+        </button>
+        <% }  %>
+        <% if(number==3){ %>
+            <button
+          type="button"
+          class="btn btn-outline-secondary dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+        Yearly Sales Report
+        </button>
+        <% }  %>
+        <% if(number==null){ %>
+            <button
+          type="button"
+          class="btn btn-outline-secondary dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Sort
+        </button>
+        <% }  %>
+
+        
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="/admin/salesReport?no=1">Today Sales Report</a></li>
+          <li><a class="dropdown-item" href="/admin/salesReport?no=2">Monthly Sales Report</a></li>
+          <li><a class="dropdown-item" href="/admin/salesReport?no=3">Yearly Sales Report</a></li>
+          <li><a class="dropdown-item" href="/admin/salesReport">Total Sales Report</a></li>
+         
+         
+        </ul>
+      </div>
+  </div>
+
+
+
+
+<div class="card mt-4 m-3">
+
+<div class="text-nowrap">
+    <table id="example" class="table" style="width:100%">
+        <thead class="table-dark">
+            
+            <tr>
+                <th>Order Id</th>
+                <th>Customer</th>
+                <th>Place</th>
+                <th>Phone No</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+            <% orders.forEach((x) => { %>
+            <tr>
+                <td><%=x._id%></td>
+                <td><%=x.deliveryAddress.firstName%></td>
+                <td><%=x.deliveryAddress.city%></td>
+                <td><%=x.deliveryAddress.mobNumber%></td>
+                <td><%=x.orderStatus%></td>
+            
+                <td><%=x.createdAt.toLocaleDateString()%></td>
+                <td><%=x.total%></td>
+            </tr>
+            <% }) %>
+            <tr>
+                <td class="font-weight-bold">TOTAL</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="font-weight-bold"><%=total%></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</div>
+
+
+
+
+
+
+<%- include('./partials/admin-footer.ejs') %>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    } );
+} );
+</script>

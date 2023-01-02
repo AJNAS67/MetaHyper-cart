@@ -1,2 +1,41 @@
-<%- include('./partials/admin-dash.ejs') %> <%-
-include('./partials/admin-footer.ejs') %>
+<%- include('./partials/admin-dash.ejs') %>
+<div class="container">
+  <h3>Shipping address</h3>
+  <span></span>
+  <p>Name : <%=orders.deliveryAddress.firstName%></p>
+  <p>Mobail number : <%=orders.deliveryAddress.mobNumber%></p>
+
+  <p>Email : <%=orders.deliveryAddress.email%></p>
+
+  <p>appartment : <%=orders.deliveryAddress.appartment%></p>
+  <p>Homeaddress : <%=orders.deliveryAddress.homeaddress%></p>
+
+  <p>City : <%=orders.deliveryAddress.city%></p>
+  <p>State : <%=orders.deliveryAddress.state%></p>
+  <p>Zipcode : <%=orders.deliveryAddress.zipcode%></p>
+
+  <table class="table table-hover mt-4">
+    <thead>
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Product Name</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% orders.products.forEach(function(order,i){ %>
+
+      <tr>
+        <th scope="row"><%=i+1%></th>
+        <td><%=order.name%></td>
+        <td><%=order.quantity%></td>
+        <td><%=order.price%></td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<!-- <div class="d-flex justify-content-around">...</div> -->
+<%- include('./partials/admin-footer.ejs') %>

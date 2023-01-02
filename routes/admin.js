@@ -15,6 +15,7 @@ router.get("/addproducts", adminController.addProduct);
 router.get("/adminProducts", productController.viewProduct);
 router.post("/", adminController.adminLogin);
 
+
 router.get("/viewcategory", adminController.viewCategory);
 router.get("/addCategories", productController.addCategory1);
 
@@ -59,4 +60,6 @@ router.get('/delete_coupon',couponController.deleteCoupon)
 
 // router.get('/addproducts',productController.addProduct)
 
+router.get('/view-order-detail',adminController.viewOrderDetails)
+router.get('/salesReport',adminController.salesReport)
 module.exports = router;

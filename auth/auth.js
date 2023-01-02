@@ -1,3 +1,5 @@
+const flash = require("connect-flash");
+
 // module.exports = {
 //     ensureAuthenticated: function(req, res, next) {
 //       if (req.isAuthenticated()) {
@@ -26,7 +28,9 @@ module.exports = {
     if (req.session.userLogin) {
       next();
     } else {
-      res.render("user/userlogin", { login: false });
+      const loginError = req.flash("user");
+
+      res.render("user/userlogin", { login: false, loginError });
     }
   },
 };
