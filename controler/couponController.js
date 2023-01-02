@@ -60,7 +60,6 @@ module.exports = {
       const cartId = req.body.cartId;
       let userId = req.session.userId;
       const user = await User.findById(userId);
-      console.log(user, "useruser");
       console.log(CoupenCode, "CoupenCode");
       console.log(amoutTotal, "amoutTotal");
       let coupon = await couponModule.findOne({ couponCode: CoupenCode });

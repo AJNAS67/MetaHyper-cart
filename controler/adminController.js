@@ -7,7 +7,6 @@ const orderModule = require("../model/orderModule");
 const productModel = require("../model/product");
 const moment = require("moment");
 
-
 // const AdminModel = require("../model/AdminModel");
 
 module.exports = {
@@ -36,6 +35,44 @@ module.exports = {
       let year = currentDate.getFullYear();
       console.log(year, "year");
 
+      let previousYear = year - 1;
+      const previousYearSales = await orderModule.aggregate([
+        {
+          $match: {
+            createdAt: {
+              $gte: new Date(
+                new Date(previousYear, 10, 1).setHours(00, 00, 00)
+              ),
+            },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: "$total" },
+          },
+        },
+      ]);
+      const currentYearSales = await orderModule.aggregate([
+        {
+          $match: {
+            createdAt: {
+              $gte: new Date(new Date(year, 0, 1).setHours(00, 00, 00)),
+            },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: "$total" },
+          },
+        },
+      ]);
+      let pys = previousYearSales[0].total;
+      let cys = currentYearSales[0].total;
+      let sg = ((cys - pys) / pys) * 100;
+      console.log(sg, "salesGrouth");
+      let salesGrouth = Math.round(sg);
       const TodaySalesT = await orderModule.aggregate([
         {
           $match: {
@@ -170,12 +207,12 @@ module.exports = {
       if (TodaySalesT == "") {
         TodaySales = 0;
       } else {
-        TodaySales = TodaySalesT.total;
+        TodaySales = TodaySalesT[0].total;
       }
       if (monthlySalesT == "") {
         monthlySales = 0;
       } else {
-        let monthlySales = monthlySalesT[0].total;
+        monthlySales = monthlySalesT[0].total;
       }
       // let weaklySales = weaklySalesT[0].total;
       // let monthlySales = monthlySalesT[0].total;
@@ -194,6 +231,11 @@ module.exports = {
         AccessoriesCount,
         KidsCount,
         CosmeticsCount,
+        pys,
+        cys,
+        salesGrouth,
+        previousYear,
+        year,
       });
     } else {
       res.redirect("/admin");
@@ -262,6 +304,40 @@ module.exports = {
       console.log(month, "month");
       let year = currentDate.getFullYear();
       console.log(year, "year");
+
+      let previousYear = year - 1;
+      const previousYearSales = await orderModule.aggregate([
+        {
+          $match: {
+            createdAt: {
+              $gte: new Date(
+                new Date(previousYear, 10, 1).setHours(00, 00, 00)
+              ),
+            },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: "$total" },
+          },
+        },
+      ]);
+      const currentYearSales = await orderModule.aggregate([
+        {
+          $match: {
+            createdAt: {
+              $gte: new Date(new Date(year, 0, 1).setHours(00, 00, 00)),
+            },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: "$total" },
+          },
+        },
+      ]);
 
       const TodaySalesT = await orderModule.aggregate([
         {
@@ -396,14 +472,19 @@ module.exports = {
       if (TodaySalesT == "") {
         TodaySales = 0;
       } else {
-        TodaySales = TodaySalesT.total;
+        TodaySales = TodaySalesT[0].total;
       }
       if (monthlySalesT == "") {
         monthlySales = 0;
       } else {
-        let monthlySales = monthlySalesT[0].total;
+        monthlySales = monthlySalesT[0].total;
       }
 
+      let pys = previousYearSales[0].total;
+      let cys = currentYearSales[0].total;
+      let sg = ((cys - pys) / pys) * 100;
+      console.log(sg, "salesGrouth");
+      let salesGrouth = Math.round(sg);
       console.log(monthlySalesT, "monthlySalesmonthlySales");
       // let TodaySales = TodaySalesT.total;
       // let weaklySales = weaklySalesT[0].total;
@@ -423,6 +504,11 @@ module.exports = {
         AccessoriesCount,
         KidsCount,
         CosmeticsCount,
+        pys,
+        cys,
+        salesGrouth,
+        year,
+        previousYear,
       });
     }
   },

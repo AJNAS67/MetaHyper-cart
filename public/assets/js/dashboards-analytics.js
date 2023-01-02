@@ -30,11 +30,11 @@
     totalRevenueChartOptions = {
       series: [
         {
-          name: "2022",
+          name: "2023",
           data: [MenCount, WomenCount, KidsCount, AccessoriesCount, CosmeticsCount],
         },
         {
-          name: "2021",
+          name: "2022",
           data: [-13, -18, -9, -14, -5],
         },
       ],

@@ -195,11 +195,38 @@ module.exports = {
   },
 
   homeView: async (req, res) => {
+    let currentDate1 = new Date();
+    let month1 = currentDate1.getMonth();
+    console.log(month1, "month1month1");
+
+    const TotalOrder2022 = await orderModule.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: new Date(new Date(2022, 10, 1).setHours(00, 00, 00)),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$total" },
+        },
+      },
+    ]);
+
+    console.log(TotalOrder2022, "TotalOrder");
     let currentDate = new Date();
-    let endDate = currentDate.setDate(currentDate.getDate() - 5);
-    console.log(endDate, "endDate");
+    console.log(currentDate, "currentDatecurrentDate");
+    // let currentDate2=currentDate;
+    // let endDate = currentDate2.setDate(currentDate2.getDate() - 5);
+    // console.log(endDate, "endDate");
 
     let today = currentDate.getDate();
+    console.log(
+      today,
+      "todaytodaytodaytodaytodaytodaytodaytodaytodaytodaytoday"
+    );
     let startdate;
     if (today <= 7) {
       startdate = 1;
@@ -255,6 +282,45 @@ module.exports = {
       new Date(new Date(year, month, 24).setHours(00, 00, 00)),
       "new Date(new Date(year, month, 24).setHours(00, 00, 00)"
     );
+    let previousYear = year - 1;
+    const previousYearSales = await orderModule.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: new Date(new Date(previousYear, 10, 1).setHours(00, 00, 00)),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$total" },
+        },
+      },
+    ]);
+    const currentYearSales = await orderModule.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: new Date(new Date(year, 0, 1).setHours(00, 00, 00)),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$total" },
+        },
+      },
+    ]);
+    let pys = previousYearSales[0].total;
+    let cys = currentYearSales[0].total;
+    let sg = ((cys - pys) / pys) * 100;
+    console.log(sg, "salesGrouth");
+    let salesGrouth = Math.round(sg);
+
+
+    
     let or = await orderModule.aggregate([
       {
         $match: {
