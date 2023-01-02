@@ -195,6 +195,52 @@ module.exports = {
           CosmeticsCount.push(elements);
         }
       });
+
+
+
+      let MenTotalAmount = MenCount.reduce(
+        (acc, cur) => acc + cur.quantity*cur.price,
+        0
+      );
+      let WomenTotalAmount = MenCount.reduce(
+        (acc, cur) => acc + cur.quantity*cur.price,
+        0
+      );
+      let KidsTotalAmount = MenCount.reduce(
+        (acc, cur) => acc + cur.quantity*cur.price,
+        0
+      );
+      let CosmeticsTotalAmount = MenCount.reduce(
+        (acc, cur) => acc + cur.quantity*cur.price,
+        0
+      );
+
+      let MenTotalPrdPrice = MenCount.reduce(
+        (acc, cur) => acc + cur.quantity*cur.price,
+        0
+      );
+
+      let MenTotalProdAvailable = MenCount.reduce(
+        (acc, cur) => acc + cur.quantity,
+        0
+      );
+      let KidsTotalProdAvailable = KidsCount.reduce(
+        (acc, cur) => acc + cur.quantity,
+        0
+      );
+      let AccessoriesTotalProdAvailable = AccessoriesCount.reduce(
+        (acc, cur) => acc + cur.quantity,
+        0
+      );
+      let CosmeticsTotalProdAvailable = CosmeticsCount.reduce(
+        (acc, cur) => acc + cur.quantity,
+        0
+      );
+      let WomenCountTotalProdAvailable = WomenCount.reduce(
+        (acc, cur) => acc + cur.quantity,
+        0
+      );
+
       let weaklySales;
       let TodaySales;
       let monthlySales;
@@ -236,6 +282,15 @@ module.exports = {
         salesGrouth,
         previousYear,
         year,
+        MenTotalProdAvailable,
+        KidsTotalProdAvailable,
+        AccessoriesTotalProdAvailable,
+        CosmeticsTotalProdAvailable,
+        WomenCountTotalProdAvailable,
+        MenTotalAmount,
+        WomenTotalAmount,
+        KidsTotalAmount,
+        CosmeticsTotalAmount
       });
     } else {
       res.redirect("/admin");
@@ -460,6 +515,56 @@ module.exports = {
         }
       });
 
+
+      let MenTotalAmount = MenCount.reduce(
+        (acc, cur) => acc + cur.quantity*cur.price,
+        0
+      );
+      let WomenTotalAmount = MenCount.reduce(
+        (acc, cur) => acc + cur.quantity*cur.price,
+        0
+      );
+      let KidsTotalAmount = MenCount.reduce(
+        (acc, cur) => acc + cur.quantity*cur.price,
+        0
+      );
+      let CosmeticsTotalAmount = MenCount.reduce(
+        (acc, cur) => acc + cur.quantity*cur.price,
+        0
+      );
+
+      let MenTotalPrdPrice = MenCount.reduce(
+        (acc, cur) => acc + cur.quantity*cur.price,
+        0
+      );
+
+
+      let MenTotalProdAvailable = MenCount.reduce(
+        (acc, cur) => acc + cur.quantity,
+        0
+      );
+      let KidsTotalProdAvailable = KidsCount.reduce(
+        (acc, cur) => acc + cur.quantity,
+        0
+      );
+      let AccessoriesTotalProdAvailable = AccessoriesCount.reduce(
+        (acc, cur) => acc + cur.quantity,
+        0
+      );
+      let CosmeticsTotalProdAvailable = CosmeticsCount.reduce(
+        (acc, cur) => acc + cur.quantity,
+        0
+      );
+      let WomenCountTotalProdAvailable = WomenCount.reduce(
+        (acc, cur) => acc + cur.quantity,
+        0
+      );
+
+      let MenTotalSales = MenCount.reduce(
+        (acc, cur) => acc + cur.quantity,
+        0
+      );
+
       let weaklySales;
       let TodaySales;
       let monthlySales;
@@ -509,6 +614,16 @@ module.exports = {
         salesGrouth,
         year,
         previousYear,
+        MenTotalProdAvailable,
+        KidsTotalProdAvailable,
+        KidsTotalProdAvailable,
+        AccessoriesTotalProdAvailable,
+        CosmeticsTotalProdAvailable,
+        WomenCountTotalProdAvailable,
+        MenTotalAmount,
+        WomenTotalAmount,
+        KidsTotalAmount,
+        CosmeticsTotalAmount
       });
     }
   },

@@ -137,7 +137,7 @@
         <div class="card">
           <div class="row row-bordered g-0">
             <div class="col-md-8">
-              <h5 class="card-header m-0 me-2 pb-3">Total Revenue</h5>
+              <h5 class="card-header m-0 me-2 pb-3">Category Item</h5>
               <div id="totalRevenueChart" class="px-2"></div>
             </div>
             <div class="col-md-4">
@@ -173,7 +173,7 @@
                     ></span>
                   </div>
                   <div class="d-flex flex-column">
-                    <small><%=year%></small>
+                    <small id="year"><%=year%></small>
                     <h6 class="mb-0">$<%=cys%></h6>
                   </div>
                 </div>
@@ -372,7 +372,7 @@
                     <small class="text-muted">T-shirt, Jeans, Shoes</small>
                   </div>
                   <div class="user-progress">
-                    <small class="fw-semibold">82.5k</small>
+                    <small class="fw-semibold"><%=MenTotalAmount%></small>
                   </div>
                 </div>
               </li>
@@ -390,7 +390,7 @@
                     <small class="text-muted">T-shirt, Jeans, Shoes</small>
                   </div>
                   <div class="user-progress">
-                    <small class="fw-semibold">23.8k</small>
+                    <small class="fw-semibold"><%=WomenTotalAmount%></small>
                   </div>
                 </div>
               </li>
@@ -408,7 +408,7 @@
                     <small class="text-muted">T-shirt, Jeans, Shoes</small>
                   </div>
                   <div class="user-progress">
-                    <small class="fw-semibold">849k</small>
+                    <small class="fw-semibold"><%=KidsTotalAmount%></small>
                   </div>
                 </div>
               </li>
@@ -426,7 +426,7 @@
                     <small class="text-muted">T-shirt, Jeans, Shoes, Beaty Blender</small>
                   </div>
                   <div class="user-progress">
-                    <small class="fw-semibold">99</small>
+                    <small class="fw-semibold"><%=CosmeticsTotalAmount%></small>
                   </div>
                 </div>
               </li>
@@ -683,6 +683,14 @@
   <p id="AccessoriesCount" value="<%=AccessoriesCount%>" hidden><%=AccessoriesCount%></p>
   <p id="KidsCount" value="<%=KidsCount%>" hidden><%=KidsCount%></p>
   <p id="CosmeticsCount" value="<%=CosmeticsCount%>" hidden><%=CosmeticsCount%></p>
+  <p id="salesGrouth" value="<%=salesGrouth%>" hidden><%=salesGrouth%></p>
+  <p id="wtpa" value="<%=WomenCountTotalProdAvailable%>" hidden><%=WomenCountTotalProdAvailable%></p>
+  <p id="ctpa" value="<%=CosmeticsTotalProdAvailable%>" hidden><%=CosmeticsTotalProdAvailable%></p>
+  <p id="atpa" value="<%=AccessoriesTotalProdAvailable%>" hidden><%=AccessoriesTotalProdAvailable%></p>
+  <p id="ktpa" value="<%=KidsTotalProdAvailable%>" hidden><%=KidsTotalProdAvailable%></p>
+  <p id="mtpa" value="<%=MenTotalProdAvailable%>" hidden><%=MenTotalProdAvailable%></p>
+
+
 
 
   <!-- Footer -->

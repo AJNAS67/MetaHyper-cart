@@ -22,6 +22,22 @@
   console.log(KidsCount, "KidsCount");
   let CosmeticsCount = document.getElementById("CosmeticsCount").innerHTML;
   console.log(CosmeticsCount, "CosmeticsCount");
+  let salesGrouth = document.getElementById("salesGrouth").innerHTML;
+  let year = document.getElementById("year").innerHTML;
+  let mtpa = document.getElementById("mtpa").innerHTML;
+  let MenTotalProd=parseInt(mtpa)
+  let wtpa = document.getElementById("wtpa").innerHTML;
+  let WomenTotalProd=parseInt(wtpa)
+
+  let ktpa = document.getElementById("ktpa").innerHTML;
+  let KidTotalProd=parseInt(ktpa)
+  let ctpa = document.getElementById("ctpa").innerHTML;
+  let CosmeticTotalProd=parseInt(ctpa)
+  let atpa = document.getElementById("atpa").innerHTML;
+  let AccessorieTotalProd=parseInt(atpa)
+
+
+  
   
 
   // Total Revenue Report Chart - Bar Chart
@@ -30,13 +46,10 @@
     totalRevenueChartOptions = {
       series: [
         {
-          name: "2023",
+          name: year,
           data: [MenCount, WomenCount, KidsCount, AccessoriesCount, CosmeticsCount],
         },
-        {
-          name: "2022",
-          data: [-13, -18, -9, -14, -5],
-        },
+       
       ],
       chart: {
         height: 300,
@@ -296,7 +309,7 @@
   // --------------------------------------------------------------------
   const growthChartEl = document.querySelector("#growthChart"),
     growthChartOptions = {
-      series: [78],
+      series: [salesGrouth*-1],
       labels: ["Growth"],
       chart: {
         height: 240,
@@ -452,12 +465,16 @@
         type: "donut",
       },
       labels: ["Men", "Women", "Kids", "Cosmetics"],
-      series: [85, 15, 55, 50],
+      series: [MenTotalProd, WomenTotalProd, KidTotalProd, CosmeticTotalProd],
+
+
       colors: [
         config.colors.primary,
         config.colors.secondary,
         config.colors.info,
         config.colors.success,
+        config.colors.dark,
+
       ],
       stroke: {
         width: 5,

@@ -195,6 +195,9 @@ module.exports = {
   },
 
   homeView: async (req, res) => {
+
+
+    
     let currentDate1 = new Date();
     let month1 = currentDate1.getMonth();
     console.log(month1, "month1month1");
@@ -240,39 +243,7 @@ module.exports = {
     let year = currentDate.getFullYear();
     console.log(year, "year");
 
-    console.log(currentDate.getDate(), "pppppppppppp");
-
-    // var DateSpan = [];
-    // for (let i = 0; i < 7; i++) {
-    //   var currentDate = new Date();
-    //   currentDate.setDate(currentDate.getDate() - i);
-    //   var $dd = currentDate.getDate();
-    //   console.log($dd, "kkkkkkkkkkkkkkkkkkkkkkkk");
-    //   var $mm = currentDate.getMonth() + 1; //January is 0!
-    //   var $yyyy = currentDate.getFullYear();
-    //   if ($dd < 10) {
-    //     $dd = "0" + $dd;
-    //   }
-    //   if ($mm < 10) {
-    //     $mm = "0" + $mm;
-    //   }
-    //   currentDate = $dd + "-" + $mm + "-" + $yyyy;
-    //   DateSpan.push(currentDate);
-    // }
-    // console.log(DateSpan, "DateSpanDateSpan");
-    // console.log(new Date(2022, 10, 14), "aaaaaaaaaa");
-
-    // let aj = await orderModule.find({
-    //   //query today up to tonight
-    //   createdAt: {
-    //     $gte: new Date(2022, 10, 14),
-    //     $lt: new Date(2022, 11, 25),
-    //   },
-    // });
-    // console.log(aj, "ssssssssssssssssss");
-
-    // let ord=await orderModule.find()
-    // console.log(ord,'ordord');
+   
     console.log(
       new Date(new Date(currentDate).setHours(00, 00, 00)),
       "llllllllllllllllllllllll"
