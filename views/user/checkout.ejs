@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="breadcrumb__links">
-          <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+          <a href="/"><i class="fa fa-home"></i> Home</a>
           <span>Shopping cart</span>
         </div>
       </div>
@@ -177,14 +177,13 @@
           });
         } else if (response.onlinePayment) {
           console.log(response, "responseresponseonline");
-          console.log("test ooooooooooooooooooooooooook");
           razorpayoderData = response.razorpayOrderData;
           userOrderData = response.userOrderData;
           walletBalance = response.walletBalance;
           var options = {
             key: response.razorpayOrderData.notes.key1, // Enter the Key ID generated from the Dashboard
             amount: response.razorpayOrderData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-            currency: "INR",
+            currency: "USD",
             name: " Meta Hyprt mart",
             description: "Test Transaction",
             image: "https://example.com/your_logo",

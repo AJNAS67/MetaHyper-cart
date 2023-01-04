@@ -197,10 +197,6 @@ module.exports = {
   },
 
   homeView: async (req, res) => {
-    
-   
-
-
     let userId = req.session.userId;
 
     // const cartNum = cartView.products.length;
@@ -333,9 +329,18 @@ module.exports = {
   },
   mens: async (req, res) => {
     try {
-      let products = await productModel
-        .find({ category: "639acfd61006ac4c0f1e4822" })
-        .populate("category");
+      var query = await productModel.find().populate({
+        path: "category",
+        match: {
+          category: { $eq: "Men" },
+        },
+      });
+      let products = [];
+      query.forEach((elements) => {
+        if (elements.category !== null) {
+          products.push(elements);
+        }
+      });
 
       if (req.session.userLogin) {
         res.render("user/mens", {
@@ -352,10 +357,18 @@ module.exports = {
   },
   womens: async (req, res) => {
     try {
-      let products = await productModel
-        .find({ category: "639acfe51006ac4c0f1e4825" })
-        .populate("category");
-
+      var query = await productModel.find().populate({
+        path: "category",
+        match: {
+          category: { $eq: "Women" },
+        },
+      });
+      let products = [];
+      query.forEach((elements) => {
+        if (elements.category !== null) {
+          products.push(elements);
+        }
+      });
       if (req.session.userLogin) {
         res.render("user/womens", {
           login: true,
@@ -371,9 +384,18 @@ module.exports = {
   },
   kids: async (req, res) => {
     try {
-      let products = await productModel
-        .find({ category: "6392b46240ab9bd84d9f22f2" })
-        .populate("category");
+      var query = await productModel.find().populate({
+        path: "category",
+        match: {
+          category: { $eq: "Kids" },
+        },
+      });
+      let products = [];
+      query.forEach((elements) => {
+        if (elements.category !== null) {
+          products.push(elements);
+        }
+      });
 
       if (req.session.userLogin) {
         res.render("user/kids", {
@@ -390,9 +412,18 @@ module.exports = {
   },
   cosmetics: async (req, res) => {
     try {
-      let products = await productModel
-        .find({ category: "63a68cb5b45a69b23404fd10" })
-        .populate("category");
+      var query = await productModel.find().populate({
+        path: "category",
+        match: {
+          category: { $eq: "Cosmetics" },
+        },
+      });
+      let products = [];
+      query.forEach((elements) => {
+        if (elements.category !== null) {
+          products.push(elements);
+        }
+      });
 
       if (req.session.userLogin) {
         res.render("user/cosmetics", {
@@ -409,9 +440,18 @@ module.exports = {
   },
   Accessories: async (req, res) => {
     try {
-      let products = await productModel
-        .find({ category: "63a68966b45a69b23404fd01" })
-        .populate("category");
+      var query = await productModel.find().populate({
+        path: "category",
+        match: {
+          category: { $eq: "Accessories" },
+        },
+      });
+      let products = [];
+      query.forEach((elements) => {
+        if (elements.category !== null) {
+          products.push(elements);
+        }
+      });
 
       if (req.session.userLogin) {
         res.render("user/accessories", {
@@ -711,7 +751,7 @@ module.exports = {
     try {
       let user = req.session.user;
       let prodId = req.params.Id;
-      let product = await productModel.findOne({ _id: prodId });
+      let product = await productModel.findOne({ _id: prodId }).populate("category")
       let imageNum = product.image.length;
 
       if (user) {

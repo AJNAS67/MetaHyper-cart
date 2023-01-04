@@ -6,14 +6,28 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="breadcrumb__links">
-          <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-          <a href="#">Women’s </a>
+          <a href="/"><i class="fa fa-home"></i> Home</a>
+          <!-- <a href="#">Women’s </a> -->
+          <% if ((product.category.category=='Men')){ %>
+          <a href="/mens">Men’s </a>
+
+          <% } %> <% if ((product.category.category=='Women')){ %>
+          <a href="/womens">Women’s </a>
+
+          <% } %> <% if ((product.category.category=='Kids')){ %>
+          <a href="/kids">Kid’s' </a>
+          <% } %> <% if ((product.category.category=='Accessories')){ %>
+          <a href="/accessories">Accessories </a>
+          <% } %> <% if ((product.category.category=='Cosmetics')){ %>
+          <a href="/cosmetics">Cosmetics </a>
+          <% } %>
           <span><%=product.name%></span>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 <!-- Breadcrumb End -->
 
 <!-- Product Details Section Begin -->
@@ -23,26 +37,26 @@
       <div class="col-lg-6">
         <div class="product__details__pic">
           <div class="product__details__pic__left product__thumb nice-scroll">
+            <% for (var i =0; i <= imageNum; i++ ) { %>
 
-            <% for (var i =0; i <= imageNum;  i++ ) { %>
-              
+            <a class="pt active" href="#product-<%=i+1%>">
+              <img src="/images/productImages/<%=product.image[i]%>" alt="" />
+            </a>
 
-              <a class="pt active" href="#product-<%=i+1%>">
-                <img src="/images/productImages/<%=product.image[i]%>" alt="" />
-              </a>
-              
-              <% } %>
-            
+            <% } %>
           </div>
           <div class="product__details__slider__content">
             <div class="product__details__pic__slider owl-carousel">
+              <% for (var i =0; i <= imageNum; i++ ) { %>
 
-              <% for (var i =0; i <= imageNum;  i++ ) { %>
-               
-              <a data-hash="product-<%=i+1%>"  href="/images/productImages/<%=product.image[i]%>" class="MagicZoom"><img src="/images/productImages/<%=product.image[i]%>" /></a>
+              <a
+                data-hash="product-<%=i+1%>"
+                href="/images/productImages/<%=product.image[i]%>"
+                class="MagicZoom"
+                ><img src="/images/productImages/<%=product.image[i]%>"
+              /></a>
 
-                <% } %>
-
+              <% } %>
             </div>
           </div>
         </div>
@@ -61,10 +75,8 @@
             <i class="fa fa-star"></i>
             <span>( 138 reviews )</span>
           </div>
-          <div class="product__details__price">$ <%=product.price%></div>
-          <p>
-           <%=product.description%>
-          </p>
+          <div class="product__details__price">₹  <%=product.price%></div>
+          <p><%=product.description%></p>
           <div class="product__details__button">
             <!-- <div class="quantity">
               <span>Quantity:</span>
@@ -72,12 +84,17 @@
                 <input type="text" value="1" />
               </div>
             </div> -->
-            <a onclick="addTocart('<%=product.id%>','<%=product.name%>','<%=product.price%>')" class="cart-btn"
+            <a
+              onclick="addTocart('<%=product.id%>','<%=product.name%>','<%=product.price%>')"
+              class="cart-btn"
               ><span class="icon_bag_alt"></span> Add to cart</a
             >
             <ul>
               <li>
-                <a onclick="addToWishlist('<%=product.id%>','<%=product.name%>','<%=user%>')"><span class="icon_heart_alt"></span></a>
+                <a
+                  onclick="addToWishlist('<%=product.id%>','<%=product.name%>','<%=user%>')"
+                  ><span class="icon_heart_alt"></span
+                ></a>
               </li>
               <li>
                 <a href="#"><span class="icon_adjust-horiz"></span></a>
@@ -263,7 +280,7 @@
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
             </div>
-            <div class="product__price">$ 59.0</div>
+            <div class="product__price">₹  59.0</div>
           </div>
         </div>
       </div>
@@ -296,7 +313,7 @@
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
             </div>
-            <div class="product__price">$ 49.0</div>
+            <div class="product__price">₹  49.0</div>
           </div>
         </div>
       </div>
@@ -330,7 +347,7 @@
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
             </div>
-            <div class="product__price">$ 59.0</div>
+            <div class="product__price">₹  59.0</div>
           </div>
         </div>
       </div>
@@ -363,7 +380,7 @@
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
             </div>
-            <div class="product__price">$ 59.0</div>
+            <div class="product__price">₹  59.0</div>
           </div>
         </div>
       </div>

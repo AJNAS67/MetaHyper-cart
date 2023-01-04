@@ -356,10 +356,8 @@
 <script>
   function QuantityInc(ProductId, count) {
     let qua = document.getElementById(`sst${ProductId}`).value;
-    console.log(qua, "quaquaquaquaquaqua");
 
-    console.log(count, "vcount");
-    console.log(ProductId, "ProductId");
+    
     $.ajax({
       url: "/quantityInc/" + ProductId,
       method: "get",

@@ -97,11 +97,10 @@ module.exports = {
             { $inc: { quantity: -el.quantity } }
           );
         });
-        res.json({ cashOnDelivery: true });
 
-        // cartModel.findOneAndRemove({ userId: result.userId }).then((result) => {
-        //   res.json({ cashOnDelivery: true });
-        // });
+        cartModel.findOneAndRemove({ userId: result.userId }).then((result) => {
+          res.json({ cashOnDelivery: true });
+        });
       });
     } else if (paymentMethod == "Online Payment") {
       const newOrder = new orderModel({
