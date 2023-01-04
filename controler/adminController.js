@@ -92,10 +92,8 @@ module.exports = {
       } catch (error) {
         sg = 0;
       }
-      // let pys = previousYearSales[0].total;
-      // let cys = currentYearSales[0].total;
-      console.log(sg, "salesGrouth");
-      let salesGrouth = Math.round(0);
+
+      let salesGrouth = Math.round(sg);
       const TodaySalesT = await orderModule.aggregate([
         {
           $match: {
@@ -287,8 +285,7 @@ module.exports = {
       } else {
         monthlySales = monthlySalesT[0].total;
       }
-      // let weaklySales = weaklySalesT[0].total;
-      // let monthlySales = monthlySalesT[0].total;
+      
       var WomenCount = WomenCount.length;
       var AccessoriesCount = AccessoriesCount.length;
       var KidsCount = KidsCount.length;
@@ -611,11 +608,30 @@ module.exports = {
       } else {
         monthlySales = monthlySalesT[0].total;
       }
+      let pys;
+      let cys;
+      let sg;
 
-      let pys = previousYearSales[0].total;
-      let cys = currentYearSales[0].total;
-      let sg = ((cys - pys) / pys) * 100;
-      console.log(sg, "salesGrouth");
+      if (previousYearSales == "") {
+        pys = 0;
+      } else {
+        pys = previousYearSales[0].total;
+      }
+      if (currentYearSales == "") {
+        cys = 0;
+      } else {
+        cys = currentYearSales[0].total;
+      }
+      try {
+        sg = ((cys - pys) / pys) * 100;
+      } catch (error) {
+        sg = 0;
+      }
+
+      // let pys = previousYearSales[0].total;
+      // let cys = currentYearSales[0].total;
+      // let sg = ((cys - pys) / pys) * 100;
+      // console.log(sg, "salesGrouth");
       let salesGrouth = Math.round(sg);
       console.log(monthlySalesT, "monthlySalesmonthlySales");
       // let TodaySales = TodaySalesT.total;
