@@ -69,18 +69,38 @@ module.exports = {
           },
         },
       ]);
-      let pys = previousYearSales[0].total;
-      let cys = currentYearSales[0].total;
-      let sg = ((cys - pys) / pys) * 100;
+
+      console.log(
+        previousYearSales,
+        "previousYearSalespreviousYearSalespreviousYearSalespreviousYearSalespreviousYearSalespreviousYearSalespreviousYearSalespreviousYearSalespreviousYearSales"
+      );
+      let pys;
+      let cys;
+      if (previousYearSales == "") {
+        pys = 0;
+      } else {
+        pys = previousYearSales[0].total;
+      }
+      if (currentYearSales == "") {
+        cys = 0;
+      } else {
+        cys = currentYearSales[0].total;
+      }
+      let sg;
+      try {
+        sg = ((cys - pys) / pys) * 100;
+      } catch (error) {
+        sg = 0;
+      }
+      // let pys = previousYearSales[0].total;
+      // let cys = currentYearSales[0].total;
       console.log(sg, "salesGrouth");
-      let salesGrouth = Math.round(sg);
+      let salesGrouth = Math.round(0);
       const TodaySalesT = await orderModule.aggregate([
         {
           $match: {
             createdAt: {
-              $gte: new Date(
-                new Date(year, month, today).setHours(00, 00, 00)
-              ),
+              $gte: new Date(new Date(year, month, today).setHours(00, 00, 00)),
             },
           },
         },
@@ -91,7 +111,7 @@ module.exports = {
           },
         },
       ]);
-      console.log(TodaySalesT,'TodaySalesTTodaySalesT');
+      console.log(TodaySalesT, "TodaySalesTTodaySalesT");
 
       const weaklySalesT = await orderModule.aggregate([
         {
@@ -261,7 +281,7 @@ module.exports = {
       } else {
         TodaySales = TodaySalesT[0].total;
       }
-      console.log(TodaySales,'TodaySales');
+      console.log(TodaySales, "TodaySales");
       if (monthlySalesT == "") {
         monthlySales = 0;
       } else {
@@ -302,7 +322,7 @@ module.exports = {
         CosmeticsTotalAmount,
         test,
         allData,
-        TotalProdAvailable
+        TotalProdAvailable,
       });
     } else {
       res.redirect("/admin");
@@ -609,11 +629,11 @@ module.exports = {
       let test = [1, 2, 3, 4];
       const allData = await pieChartDetails();
       let TotalProdAvailable =
-      MenTotalProdAvailable +
-      KidsTotalProdAvailable +
-      AccessoriesTotalProdAvailable +
-      CosmeticsTotalProdAvailable +
-      WomenCountTotalProdAvailable;
+        MenTotalProdAvailable +
+        KidsTotalProdAvailable +
+        AccessoriesTotalProdAvailable +
+        CosmeticsTotalProdAvailable +
+        WomenCountTotalProdAvailable;
 
       res.render("admin/adminHome", {
         TodaySales,
@@ -641,7 +661,7 @@ module.exports = {
         CosmeticsTotalAmount,
         test,
         allData,
-        TotalProdAvailable
+        TotalProdAvailable,
       });
     }
   },
