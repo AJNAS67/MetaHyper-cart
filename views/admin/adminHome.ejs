@@ -234,7 +234,7 @@
                   </div>
                 </div>
                 <span class="d-block mb-1">Todays Sales</span>
-                <h3 class="card-title text-nowrap mb-2">$2,456</h3>
+                <h3 class="card-title text-nowrap mb-2">$<%=TodaySales%></h3>
                 <small class="text-danger fw-semibold"
                   ><i class="bx bx-down-arrow-alt"></i> -14.82%</small
                 >
@@ -297,14 +297,14 @@
                     <div class="card-title">
                       <h5 class="text-nowrap mb-2">Profile Report</h5>
                       <span class="badge bg-label-warning rounded-pill"
-                        >Year 2021</span
+                        >Year <%=year%></span
                       >
                     </div>
                     <div class="mt-sm-auto">
                       <small class="text-success text-nowrap fw-semibold"
-                        ><i class="bx bx-chevron-up"></i> 68.2%</small
+                        ><i class="bx bx-chevron-up"></i> <%=salesGrouth%>%</small
                       >
-                      <h3 class="mb-0">$84,686k</h3>
+                      <h3 class="mb-0">$<%=cys%></h3>
                     </div>
                   </div>
                   <div id="profileReportChart"></div>
@@ -323,8 +323,8 @@
             class="card-header d-flex align-items-center justify-content-between pb-0"
           >
             <div class="card-title mb-0">
-              <h5 class="m-0 me-2">Order Statistics</h5>
-              <small class="text-muted">42.82k Total Sales</small>
+              <h5 class="m-0 me-2">Total Product Available</h5>
+              <!-- <small class="text-muted">42.82k Total Sales</small> -->
             </div>
             <div class="dropdown">
               <button
@@ -352,8 +352,8 @@
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <div class="d-flex flex-column align-items-center gap-1">
-                <h2 class="mb-2">8,258</h2>
-                <span>Total Orders</span>
+                <h2 class="mb-2"><%=TotalProdAvailable%></h2>
+                <span>Total Products</span>
               </div>
               <div id="orderStatisticsChart"></div>
             </div>
@@ -372,7 +372,7 @@
                     <small class="text-muted">T-shirt, Jeans, Shoes</small>
                   </div>
                   <div class="user-progress">
-                    <small class="fw-semibold"><%=MenTotalAmount%></small>
+                    <small class="fw-semibold"><%=MenTotalProdAvailable%></small>
                   </div>
                 </div>
               </li>
@@ -390,7 +390,7 @@
                     <small class="text-muted">T-shirt, Jeans, Shoes</small>
                   </div>
                   <div class="user-progress">
-                    <small class="fw-semibold"><%=WomenTotalAmount%></small>
+                    <small class="fw-semibold"><%=WomenCountTotalProdAvailable%></small>
                   </div>
                 </div>
               </li>
@@ -408,7 +408,7 @@
                     <small class="text-muted">T-shirt, Jeans, Shoes</small>
                   </div>
                   <div class="user-progress">
-                    <small class="fw-semibold"><%=KidsTotalAmount%></small>
+                    <small class="fw-semibold"><%=KidsTotalProdAvailable%></small>
                   </div>
                 </div>
               </li>
@@ -426,7 +426,7 @@
                     <small class="text-muted">T-shirt, Jeans, Shoes, Beaty Blender</small>
                   </div>
                   <div class="user-progress">
-                    <small class="fw-semibold"><%=CosmeticsTotalAmount%></small>
+                    <small class="fw-semibold"><%=CosmeticsTotalProdAvailable%></small>
                   </div>
                 </div>
               </li>
@@ -689,6 +689,9 @@
   <p id="atpa" value="<%=AccessoriesTotalProdAvailable%>" hidden><%=AccessoriesTotalProdAvailable%></p>
   <p id="ktpa" value="<%=KidsTotalProdAvailable%>" hidden><%=KidsTotalProdAvailable%></p>
   <p id="mtpa" value="<%=MenTotalProdAvailable%>" hidden><%=MenTotalProdAvailable%></p>
+  <p id="test" value="<%=test%>" hidden><%=test%></p>
+  <p id="allData" value="<%=allData%>" hidden><%=allData%></p>
+
 
 
 

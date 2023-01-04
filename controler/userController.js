@@ -7,6 +7,8 @@ const cartModel = require("../model/cart");
 const addressModule = require("../model/addressModel");
 const categoryModel = require("../model/category");
 const orderModule = require("../model/orderModule");
+const moment = require("moment");
+const { pieChartDetails } = require("../middleware/pieChart");
 
 const flash = require("connect-flash");
 function otpCreation() {
@@ -195,9 +197,34 @@ module.exports = {
   },
 
   homeView: async (req, res) => {
-
-
     
+   
+
+    // console.log(orders, "ordersordersorders");
+    //  async function getFifthMonthOrders() {
+    //   const startDate = moment().subtract(5, "months").startOf("month");
+    //   const endDate = moment().subtract(5, "months").endOf("month");
+    //   try {
+    //     const orders = await orderModule.find({
+    //       $and: [
+    //         { createdAt: { $gt: startDate } },
+    //         { createdAt: { $lt: endDate } },
+    //       ],
+    //     });
+
+    //     const totalSale = orders.reduce((total, order) => {
+    //       total += order.total;
+    //       return total;
+    //     }, 0);
+
+    //     return totalSale;
+    //   } catch (err) {
+    //     return null;
+    //   }
+    // }
+    // let totalSale=getFifthMonthOrders()
+    // console.log(totalSale,'totalSaletotalSale');
+
     let currentDate1 = new Date();
     let month1 = currentDate1.getMonth();
     console.log(month1, "month1month1");
@@ -243,7 +270,6 @@ module.exports = {
     let year = currentDate.getFullYear();
     console.log(year, "year");
 
-   
     console.log(
       new Date(new Date(currentDate).setHours(00, 00, 00)),
       "llllllllllllllllllllllll"
@@ -290,32 +316,10 @@ module.exports = {
     console.log(sg, "salesGrouth");
     let salesGrouth = Math.round(sg);
 
-
-    
-    let or = await orderModule.aggregate([
-      {
-        $match: {
-          createdAt: {
-            $gt: new Date(
-              new Date(year, month, startdate).setHours(00, 00, 00)
-            ),
-          },
-        },
-      },
-      {
-        $group: {
-          _id: null,
-          total: { $sum: "$total" },
-        },
-      },
-    ]);
-    // console.log(or, "ororororororororororororororororororororor");
-
     // await orderModule
     //   .aggregate([
     //     {
     //       paymentStatus: "Payment Completed",
-    //       // },
 
     //       $match: {
     //         createdAt: {

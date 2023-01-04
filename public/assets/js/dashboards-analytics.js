@@ -5,6 +5,10 @@
 "use strict";
 
 (function () {
+
+
+
+
   let cardColor, headingColor, axisColor, shadeColor, borderColor;
 
   cardColor = config.colors.white;
@@ -35,6 +39,49 @@
   let CosmeticTotalProd=parseInt(ctpa)
   let atpa = document.getElementById("atpa").innerHTML;
   let AccessorieTotalProd=parseInt(atpa)
+  let test = document.getElementById("test").innerHTML;
+  let allData = document.getElementById("allData").innerHTML;
+  const myArray = allData.split(",");
+  const map1 = myArray.map(x => parseInt(x));
+console.log(map1,'map1map1map1');
+  console.log(myArray,'dddddddddddddd');
+  console.log(allData.length,'888888888888888888888');
+let dt=[0,6,9,0,87,6,4]
+console.log(dt,'dt');
+let allData1=[allData];
+console.log(allData1,'allData1allData1');
+
+
+var result = allData1.map(function (x) { 
+  return parseInt(x, 10); 
+});
+console.log(result,'resultresultresult');
+
+  console.log([allData],'ppppppppppppppppppp');
+  const allMonths = [
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const mon = new Date().getMonth();
+  const months = allMonths.slice(mon, mon + 7);
+  console.log(months,'monthsmonths');
+  
 
 
   
@@ -425,7 +472,7 @@
       },
       series: [
         {
-          data: [110, 270, 145, 245, 205, 285],
+          data: map1,
         },
       ],
       xaxis: {
@@ -546,7 +593,7 @@
     incomeChartConfig = {
       series: [
         {
-          data: [24, 21, 30, 22, 42, 26, 35, 29],
+          data: map1,
         },
       ],
       chart: {
@@ -610,7 +657,7 @@
         },
       },
       xaxis: {
-        categories: ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        categories: months,
         axisBorder: {
           show: false,
         },
@@ -629,8 +676,8 @@
         labels: {
           show: false,
         },
-        min: 10,
-        max: 50,
+        min: 50,
+        max: 303518,
         tickAmount: 4,
       },
     };

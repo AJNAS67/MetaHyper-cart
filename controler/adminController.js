@@ -6,6 +6,7 @@ const adminData = require("../model/adminModel");
 const orderModule = require("../model/orderModule");
 const productModel = require("../model/product");
 const moment = require("moment");
+const { pieChartDetails } = require("../middleware/pieChart");
 
 // const AdminModel = require("../model/AdminModel");
 
@@ -78,7 +79,7 @@ module.exports = {
           $match: {
             createdAt: {
               $gte: new Date(
-                new Date(year, month, currentDate).setHours(00, 00, 00)
+                new Date(year, month, today).setHours(00, 00, 00)
               ),
             },
           },
@@ -90,6 +91,7 @@ module.exports = {
           },
         },
       ]);
+      console.log(TodaySalesT,'TodaySalesTTodaySalesT');
 
       const weaklySalesT = await orderModule.aggregate([
         {
@@ -196,27 +198,25 @@ module.exports = {
         }
       });
 
-
-
       let MenTotalAmount = MenCount.reduce(
-        (acc, cur) => acc + cur.quantity*cur.price,
+        (acc, cur) => acc + cur.quantity * cur.price,
         0
       );
       let WomenTotalAmount = MenCount.reduce(
-        (acc, cur) => acc + cur.quantity*cur.price,
+        (acc, cur) => acc + cur.quantity * cur.price,
         0
       );
       let KidsTotalAmount = MenCount.reduce(
-        (acc, cur) => acc + cur.quantity*cur.price,
+        (acc, cur) => acc + cur.quantity * cur.price,
         0
       );
       let CosmeticsTotalAmount = MenCount.reduce(
-        (acc, cur) => acc + cur.quantity*cur.price,
+        (acc, cur) => acc + cur.quantity * cur.price,
         0
       );
 
       let MenTotalPrdPrice = MenCount.reduce(
-        (acc, cur) => acc + cur.quantity*cur.price,
+        (acc, cur) => acc + cur.quantity * cur.price,
         0
       );
 
@@ -240,6 +240,12 @@ module.exports = {
         (acc, cur) => acc + cur.quantity,
         0
       );
+      let TotalProdAvailable =
+        MenTotalProdAvailable +
+        KidsTotalProdAvailable +
+        AccessoriesTotalProdAvailable +
+        CosmeticsTotalProdAvailable +
+        WomenCountTotalProdAvailable;
 
       let weaklySales;
       let TodaySales;
@@ -255,6 +261,7 @@ module.exports = {
       } else {
         TodaySales = TodaySalesT[0].total;
       }
+      console.log(TodaySales,'TodaySales');
       if (monthlySalesT == "") {
         monthlySales = 0;
       } else {
@@ -267,6 +274,8 @@ module.exports = {
       var KidsCount = KidsCount.length;
       var MenCount = MenCount.length;
       var CosmeticsCount = CosmeticsCount.length;
+      let test = [1, 2, 3, 4];
+      const allData = await pieChartDetails();
 
       res.render("admin/adminHome", {
         TodaySales,
@@ -290,7 +299,10 @@ module.exports = {
         MenTotalAmount,
         WomenTotalAmount,
         KidsTotalAmount,
-        CosmeticsTotalAmount
+        CosmeticsTotalAmount,
+        test,
+        allData,
+        TotalProdAvailable
       });
     } else {
       res.redirect("/admin");
@@ -515,29 +527,27 @@ module.exports = {
         }
       });
 
-
       let MenTotalAmount = MenCount.reduce(
-        (acc, cur) => acc + cur.quantity*cur.price,
+        (acc, cur) => acc + cur.quantity * cur.price,
         0
       );
       let WomenTotalAmount = MenCount.reduce(
-        (acc, cur) => acc + cur.quantity*cur.price,
+        (acc, cur) => acc + cur.quantity * cur.price,
         0
       );
       let KidsTotalAmount = MenCount.reduce(
-        (acc, cur) => acc + cur.quantity*cur.price,
+        (acc, cur) => acc + cur.quantity * cur.price,
         0
       );
       let CosmeticsTotalAmount = MenCount.reduce(
-        (acc, cur) => acc + cur.quantity*cur.price,
+        (acc, cur) => acc + cur.quantity * cur.price,
         0
       );
 
       let MenTotalPrdPrice = MenCount.reduce(
-        (acc, cur) => acc + cur.quantity*cur.price,
+        (acc, cur) => acc + cur.quantity * cur.price,
         0
       );
-
 
       let MenTotalProdAvailable = MenCount.reduce(
         (acc, cur) => acc + cur.quantity,
@@ -560,10 +570,7 @@ module.exports = {
         0
       );
 
-      let MenTotalSales = MenCount.reduce(
-        (acc, cur) => acc + cur.quantity,
-        0
-      );
+      let MenTotalSales = MenCount.reduce((acc, cur) => acc + cur.quantity, 0);
 
       let weaklySales;
       let TodaySales;
@@ -599,6 +606,14 @@ module.exports = {
       var KidsCount = KidsCount.length;
       var MenCount = MenCount.length;
       var CosmeticsCount = CosmeticsCount.length;
+      let test = [1, 2, 3, 4];
+      const allData = await pieChartDetails();
+      let TotalProdAvailable =
+      MenTotalProdAvailable +
+      KidsTotalProdAvailable +
+      AccessoriesTotalProdAvailable +
+      CosmeticsTotalProdAvailable +
+      WomenCountTotalProdAvailable;
 
       res.render("admin/adminHome", {
         TodaySales,
@@ -623,7 +638,10 @@ module.exports = {
         MenTotalAmount,
         WomenTotalAmount,
         KidsTotalAmount,
-        CosmeticsTotalAmount
+        CosmeticsTotalAmount,
+        test,
+        allData,
+        TotalProdAvailable
       });
     }
   },
@@ -669,7 +687,7 @@ module.exports = {
 
       console.log(today, "today");
       orders = await orderModule.find({
-        orderStatus: "Placed",
+        orderStatus: "Delivered",
         createdAt: {
           $gte: today.toDate(),
           $lte: moment(today).endOf("day").toDate(),
@@ -680,7 +698,7 @@ module.exports = {
     } else if (sort.no == 2) {
       const month = moment().startOf("month");
       orders = await orderModule.find({
-        orderStatus: "Placed",
+        orderStatus: "Delivered",
         createdAt: {
           $gte: month.toDate(),
           $lte: moment(month).endOf("month").toDate(),
@@ -691,7 +709,7 @@ module.exports = {
     } else if (sort.no == 3) {
       const year = moment().startOf("year");
       orders = await orderModule.find({
-        orderStatus: "Placed",
+        orderStatus: "Delivered",
         createdAt: {
           $gte: year.toDate(),
           $lte: moment(year).endOf("year").toDate(),
