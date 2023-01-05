@@ -3,9 +3,9 @@ const cartModel = require("../model/cart");
 const orderModel = require("../model/orderModule");
 const productModel = require("../model/product");
 const { default: mongoose } = require("mongoose");
-
 const Razorpay = require("razorpay");
 const userHelpers = require("../helpers/user-helper");
+const { cartAndWishlstNum } = require("../middleware/cart-wishlist-number");
 
 var instance = new Razorpay({
   key_id: process.env.YOUR_KEY_ID,
@@ -20,7 +20,10 @@ module.exports = {
     if (req.session.userLogin) {
       try {
         let user = req.session.user;
+        let userId = req.session.userId;
+        const cartAndWishlist = await cartAndWishlstNum(userId);
         let result = await orderModel
+
           .find({ userId: req.session.userId })
           .sort({ createdAt: -1 });
         res.render("user/view-orders", {
@@ -28,6 +31,7 @@ module.exports = {
           user,
           session: req.session,
           Orders: result,
+          cartAndWishlist,
         });
       } catch (err) {
         res.use((req, res) => {
@@ -143,7 +147,6 @@ module.exports = {
         );
       });
     } else {
-
       const walletBlance = user.useWallet;
       if (walletBlance == 0) {
         res.json({ noBalane: true });
@@ -258,7 +261,6 @@ module.exports = {
       .veryfiyPayment(orderdata)
       .then(async (rs) => {
         if (orderdata.userOrderData.paymentMethod == "Wallet") {
-        
           let walletAmount = await userModule.findOneAndUpdate(
             { _id: req.session.userId },
             { $inc: { useWallet: -walletBalance } }
@@ -274,7 +276,7 @@ module.exports = {
           // cart remove
           await cartModel.findOneAndRemove({ userId: req.session.userId });
         }
-        
+
         res.json({ status: true });
       })
       .catch(async (err) => {
@@ -303,19 +305,20 @@ module.exports = {
   },
   postOderSuccess: async (req, res) => {
     try {
+      let userId = req.session.userId;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
       let user = req.session.user;
       req.session.orderId = req.query.id;
       let result = await orderModel
         .findById(req.query.id)
         .populate("products")
         .populate("deliveryAddress");
-      // result.products.map(result.products)
-
       res.render("user/orderSummery", {
         login: true,
         id: result,
         session: req.session,
         user,
+        cartAndWishlist
       });
     } catch (error) {
       res.status(429).render("admin/error-429");
@@ -323,10 +326,12 @@ module.exports = {
   },
   getTracking: async (req, res) => {
     try {
+      let userId = req.session.userId;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
       let user = req.session.user;
       let orderId = req.query.id;
       let order = await orderModel.findById({ _id: orderId });
-      res.render("user/orderTracking", { login: true, user, order });
+      res.render("user/orderTracking", { login: true, user, order,cartAndWishlist });
     } catch (error) {}
   },
   getCancelOrder: async (req, res) => {

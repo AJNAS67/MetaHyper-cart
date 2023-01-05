@@ -1,13 +1,17 @@
 const cartModel = require("../model/cart");
 const productModel = require("../model/product");
 const wishlistModel = require("../model/wishlistMode");
+const { cartAndWishlstNum } = require("../middleware/cart-wishlist-number");
+
 
 module.exports = {
   wishlist: async (req, res) => {
     const user = req.session.user;
 
     try {
+
       let userId = req.session.userId;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
       const wishView = await wishlistModel
         .findOne({ userId })
         .populate("myWishlist.ProductId")
@@ -24,6 +28,7 @@ module.exports = {
         user,
         wishNum,
         wishProducts: wishView,
+        cartAndWishlist
       });
     } catch (error) {
       console.log(error.message);

@@ -1,20 +1,7 @@
 const flash = require("connect-flash");
+const { cartAndWishlstNum } = require("../middleware/cart-wishlist-number");
 
-// module.exports = {
-//     ensureAuthenticated: function(req, res, next) {
-//       if (req.isAuthenticated()) {
-//         return next();
-//       }
-//       req.flash('error_msg', 'Please log in to view that resource');
-//       res.redirect('/users/login');
-//     },
-//     forwardAuthenticated: function(req, res, next) {
-//       if (!req.isAuthenticated()) {
-//         return next();
-//       }
-//       res.redirect('/dashboard');
-//     }
-//   };
+
 module.exports = {
   sessionchek: (req, res, next) => {
     if (req.session.userLogin) {
@@ -24,13 +11,19 @@ module.exports = {
       res.render("user/womens", { login: false });
     }
   },
-  sessionchekDirectLogin: (req, res, next) => {
+  sessionchekDirectLogin: async (req, res, next) => {
     if (req.session.userLogin) {
       next();
     } else {
       const loginError = req.flash("user");
+      let userId = req.session.userId;
+      const cartAndWishlist = await cartAndWishlstNum(userId);
 
-      res.render("user/userlogin", { login: false, loginError });
+      res.render("user/userlogin", {
+        login: false,
+        loginError,
+        cartAndWishlist,
+      });
     }
   },
 };

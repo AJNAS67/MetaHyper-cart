@@ -9,7 +9,6 @@
     <title>MeatHyper cart</title>
     <link rel="icon" type="image/x-icon" href="../assets/img/favicon/fav.png" />
 
-
     <!-- Google Font -->
     <link
       href="https://fonts.googleapis.com/css2?family=Cookie&display=swap"
@@ -89,7 +88,7 @@
                 <li><a href="/womens">Women’s</a></li>
                 <li><a href="/mens">Men’s</a></li>
                 <li><a href="/kids">Kid’s</a></li>
-                
+
                 <li><a href="/contact">Contact</a></li>
               </ul>
             </nav>
@@ -112,13 +111,21 @@
                 <li>
                   <a href="/wishlist"
                     ><span class="icon_heart_alt"></span>
-                    <div class="tip"><span class="badge badge">4</span></div>
+                    <div class="tip">
+                      <span class="badge badge"
+                        ><%=cartAndWishlist.wishlistNumber%></span
+                      >
+                    </div>
                   </a>
                 </li>
                 <li>
                   <a href="/shoping-cart"
                     ><span class="icon_bag_alt"></span>
-                    <div class="tip"><span class="badge badge">4</span></div>
+                    <div class="tip">
+                      <span class="badge badge"
+                        ><%=cartAndWishlist.cartNumber%></span
+                      >
+                    </div>
                   </a>
                 </li>
               </ul>

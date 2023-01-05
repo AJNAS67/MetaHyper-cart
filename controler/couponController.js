@@ -2,6 +2,8 @@ const couponModule = require("../model/couponModal");
 const moment = require("moment");
 const User = require("../model/userModel");
 const cartModel = require("../model/cart");
+const { cartAndWishlstNum } = require("../middleware/cart-wishlist-number");
+
 module.exports = {
   adminCoupon: async (req, res) => {
     try {
@@ -176,6 +178,8 @@ module.exports = {
   },
   myCoupons:async(req,res)=>{
     try {
+      let userId = req.session.userId;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
       let user=req.session.user;
       const coupons=await couponModule.find()
       const formattedOrders = coupons.map((el) => {
@@ -183,10 +187,11 @@ module.exports = {
         newEl.expiryDate = moment(newEl.expiryDate).format("DD MMMM , YYYY");
         return newEl;
       });
-      res.render('user/my-coupon',{user,login:true,coupons:formattedOrders})
+      res.render('user/my-coupon',{user,login:true,coupons:formattedOrders,cartAndWishlist})
 
       
     } catch (error) {
+      res.redirect('/')
       
     }
    

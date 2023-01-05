@@ -4,6 +4,7 @@ const { login } = require("./userController");
 const express = require("express");
 const userHelpers = require("../helpers/user-helper");
 const User = require("../model/userModel");
+const { cartAndWishlstNum } = require("../middleware/cart-wishlist-number");
 
 const app = express();
 
@@ -74,9 +75,12 @@ module.exports = {
 
   shopingCart: async (req, res) => {
     const user = req.session.user;
+    let userId = req.session.userId;
+
+    const cartAndWishlist = await cartAndWishlstNum(userId);
+    console.log(cartAndWishlist,'cartAndWishlistcartAndWishlistcartAndWishlistcartAndWishlistcartAndWishlistcartAndWishlist');
 
     try {
-      let userId = req.session.userId;
       const userDetails = await User.findById(userId);
       console.log(userDetails.applyCoupon);
       let applyCoupon = userDetails.applyCoupon;
@@ -102,6 +106,7 @@ module.exports = {
           userDetails,
           applyCoupon,
           usedCoupon,
+          cartAndWishlist:cartAndWishlstNum,
         });
       } else {
         res.render("user/shoping-cart", {
@@ -112,10 +117,12 @@ module.exports = {
           userDetails,
           applyCoupon,
           usedCoupon: null,
+          cartAndWishlist:cartAndWishlstNum,
         });
       }
     } catch (error) {
       console.log(error.message);
+      res.redirect("/");
     }
   },
 

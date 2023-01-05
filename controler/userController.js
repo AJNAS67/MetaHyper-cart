@@ -2,18 +2,8 @@ const User = require("../model/userModel");
 const productModel = require("../model/product");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
-const addressModel = require("../model/addressModel");
 const cartModel = require("../model/cart");
-const addressModule = require("../model/addressModel");
-const categoryModel = require("../model/category");
-const orderModule = require("../model/orderModule");
-const moment = require("moment");
-const { pieChartDetails } = require("../middleware/pieChart");
-const { findCartNumber } = require("../middleware/cart-number");
-
-const { findWishistNumber } = require("../middleware/wishlist-number");
-const wishlistModel = require("../model/wishlistMode");
-
+const { cartAndWishlstNum } = require("../middleware/cart-wishlist-number");
 const flash = require("connect-flash");
 function otpCreation() {
   var otp = Math.random();
@@ -202,8 +192,7 @@ module.exports = {
 
   homeView: async (req, res) => {
     let userId = req.session.userId;
-    const cartNum = await findCartNumber(userId);
-    const wishlistNum = await findWishistNumber(userId);
+    const cartAndWishlist = await cartAndWishlstNum(userId);
 
     let products = await productModel.find().populate("category");
 
@@ -216,9 +205,7 @@ module.exports = {
         user: req.session.user,
         products,
         applycoupen,
-        cartNum,
-        wishlistNum
-        
+        cartAndWishlist,
       });
     } else {
       res.render("user/home", {
@@ -227,8 +214,7 @@ module.exports = {
         applycoupen: false,
         aj: true,
         user: null,
-        cartNum,
-        wishlistNum
+        cartAndWishlist,
       });
     }
   },
@@ -260,50 +246,103 @@ module.exports = {
     req.session.userLogin = true;
     res.redirect("/");
   },
-  optPage: (req, res) => {
+  optPage: async (req, res) => {
     const otpError = req.flash("message");
+    let userId = req.session.userId;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
 
-    res.render("user/otpPage", { login: false, otpError });
+    res.render("user/otpPage", {
+      login: false,
+      otpError,
+      cartNum: 0,
+      wishlistNum: 0,
+      cartAndWishlist,
+    });
   },
 
-  shop: (req, res) => {
+  shop: async (req, res) => {
+    let userId = req.session.userId;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
+
     if (req.session.userLogin) {
-      res.render("user/shop", { login: true, user: req.session.user });
+      res.render("user/shop", {
+        login: true,
+        user: req.session.user,
+        cartAndWishlist,
+      });
     } else {
-      res.render("user/shop", { login: false });
+      res.render("user/shop", { login: false, cartAndWishlist });
     }
   },
-  userlogin: (req, res) => {
+  userlogin: async (req, res) => {
     if (!req.session.userLogin) {
+      let userId = req.session.userId;
+      const cartAndWishlist = await cartAndWishlstNum(userId);
+
       const loginError = req.flash("user");
-      res.render("user/userlogin", { login: false, loginError });
+      res.render("user/userlogin", {
+        login: false,
+        loginError,
+        cartAndWishlist,
+      });
     } else {
       res.redirect("/");
     }
   },
 
-  userSignup: (req, res) => {
+  userSignup: async (req, res) => {
     const userExistError = req.flash("user");
 
-    res.render("user/usersignup", { login: false, userExistError });
+    let userId = req.session.userId;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
+
+    res.render("user/usersignup", {
+      login: false,
+      userExistError,
+
+      cartNum: 0,
+      wishlistNum: 0,
+      cartAndWishlist,
+    });
   },
-  shopView: (req, res) => {
+  shopView: async (req, res) => {
+    let user = req.session.user;
+    let userId = req.session.userId;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
+
     if (req.session.userLogin) {
-      res.render("user/shopView", { login: true, user: req.session.user });
+      res.render("user/shopView", {
+        login: true,
+        user,
+        cartAndWishlist,
+      });
     } else {
-      res.render("user/shopView", { login: false });
+      res.render("user/shopView", {
+        login: false,
+        cartNum,
+        wishlistNum,
+        cartAndWishlist,
+      });
     }
   },
 
-  productDetails: (req, res) => {
+  productDetails: async (req, res) => {
     try {
       let user = req.session.user;
+      let userId = req.session.userId;
+      const cartAndWishlist = await cartAndWishlstNum(userId);
+
       if (user) {
-        res.render("user/productDetails", { login: true, user });
+        res.render("user/productDetails", {
+          login: true,
+          user,
+          cartAndWishlist,
+        });
       } else {
         res.render("user/productDetails", {
           login: false,
           user: null,
+          cartAndWishlist,
         });
       }
     } catch (error) {
@@ -316,6 +355,8 @@ module.exports = {
     try {
       let user = req.session.user;
       let userId = req.session.userId;
+      const cartAndWishlist = await cartAndWishlstNum(userId);
+
       const userDetail = await User.findById(userId);
 
       let cartDetail = await cartModel.findOne({ userId });
@@ -325,6 +366,7 @@ module.exports = {
         user,
         userDetail,
         cartDetail,
+        cartAndWishlist,
       });
     } catch (error) {
       res.status(429).render("admin/error-429");
@@ -332,6 +374,9 @@ module.exports = {
   },
   mens: async (req, res) => {
     try {
+      let userId = req.session.userId;
+      const cartAndWishlist = await cartAndWishlstNum(userId);
+
       var query = await productModel.find().populate({
         path: "category",
         match: {
@@ -350,9 +395,15 @@ module.exports = {
           login: true,
           user: req.session.user,
           products,
+          cartAndWishlist,
         });
       } else {
-        res.render("user/mens", { login: false, products, user: null });
+        res.render("user/mens", {
+          login: false,
+          products,
+          user: null,
+          cartAndWishlist,
+        });
       }
     } catch (error) {
       res.redirect("/");
@@ -360,6 +411,9 @@ module.exports = {
   },
   womens: async (req, res) => {
     try {
+      let userId = req.session.userId;
+      const cartAndWishlist = await cartAndWishlstNum(userId);
+
       var query = await productModel.find().populate({
         path: "category",
         match: {
@@ -377,9 +431,15 @@ module.exports = {
           login: true,
           user: req.session.user,
           products,
+          cartAndWishlist,
         });
       } else {
-        res.render("user/womens", { login: false, products, user: null });
+        res.render("user/womens", {
+          login: false,
+          products,
+          user: null,
+          cartAndWishlist,
+        });
       }
     } catch (error) {
       res.redirect("/");
@@ -387,6 +447,9 @@ module.exports = {
   },
   kids: async (req, res) => {
     try {
+      let userId = req.session.userId;
+      const cartAndWishlist = await cartAndWishlstNum(userId);
+
       var query = await productModel.find().populate({
         path: "category",
         match: {
@@ -405,9 +468,15 @@ module.exports = {
           login: true,
           user: req.session.user,
           products,
+          cartAndWishlist,
         });
       } else {
-        res.render("user/kids", { login: false, products, user: null });
+        res.render("user/kids", {
+          login: false,
+          products,
+          user: null,
+          cartAndWishlist,
+        });
       }
     } catch (error) {
       res.redirect("/");
@@ -415,6 +484,8 @@ module.exports = {
   },
   cosmetics: async (req, res) => {
     try {
+      let userId = req.session.userId;
+      const cartAndWishlist = await cartAndWishlstNum(userId);
       var query = await productModel.find().populate({
         path: "category",
         match: {
@@ -433,9 +504,15 @@ module.exports = {
           login: true,
           user: req.session.user,
           products,
+          cartAndWishlist,
         });
       } else {
-        res.render("user/cosmetics", { login: false, products, user: null });
+        res.render("user/cosmetics", {
+          login: false,
+          products,
+          user: null,
+          cartAndWishlist,
+        });
       }
     } catch (error) {
       res.redirect("/");
@@ -443,6 +520,8 @@ module.exports = {
   },
   Accessories: async (req, res) => {
     try {
+      let userId = req.session.userId;
+      const cartAndWishlist = await cartAndWishlstNum(userId);
       var query = await productModel.find().populate({
         path: "category",
         match: {
@@ -461,26 +540,44 @@ module.exports = {
           login: true,
           user: req.session.user,
           products,
+          cartAndWishlist,
         });
       } else {
-        res.render("user/accessories", { login: false, products, user: null });
+        res.render("user/accessories", {
+          login: false,
+          products,
+          user: null,
+          cartAndWishlist,
+        });
       }
     } catch (error) {
       res.redirect("/");
     }
   },
-  contact: (req, res) => {
+  contact: async (req, res) => {
+    let userId = req.session.userId;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
     if (req.session.userLogin) {
-      res.render("user/contact", { login: true, user: req.session.user });
+      res.render("user/contact", {
+        login: true,
+        user: req.session.user,
+        cartAndWishlist,
+      });
     } else {
-      res.render("user/contact", { login: false });
+      res.render("user/contact", { login: false, cartAndWishlist });
     }
   },
 
-  forgetPassword: (req, res) => {
+  forgetPassword: async (req, res) => {
     const usernotfindError = req.flash("message");
+    let userId = req.session.userId;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
 
-    res.render("user/forgot-password", { login: false, usernotfindError });
+    res.render("user/forgot-password", {
+      login: false,
+      usernotfindError,
+      cartAndWishlist,
+    });
   },
 
   otpForForget: async (req, res) => {
@@ -516,10 +613,15 @@ module.exports = {
       res.redirect("/forgetPassword");
     }
   },
-  getResetPassword: (req, res) => {
+  getResetPassword: async (req, res) => {
     const userInvalid = req.flash("message");
-
-    res.render("user/reset-password", { login: false, userInvalid });
+    let userId = req.session.userId;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
+    res.render("user/reset-password", {
+      login: false,
+      userInvalid,
+      cartAndWishlist,
+    });
   },
   resetPassword: async (req, res) => {
     let password1 = req.body.password;
@@ -548,6 +650,7 @@ module.exports = {
     Email = req.body.email;
     Password = req.body.password;
     Confirm = req.body.confirm;
+
     // const { user_name, email, password, confirm } = req.body;
     const user = await User.findOne({ email: Email });
     // const user = false;
@@ -629,8 +732,10 @@ module.exports = {
     console.log(req.body, "body");
     // res.render("user/userlogin");
   },
-  resentOpt: (req, res) => {
+  resentOpt: async (req, res) => {
     otp = otpCreation();
+    let userId = req.session.userId;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
 
     var mailOptions = {
       to: Email,
@@ -649,7 +754,7 @@ module.exports = {
       console.log("Message sent: %s", info.messageId);
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 
-      res.render("user/otpPage", { login: false });
+      res.render("user/otpPage", { login: false, cartAndWishlist });
     });
   },
 
@@ -732,11 +837,18 @@ module.exports = {
   profile: async (req, res) => {
     try {
       let userId = req.session.userId;
+      const cartAndWishlist = await cartAndWishlstNum(userId);
+
       let user = req.session.user;
 
       const userDetail = await User.findById(userId);
 
-      res.render("user/profile", { login: true, userDetail, user });
+      res.render("user/profile", {
+        login: true,
+        userDetail,
+        user,
+        cartAndWishlist,
+      });
 
       //   addressModel.find({ userId: req.session.userId }).then((result) => {
       //     res.render("user/profile", {
@@ -758,6 +870,8 @@ module.exports = {
         .findOne({ _id: prodId })
         .populate("category");
       let imageNum = product.image.length;
+      let userId = req.session.userId;
+      const cartAndWishlist = await cartAndWishlstNum(userId);
 
       if (user) {
         res.render("user/productDetails", {
@@ -765,6 +879,7 @@ module.exports = {
           user,
           product,
           imageNum,
+          cartAndWishlist,
         });
       } else {
         res.render("user/productDetails", {
@@ -772,14 +887,22 @@ module.exports = {
           user: null,
           product,
           imageNum,
+          cartAndWishlist,
         });
       }
     } catch (error) {}
   },
-  addAddress: (req, res) => {
+  addAddress: async (req, res) => {
     try {
+      let userId = req.session.userId;
+      const cartAndWishlist = await cartAndWishlstNum(userId);
       let user = req.session.user;
-      res.render("user/addAdress", { login: true, user, session: req.session });
+      res.render("user/addAdress", {
+        login: true,
+        user,
+        session: req.session,
+        cartAndWishlist,
+      });
     } catch (error) {
       res.status(429).render("admin/error-429");
     }
@@ -808,26 +931,6 @@ module.exports = {
     } catch (error) {
       console.log(error.message);
     }
-
-    // try {
-    //   const address = await User({
-    //     firstName: req.body.firstName,
-    //     lastName: req.body.lastName,
-    //     mobNumber: req.body.phone,
-    //     email: req.body.email,
-    //     appartment: req.body.appartment,
-    //     homeaddress: req.body.address,
-    //     city: req.body.city,
-    //     state: req.body.state,
-    //     country: req.body.country,
-    //     zipcode: req.body.zipcode,
-    //     userId: req.session.userId,
-    //   });
-    //   address.save().then((result) => {});
-    //   res.redirect("/userProfile");
-    // } catch (error) {
-    //   res.status(429).render("admin/error-429");
-    // }
   },
   editprofile: async (req, res) => {
     let addressId = req.params.id;
