@@ -7,6 +7,7 @@ const orderModule = require("../model/orderModule");
 const productModel = require("../model/product");
 const moment = require("moment");
 const { pieChartDetails } = require("../middleware/pieChart");
+const userModel = require("../model/userModel");
 
 // const AdminModel = require("../model/AdminModel");
 
@@ -21,20 +22,25 @@ module.exports = {
   },
   adminHome: async (req, res) => {
     if (req.session.adminLogin) {
+      const user = await userModel.find();
+      let numberOfUser;
+      if (user) {
+        numberOfUser = user.length;
+      } else {
+        numberOfUser = 0;
+      }
+
       let currentDate = new Date();
       let today = currentDate.getDate();
       let startdate;
+
       if (today <= 7) {
         startdate = 1;
       } else {
         startdate = today - 7;
       }
-      console.log(today, "today");
-      console.log(startdate, "start dat");
       let month = currentDate.getMonth();
-      console.log(month, "month");
       let year = currentDate.getFullYear();
-      console.log(year, "year");
 
       let previousYear = year - 1;
       const previousYearSales = await orderModule.aggregate([
@@ -105,7 +111,6 @@ module.exports = {
           },
         },
       ]);
-      console.log(TodaySalesT, "TodaySalesTTodaySalesT");
 
       const weaklySalesT = await orderModule.aggregate([
         {
@@ -124,7 +129,6 @@ module.exports = {
           },
         },
       ]);
-      console.log(weaklySalesT, "weaklySalesTweaklySalesT");
       const monthlySalesT = await orderModule.aggregate([
         {
           $match: {
@@ -154,7 +158,6 @@ module.exports = {
           WomenCount.push(elements);
         }
       });
-      console.log(WomenCount.length, "WomenCount");
 
       var prodMen = await productModel.find().populate({
         path: "category",
@@ -168,8 +171,6 @@ module.exports = {
           MenCount.push(elements);
         }
       });
-
-      console.log(MenCount.length, "MenCount");
 
       var prodKids = await productModel.find().populate({
         path: "category",
@@ -269,13 +270,11 @@ module.exports = {
       } else {
         weaklySales = weaklySalesT[0].total;
       }
-      console.log(weaklySales, "weaklySalesweaklySalesweaklySales");
       if (TodaySalesT == "") {
         TodaySales = 0;
       } else {
         TodaySales = TodaySalesT[0].total;
       }
-      console.log(TodaySales, "TodaySales");
       if (monthlySalesT == "") {
         monthlySales = 0;
       } else {
@@ -316,6 +315,7 @@ module.exports = {
         test,
         allData,
         TotalProdAvailable,
+        numberOfUser,
       });
     } else {
       res.redirect("/admin");
@@ -370,6 +370,13 @@ module.exports = {
   },
   Home: async (req, res) => {
     if (req.session.adminLogin) {
+      const user = await userModel.find();
+      let numberOfUser;
+      if (user) {
+        numberOfUser = user.length;
+      } else {
+        numberOfUser = 0;
+      }
       let currentDate = new Date();
       let today = currentDate.getDate();
       let startdate;
@@ -672,6 +679,7 @@ module.exports = {
         test,
         allData,
         TotalProdAvailable,
+        numberOfUser,
       });
     }
   },

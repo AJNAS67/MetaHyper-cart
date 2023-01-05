@@ -52,30 +52,6 @@
                       class="rounded"
                     />
                   </div>
-                  <div class="dropdown">
-                    <button
-                      class="btn p-0"
-                      type="button"
-                      id="cardOpt3"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i class="bx bx-dots-vertical-rounded"></i>
-                    </button>
-                    <div
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="cardOpt3"
-                      
-                    >
-                      <a class="dropdown-item" href="javascript:void(0);"
-                        >View More</a
-                      >
-                      <a class="dropdown-item" href="javascript:void(0);"
-                        >Delete</a
-                      >
-                    </div>
-                  </div>
                 </div>
                 <span class="fw-semibold d-block mb-1">Weakly Sales</span>
                 <h3 class="card-title mb-2">₹<%=weaklySales%></h3>
@@ -97,29 +73,6 @@
                       alt="Credit Card"
                       class="rounded"
                     />
-                  </div>
-                  <div class="dropdown">
-                    <button
-                      class="btn p-0"
-                      type="button"
-                      id="cardOpt6"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i class="bx bx-dots-vertical-rounded"></i>
-                    </button>
-                    <div
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="cardOpt6"
-                    >
-                      <a class="dropdown-item" href="javascript:void(0);"
-                        >View More</a
-                      >
-                      <a class="dropdown-item" href="javascript:void(0);"
-                        >Delete</a
-                      >
-                    </div>
                   </div>
                 </div>
                 <span>Monthly Sales</span>
@@ -154,14 +107,10 @@
                     >
                       <%=year%>
                     </button>
-                    
                   </div>
                 </div>
               </div>
               <div id="growthChart"></div>
-              <!-- <div class="text-center fw-semibold pt-3 mb-2">
-                <%=salesGrouth%>  % Company Growth
-              </div> -->
 
               <div
                 class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between"
@@ -209,29 +158,6 @@
                       class="rounded"
                     />
                   </div>
-                  <div class="dropdown">
-                    <button
-                      class="btn p-0"
-                      type="button"
-                      id="cardOpt4"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i class="bx bx-dots-vertical-rounded"></i>
-                    </button>
-                    <div
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="cardOpt4"
-                    >
-                      <a class="dropdown-item" href="javascript:void(0);"
-                        >View More</a
-                      >
-                      <a class="dropdown-item" href="javascript:void(0);"
-                        >Delete</a
-                      >
-                    </div>
-                  </div>
                 </div>
                 <span class="d-block mb-1">Todays Sales</span>
                 <h3 class="card-title text-nowrap mb-2">₹<%=TodaySales%></h3>
@@ -254,29 +180,9 @@
                       class="rounded"
                     />
                   </div>
-                  <div class="dropdown">
-                    <button
-                      class="btn p-0"
-                      type="button"
-                      id="cardOpt1"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i class="bx bx-dots-vertical-rounded"></i>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="cardOpt1">
-                      <a class="dropdown-item" href="javascript:void(0);"
-                        >View More</a
-                      >
-                      <a class="dropdown-item" href="javascript:void(0);"
-                        >Delete</a
-                      >
-                    </div>
-                  </div>
                 </div>
-                <span class="fw-semibold d-block mb-1">Transactions</span>
-                <h3 class="card-title mb-2">₹14,857</h3>
+                <span class="fw-semibold d-block mb-1">Total Client</span>
+                <h3 class="card-title mb-2"><%=numberOfUser%></h3>
                 <small class="text-success fw-semibold"
                   ><i class="bx bx-up-arrow-alt"></i> +28.14%</small
                 >
@@ -302,7 +208,8 @@
                     </div>
                     <div class="mt-sm-auto">
                       <small class="text-success text-nowrap fw-semibold"
-                        ><i class="bx bx-chevron-up"></i> <%=salesGrouth%>%</small
+                        ><i class="bx bx-chevron-up"></i>
+                        <%=salesGrouth%>%</small
                       >
                       <h3 class="mb-0">₹<%=cys%></h3>
                     </div>
@@ -372,7 +279,9 @@
                     <small class="text-muted">T-shirt, Jeans, Shoes</small>
                   </div>
                   <div class="user-progress">
-                    <small class="fw-semibold"><%=MenTotalProdAvailable%></small>
+                    <small class="fw-semibold"
+                      ><%=MenTotalProdAvailable%></small
+                    >
                   </div>
                 </div>
               </li>
@@ -390,7 +299,9 @@
                     <small class="text-muted">T-shirt, Jeans, Shoes</small>
                   </div>
                   <div class="user-progress">
-                    <small class="fw-semibold"><%=WomenCountTotalProdAvailable%></small>
+                    <small class="fw-semibold"
+                      ><%=WomenCountTotalProdAvailable%></small
+                    >
                   </div>
                 </div>
               </li>
@@ -408,7 +319,9 @@
                     <small class="text-muted">T-shirt, Jeans, Shoes</small>
                   </div>
                   <div class="user-progress">
-                    <small class="fw-semibold"><%=KidsTotalProdAvailable%></small>
+                    <small class="fw-semibold"
+                      ><%=KidsTotalProdAvailable%></small
+                    >
                   </div>
                 </div>
               </li>
@@ -423,10 +336,14 @@
                 >
                   <div class="me-2">
                     <h6 class="mb-0">Cosmetis</h6>
-                    <small class="text-muted">T-shirt, Jeans, Shoes, Beaty Blender</small>
+                    <small class="text-muted"
+                      >T-shirt, Jeans, Shoes, Beaty Blender</small
+                    >
                   </div>
                   <div class="user-progress">
-                    <small class="fw-semibold"><%=CosmeticsTotalProdAvailable%></small>
+                    <small class="fw-semibold"
+                      ><%=CosmeticsTotalProdAvailable%></small
+                    >
                   </div>
                 </div>
               </li>
@@ -680,21 +597,31 @@
   <!-- / Content -->
   <p id="MenCount" value="<%=MenCount%>" hidden><%=MenCount%></p>
   <p id="WomenCount" value="<%=WomenCount%>" hidden><%=WomenCount%></p>
-  <p id="AccessoriesCount" value="<%=AccessoriesCount%>" hidden><%=AccessoriesCount%></p>
+  <p id="AccessoriesCount" value="<%=AccessoriesCount%>" hidden>
+    <%=AccessoriesCount%>
+  </p>
   <p id="KidsCount" value="<%=KidsCount%>" hidden><%=KidsCount%></p>
-  <p id="CosmeticsCount" value="<%=CosmeticsCount%>" hidden><%=CosmeticsCount%></p>
+  <p id="CosmeticsCount" value="<%=CosmeticsCount%>" hidden>
+    <%=CosmeticsCount%>
+  </p>
   <p id="salesGrouth" value="<%=salesGrouth%>" hidden><%=salesGrouth%></p>
-  <p id="wtpa" value="<%=WomenCountTotalProdAvailable%>" hidden><%=WomenCountTotalProdAvailable%></p>
-  <p id="ctpa" value="<%=CosmeticsTotalProdAvailable%>" hidden><%=CosmeticsTotalProdAvailable%></p>
-  <p id="atpa" value="<%=AccessoriesTotalProdAvailable%>" hidden><%=AccessoriesTotalProdAvailable%></p>
-  <p id="ktpa" value="<%=KidsTotalProdAvailable%>" hidden><%=KidsTotalProdAvailable%></p>
-  <p id="mtpa" value="<%=MenTotalProdAvailable%>" hidden><%=MenTotalProdAvailable%></p>
+  <p id="wtpa" value="<%=WomenCountTotalProdAvailable%>" hidden>
+    <%=WomenCountTotalProdAvailable%>
+  </p>
+  <p id="ctpa" value="<%=CosmeticsTotalProdAvailable%>" hidden>
+    <%=CosmeticsTotalProdAvailable%>
+  </p>
+  <p id="atpa" value="<%=AccessoriesTotalProdAvailable%>" hidden>
+    <%=AccessoriesTotalProdAvailable%>
+  </p>
+  <p id="ktpa" value="<%=KidsTotalProdAvailable%>" hidden>
+    <%=KidsTotalProdAvailable%>
+  </p>
+  <p id="mtpa" value="<%=MenTotalProdAvailable%>" hidden>
+    <%=MenTotalProdAvailable%>
+  </p>
   <p id="test" value="<%=test%>" hidden><%=test%></p>
   <p id="allData" value="<%=allData%>" hidden><%=allData%></p>
-
-
-
-
 
   <!-- Footer -->
   <footer class="content-footer footer bg-footer-theme">
