@@ -11,7 +11,6 @@ async function getFirstMonthOrders() {
     total += order.total;
     return total;
   }, 0);
-  console.log(totalSale, "totalSale11111111111111");
   return totalSale;
 }
 
