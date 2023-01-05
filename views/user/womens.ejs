@@ -308,7 +308,7 @@
                   <i class="fa fa-star"></i>
                   <i class="fa fa-star"></i>
                 </div>
-                <div class="product__price">$ <%=product.price%></div>
+                <div class="product__price">₹ <%=product.price%></div>
               </div>
             </div>
           </div>
@@ -341,63 +341,19 @@
 <!-- Shop Section End -->
 <script>
   function priceFilter() {
-    // var minPrice = document.getElementById("minamount").value;
-    // var maxPrice = document.getElementById("maxamount").value;
+   
 
     const minPrice = document
       .getElementById("minamount")
-      .value.split("$")
+      .value.split("₹")
       .join("");
     const maxPrice = document
       .getElementById("maxamount")
-      .value.split("$")
+      .value.split("₹")
       .join("");
     window.location = `/shop/category/?minPrice=${minPrice}&maxPrice=${maxPrice}`;
   }
 </script>
-<!-- <script>
-  $(document).ready(function () {
-    showAllItems(); //Display all items with no filter applied
-  });
-  $("#minamount").on("change mousemove", function () {
-    min_price = parseInt($("#minamount").val());
-    $("#min-price-txt").text("$" + min_price);
-    showItemsFiltered();
-  });
-  $("#maxamount").on("change mousemove", function () {
-    max_price = parseInt($("#maxamount").val());
-    $("#max-price-txt").text("$" + max_price);
-    showItemsFiltered();
-  });
 
-  function showAllItems() {
-    //Default grid to show all items on page load in
-    $("#display-items-div").empty();
-    for (let i = 0; i < products.length; i++) {
-      let item_content =
-        '<div class="col-12 col-md-4 text-center product-card" data-available-sizes="' +
-        category_items[i]["price"] +
-        "</p></div>";
-      $("#display-items-div").append(item_content);
-    }
-  }
-  function showItemsFiltered() {
-    //Default grid to show all items on page load in
-    $("#display-items-div").empty();
-    for (let i = 0; i < products.length; i++) {
-      //Go through the items but only show items that have size from show_sizes_array
-      if (
-        products[i]["price"] <= max_price &&
-        products[i]["price"] >= min_price
-      ) {
-        let item_content =
-          '<div class="col-12 col-md-4 text-center product-card" data-available-sizes="' +
-          category_items[i]["price"] +
-          "</p></div>";
-        $("#display-items-div").append(item_content); //Display in grid
-      }
-    }
-  }
-</script> -->
 
 <%- include('./partials/userFooter.ejs') %>

@@ -115,6 +115,7 @@
                       value="<%=p.quantity %>"
                       name="quantity"
                       id="sst<%=p._id %>"
+                      disabled
                     />
                     <button
                       onclick="var result = document.getElementById('sst<%= p._id %>');QuantityInc('<%= p._id %>'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
@@ -134,20 +135,7 @@
                   </div>
                 </td>
 
-                <!-- <td>
-                  <button
-                    class="cart-item-count mr-3"
-                    onclick="QuantityInc('<%=p._id%>')"
-                  >
-                    -</button
-                  ><span id="<%=p._id%>"><%=p.quantity%></span>
-                  <button
-                    class="cart-item-count mr-3"
-                    onclick="QuantityDec('<%=p._id%>')"
-                  >
-                    +
-                  </button>
-                </td> -->
+                
 
                 <td class="cart__total" id="totalPrice<%= p._id %>">
                   <%= p.quantity*p.price %>
@@ -206,12 +194,7 @@
             />
             <button type="submit" class="site-btn">Apply</button>
             <% } %>
-            <!-- <input
-              name="coupon"
-              type="text"
-              placeholder="Enter your coupon code"
-            />
-            <button type="submit" class="site-btn">Apply</button> -->
+           
           </form>
         </div>
       </div>
@@ -261,7 +244,7 @@
     <h5>Subtotal</h5>
   </td>
   <td>
-    <h5>$<span id="total"><%= cartProducts.total %></span></h5>
+    <h5>₹<span id="total"><%= cartProducts.total %></span></h5>
   </td>
 </tr>
 

@@ -1,7 +1,6 @@
 <%- include('./partials/admin-dash.ejs') %>
-<!-- Bootstrap Table with Header - Dark -->
-<div class="card">
-  <h5 class="card-header">Dark Table head</h5>
+<div class="card mt-4 m-3">
+  <h5 class="card-header">All users</h5>
   <div class="table-responsive text-nowrap">
     <table class="table">
       <thead class="table-dark">
@@ -12,7 +11,7 @@
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody class="table-border-bottom-0">
+      <tbody class="table-border-bottom-0"></tbody>
         <% users.forEach(function(user,i){ %>
 
         <tr>

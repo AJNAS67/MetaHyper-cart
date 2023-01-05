@@ -308,7 +308,7 @@
                   <i class="fa fa-star"></i>
                   <i class="fa fa-star"></i>
                 </div>
-                <div class="product__price">$ <%=product.price%></div>
+                <div class="product__price">₹ <%=product.price%></div>
               </div>
             </div>
           </div>
@@ -345,11 +345,11 @@ categoryAccessories
   function priceFilter() {
     const minPrice = document
       .getElementById("minamount")
-      .value.split("$")
+      .value.split("₹")
       .join("");
     const maxPrice = document
       .getElementById("maxamount")
-      .value.split("$")
+      .value.split("₹")
       .join("");
     window.location = `/shop/categoryAccessories/?minPrice=${minPrice}&maxPrice=${maxPrice}`;
   }

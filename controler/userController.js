@@ -9,6 +9,10 @@ const categoryModel = require("../model/category");
 const orderModule = require("../model/orderModule");
 const moment = require("moment");
 const { pieChartDetails } = require("../middleware/pieChart");
+const { findCartNumber } = require("../middleware/cart-number");
+
+const { findWishistNumber } = require("../middleware/wishlist-number");
+const wishlistModel = require("../model/wishlistMode");
 
 const flash = require("connect-flash");
 function otpCreation() {
@@ -198,14 +202,9 @@ module.exports = {
 
   homeView: async (req, res) => {
     let userId = req.session.userId;
+    const cartNum = await findCartNumber(userId);
+    const wishlistNum = await findWishistNumber(userId);
 
-    // const cartNum = cartView.products.length;
-    // console.log(
-    //   cartView,
-    //   "cartViewcartViewcartViewcartViewcartViewcartViewcartView"
-    // );
-
-    // let catogoey = await categoryModel.find();
     let products = await productModel.find().populate("category");
 
     if (req.session.userLogin) {
@@ -217,7 +216,9 @@ module.exports = {
         user: req.session.user,
         products,
         applycoupen,
-        // cartNum,
+        cartNum,
+        wishlistNum
+        
       });
     } else {
       res.render("user/home", {
@@ -226,6 +227,8 @@ module.exports = {
         applycoupen: false,
         aj: true,
         user: null,
+        cartNum,
+        wishlistNum
       });
     }
   },
@@ -432,7 +435,7 @@ module.exports = {
           products,
         });
       } else {
-        res.render("user/cosmetics", { login: false, productsm, user: null });
+        res.render("user/cosmetics", { login: false, products, user: null });
       }
     } catch (error) {
       res.redirect("/");
@@ -751,7 +754,9 @@ module.exports = {
     try {
       let user = req.session.user;
       let prodId = req.params.Id;
-      let product = await productModel.findOne({ _id: prodId }).populate("category")
+      let product = await productModel
+        .findOne({ _id: prodId })
+        .populate("category");
       let imageNum = product.image.length;
 
       if (user) {
