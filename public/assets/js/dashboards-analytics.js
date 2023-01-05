@@ -356,7 +356,7 @@ console.log(result,'resultresultresult');
   // --------------------------------------------------------------------
   const growthChartEl = document.querySelector("#growthChart"),
     growthChartOptions = {
-      series: [salesGrouth*-1],
+      series: [salesGrouth],
       labels: ["Growth"],
       chart: {
         height: 240,

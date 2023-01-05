@@ -26,7 +26,6 @@ router.get(
 router.get("/removeWishlist/:wishId", wishlistControler.removeWishlist);
 router.get(
   "/product-details",
-  authMiddleware.sessionchekDirectLogin,
   userController.productDetails
 );
 router.get(
@@ -78,23 +77,23 @@ router.get("/quantityDec/:proid", cartController.QuantityDec);
 
 router.get("/quantityInc/:proid", cartController.QuantityInc);
 router.post("/change-product-quantity", cartController.changeProductQuantity);
-router.get("/viewOrders", orderController.viewOrders);
+router.get("/viewOrders",authMiddleware.sessionchekDirectLogin, orderController.viewOrders);
 router.post("/checkout/:CartId", orderController.postCheckOut);
 router.get(
   "/orderSummary",
-  authMiddleware.sessionchek,
+  authMiddleware.sessionchekDirectLogin,
   orderController.postOderSuccess
 );
-router.get("/ordertracking", orderController.getTracking);
+router.get("/ordertracking",authMiddleware.sessionchekDirectLogin, orderController.getTracking);
 router.post("/verifyPayment", orderController.doVerifyPayment);
 router.post("/paymentFailed", orderController.postPaymentFailed);
 router.post("/editAddress/:id", userController.editprofile);
-router.get("/deleteAddress/:index", userController.deleteAdress);
+router.get("/deleteAddress/:index", authMiddleware.sessionchekDirectLogin,userController.deleteAdress);
 // coupen
 
 router.post("/coupon_verify", couponController.couponVerify);
 
-router.get('/cancelOrder',orderController.getCancelOrder)
+router.get('/cancelOrder',authMiddleware.sessionchekDirectLogin,orderController.getCancelOrder)
 // price filter
 
 router.get('/shop/category',userController.getShopByCategory)

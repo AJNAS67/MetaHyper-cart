@@ -70,10 +70,6 @@ module.exports = {
         },
       ]);
 
-      console.log(
-        previousYearSales,
-        "previousYearSalespreviousYearSalespreviousYearSalespreviousYearSalespreviousYearSalespreviousYearSalespreviousYearSalespreviousYearSalespreviousYearSales"
-      );
       let pys;
       let cys;
       if (previousYearSales == "") {
@@ -285,7 +281,7 @@ module.exports = {
       } else {
         monthlySales = monthlySalesT[0].total;
       }
-      
+
       var WomenCount = WomenCount.length;
       var AccessoriesCount = AccessoriesCount.length;
       var KidsCount = KidsCount.length;
@@ -427,9 +423,7 @@ module.exports = {
         {
           $match: {
             createdAt: {
-              $gte: new Date(
-                new Date(year, month, currentDate).setHours(00, 00, 00)
-              ),
+              $gte: new Date(new Date(year, month, today).setHours(00, 00, 00)),
             },
           },
         },

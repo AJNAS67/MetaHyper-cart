@@ -39,7 +39,7 @@ module.exports = {
         });
       }
     } else {
-      res.redirect("/login");
+      res.redirect("/signin");
     }
   },
   postCheckOut: async (req, res) => {

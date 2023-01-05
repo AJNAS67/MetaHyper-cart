@@ -327,6 +327,7 @@ module.exports = {
   },
 
   productDetails: async (req, res) => {
+    
     try {
       let user = req.session.user;
       let userId = req.session.userId;
@@ -803,7 +804,7 @@ module.exports = {
               newUser.password = hash;
               newUser
                 .save()
-                .then(res.redirect("signin"))
+                .then(res.redirect("/signin"))
                 .catch((err) => console.log(err, "errrrrrr"));
             })
           );
@@ -866,9 +867,18 @@ module.exports = {
     try {
       let user = req.session.user;
       let prodId = req.params.Id;
+      console.log(
+        prodId,
+        "prodIdprodIdprod=================================IdprodId"
+      );
       let product = await productModel
         .findOne({ _id: prodId })
         .populate("category");
+      let prodBrand = product.brand;
+      let featuredProd = await productModel
+        .aggregate([{ $match: { brand: prodBrand } }])
+        .limit(4);
+
       let imageNum = product.image.length;
       let userId = req.session.userId;
       const cartAndWishlist = await cartAndWishlstNum(userId);
@@ -880,6 +890,7 @@ module.exports = {
           product,
           imageNum,
           cartAndWishlist,
+          featuredProd,
         });
       } else {
         res.render("user/productDetails", {
@@ -888,6 +899,7 @@ module.exports = {
           product,
           imageNum,
           cartAndWishlist,
+          featuredProd,
         });
       }
     } catch (error) {}
