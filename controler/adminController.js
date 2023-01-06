@@ -43,6 +43,7 @@ module.exports = {
       let year = currentDate.getFullYear();
 
       let previousYear = year - 1;
+      console.log(previousYear,'previousYearpreviousYear');
       const previousYearSales = await orderModule.aggregate([
         {
           $match: {
@@ -60,6 +61,7 @@ module.exports = {
           },
         },
       ]);
+      console.log(previousYearSales,'previousYearSalespreviousYearSales');
       const currentYearSales = await orderModule.aggregate([
         {
           $match: {

@@ -37,7 +37,8 @@ module.exports = {
   getShopByCategory: async (req, res) => {
     const minPrice = req.query.minPrice || 100;
     const maxPrice = req.query.maxPrice || 5000;
-    console.log(minPrice, "minPriceminPrice");
+    const cartAndWishlist = await cartAndWishlstNum(userId);
+
     var query = await productModel.find().populate({
       path: "category",
       match: {
@@ -61,14 +62,17 @@ module.exports = {
         login: true,
         user: req.session.user,
         products,
+        cartAndWishlist,
       });
     } else {
-      res.render("user/womens", { login: false, products });
+      res.render("user/womens", { login: false, products, cartAndWishlist });
     }
   },
   getMenPriceFilter: async (req, res) => {
     const minPrice = req.query.minPrice || 100;
     const maxPrice = req.query.maxPrice || 5000;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
+
     console.log(minPrice, "minPriceminPrice");
     var query = await productModel.find().populate({
       path: "category",
@@ -92,15 +96,18 @@ module.exports = {
         login: true,
         user: req.session.user,
         products,
+        cartAndWishlist,
       });
     } else {
-      res.render("user/mens", { login: false, products });
+      res.render("user/mens", { login: false, products, cartAndWishlist });
     }
   },
 
   getKidsPriceFilter: async (req, res) => {
     const minPrice = req.query.minPrice || 100;
     const maxPrice = req.query.maxPrice || 5000;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
+
     var query = await productModel.find().populate({
       path: "category",
       match: {
@@ -123,14 +130,17 @@ module.exports = {
         login: true,
         user: req.session.user,
         products,
+        cartAndWishlist,
       });
     } else {
-      res.render("user/kids", { login: false, products });
+      res.render("user/kids", { login: false, products, cartAndWishlist });
     }
   },
   getCosmeticsFilter: async (req, res) => {
     const minPrice = req.query.minPrice || 100;
     const maxPrice = req.query.maxPrice || 5000;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
+
     var query = await productModel.find().populate({
       path: "category",
       match: {
@@ -153,15 +163,18 @@ module.exports = {
         login: true,
         user: req.session.user,
         products,
+        cartAndWishlist,
       });
     } else {
-      res.render("user/cosmetics", { login: false, products });
+      res.render("user/cosmetics", { login: false, products, cartAndWishlist });
     }
   },
 
   getAccessoriesFilter: async (req, res) => {
     const minPrice = req.query.minPrice || 100;
     const maxPrice = req.query.maxPrice || 5000;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
+
     var query = await productModel.find().populate({
       path: "category",
       match: {
@@ -184,9 +197,14 @@ module.exports = {
         login: true,
         user: req.session.user,
         products,
+        cartAndWishlist,
       });
     } else {
-      res.render("user/accessories", { login: false, products });
+      res.render("user/accessories", {
+        login: false,
+        products,
+        cartAndWishlist,
+      });
     }
   },
 
@@ -327,7 +345,6 @@ module.exports = {
   },
 
   productDetails: async (req, res) => {
-    
     try {
       let user = req.session.user;
       let userId = req.session.userId;
@@ -754,21 +771,12 @@ module.exports = {
       }
       console.log("Message sent: %s", info.messageId);
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-
-      res.render("user/otpPage", { login: false, cartAndWishlist });
+      // const otpError = req.flash("message");
+      res.redirect("/otp");
+      // res.render("user/otpPage", { login: false, cartAndWishlist, otpError });
     });
   },
 
-  // doLogin: (req, res, next) => {
-  //   passport.authenticate("local", {
-  //     successRedirect: "/",
-  //     failureRedirect: "/signin",
-  //     failureMessage: true,
-  //     user: req.body.email,
-  //   })(req, res, next);
-  //   console.log(req.body, "passsssssssssssssssssssss");
-
-  // },
   signUp: (req, res) => {
     const { user_name, email, password, confirm } = req.body;
     if (!user_name || !email || !password || !confirm) {

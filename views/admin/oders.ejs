@@ -60,7 +60,6 @@
         <% for( let i = 0; i < result.length; i++ ) { %>
 
         <tr>
-
           <th scope="row"><%= result[i]._id %></th>
           <td><%= result[i].deliveryAddress.firstName %></td>
           <td>₹ <%= result[i].total %></td>
@@ -69,9 +68,14 @@
 
           <td>
             <select
-              style="background-color: yellow; text-size-adjust: 12px"
+              style="
+                background-color: #696cff;
+                text-size-adjust: 12px;
+                color: white;
+              "
               name="track"
               id="track<%= i %>"
+              class="btn btn-primary btn-lm"
             >
               <option value="<%= result[i].orderStatus %>" selected>
                 <%= result[i].track %>
@@ -87,7 +91,7 @@
             <button
               type="button"
               id="changetrack"
-              class="btn btn-primary btn-sm"
+              class="btn btn-primary btn-lm"
               onclick="orderStatus('<%= result[i]._id %>','<%= i %>')"
             >
               Change
@@ -96,13 +100,12 @@
 
           <td>
             <!-- Button trigger modal -->
-            <button
-              type="button"
+
+            <a
               class="btn btn-primary"
-            
+              href="view-order-detail?id=<%=result[i]._id%>"
+              >View details</a
             >
-              <a href="view-order-detail?id=<%=result[i]._id%>">View details</a>
-            </button>
 
             <!-- Modal -->
             <div
@@ -123,11 +126,9 @@
                     >
                       Order Details
                     </h5>
-                    
                   </div>
                   <div class="modal-body col-lg-12" id="invoice">
                     <div class="row order_d_inner">
-
                       <table class="table table-borderless">
                         <thead>
                           <tr>
@@ -153,16 +154,13 @@
                               ;city - <%=result[i].deliveryAddress.city%>
                             </td>
                           </tr>
-                          <tr>
-                            
-                          </tr>
+                          <tr></tr>
                           <tr>
                             <td>Product Details</td>
-                            
 
-                          <% for (var j =1; j <=result[i].products.length; j++ )
-                          { %>
-                          
+                            <% for (var j =1; j <=result[i].products.length; j++
+                            ) { %>
+
                             <td>
                               Name -<%=result[i].products[j-1].name%> ; Price
                               -<%=result[i].products[j-1].price%> ; Quantity
@@ -172,8 +170,6 @@
                           </tr>
                         </tbody>
                       </table>
-
-                     
                     </div>
                   </div>
                   <div class="modal-footer">

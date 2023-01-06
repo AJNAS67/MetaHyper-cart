@@ -10,7 +10,6 @@ const cartContoller = require("../controler/cartContoller");
 
 router.get("/", adminController.admin);
 router.get("/adminlog", adminController.adminHome);
-// router.get('/adminProducts',adminController.adminProductsView);
 router.get("/addproducts", adminController.addProduct);
 router.get("/adminProducts", productController.viewProduct);
 router.post("/", adminController.adminLogin);
