@@ -106,5 +106,6 @@ router.get('/myCoupon',authMiddleware.sessionchekDirectLogin,couponController.my
 router.route('/reset-password-otp').get(userController.resetOtpPage).post(userController.resetForgetOtp)
 // router.post('/verify-reset-password-otp',userController.verifyResetOtp)
 router.route('/verify-reset-password-otp').get(userController.resetPasswordPage).post(userController.verifyResetOtp)
+router.get('/404',userController.error)
 
 module.exports = router;

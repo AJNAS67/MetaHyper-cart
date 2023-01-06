@@ -35,6 +35,9 @@ var Password;
 var Confirm;
 
 module.exports = {
+  error: (req, res) => {
+    res.render("user/404");
+  },
   getShopByCategory: async (req, res) => {
     const minPrice = req.query.minPrice || 100;
     const maxPrice = req.query.maxPrice || 5000;
@@ -345,7 +348,7 @@ module.exports = {
     }
   },
 
-  productDetails: async (req, res) => {
+  productDetails: async (req, res, next) => {
     try {
       let user = req.session.user;
       let userId = req.session.userId;
@@ -926,10 +929,10 @@ module.exports = {
         res.redirect("/userProfile");
       });
     } catch (error) {
-      console.log(error.message);
+      next(error.message);
     }
   },
-  editprofile: async (req, res) => {
+  editprofile: async (req, res, next) => {
     let addressId = req.params.id;
     let userId = req.session.userId;
     const userModel = await User.updateOne(
@@ -955,7 +958,8 @@ module.exports = {
       })
       .catch((err) => {
         console.log(err.message);
-        res.redirect("/userProfile");
+        // res.redirect("/userProfile");
+        next(error.message);
       });
   },
 

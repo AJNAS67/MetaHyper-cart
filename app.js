@@ -114,7 +114,11 @@ app.use(bodyParser.json());
 
 app.use("/", usersRouter);
 app.use("/admin", adminRouter);
-
+app.use((err, req, res, next) => {
+  res.render("user/404", {
+    err,
+  });
+});
 const PORT = process.env.PORT;
 console.log(PORT,'port');
 app.listen(PORT, console.log("Server don start for port: " + PORT));
