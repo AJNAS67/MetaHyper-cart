@@ -15,7 +15,7 @@
             <strong>Shipping BY:</strong> <br />
             BLUEDART, | <i class="fa fa-phone"></i> +1598675986
           </div>
-          <% if (order.orderStatus == 'Cancellede') { %>
+          <% if (order.orderStatus == 'cancelled') { %>
           <div class="col text-danger">
             <strong>Status:</strong> <br />
             <%=order.orderStatus%>
@@ -35,7 +35,7 @@
               <div class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way </span> </div>
               <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Ready for pickup</span> </div>
           </div> -->
-      <% if (order.track == 'Cancellede') { %>
+      <% if (order.track == 'cancelled') { %>
       <div class="track">
         <div class="step">
           <span class="icon"> <i class="fa fa-check"></i> </span>

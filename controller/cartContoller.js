@@ -78,7 +78,6 @@ module.exports = {
     let userId = req.session.userId;
 
     const cartAndWishlist = await cartAndWishlstNum(userId);
-    console.log(cartAndWishlist,'cartAndWishlistcartAndWishlistcartAndWishlistcartAndWishlistcartAndWishlistcartAndWishlist');
 
     try {
       const userDetails = await User.findById(userId);
@@ -97,7 +96,6 @@ module.exports = {
       if (applyCoupon) {
         let usedCouponlen = userDetails.usedCoupon.length - 1;
         const usedCoupon = userDetails.usedCoupon[usedCouponlen];
-        console.log(usedCoupon, "usedCouponusedCoupon");
         res.render("user/shoping-cart", {
           login: true,
           user,
@@ -106,7 +104,7 @@ module.exports = {
           userDetails,
           applyCoupon,
           usedCoupon,
-          cartAndWishlist:cartAndWishlstNum,
+          cartAndWishlist: cartAndWishlstNum,
         });
       } else {
         res.render("user/shoping-cart", {
@@ -117,7 +115,7 @@ module.exports = {
           userDetails,
           applyCoupon,
           usedCoupon: null,
-          cartAndWishlist:cartAndWishlstNum,
+          cartAndWishlist: cartAndWishlstNum,
         });
       }
     } catch (error) {
@@ -139,7 +137,6 @@ module.exports = {
       );
       let userCart = await cartModel.findOne({ userId: userId });
 
-      console.log(userCart, "userCartuserCartuserCart");
       let productIndex = userCart.products.findIndex(
         (product) => product._id == req.params.cartId
       );

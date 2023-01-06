@@ -100,7 +100,7 @@
 <!--================Order Details Area =================-->
 <section class="order_details section_gap">
   <div class="container mt-5">
-    <% if (id.orderStatus=="Cancellede") { %>
+    <% if (id.orderStatus=="cancelled") { %>
     <h3 class="title_confirmation text-danger">
       Your order has been Cancelled.
     </h3>
@@ -235,7 +235,7 @@
       </div>
     </div>
     <div class="container text-center mt-5">
-      <% if(id.orderStatus != 'Cancellede' && id.orderStatus != 'Delivered' &&
+      <% if(id.orderStatus != 'cancelled' && id.orderStatus != 'Delivered' &&
       id.orderStatus!='Returnd'){ %>
 
       <button

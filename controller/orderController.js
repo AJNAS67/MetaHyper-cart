@@ -306,7 +306,7 @@ module.exports = {
   postOderSuccess: async (req, res) => {
     try {
       let userId = req.session.userId;
-    const cartAndWishlist = await cartAndWishlstNum(userId);
+      const cartAndWishlist = await cartAndWishlstNum(userId);
       let user = req.session.user;
       req.session.orderId = req.query.id;
       let result = await orderModel
@@ -318,7 +318,7 @@ module.exports = {
         id: result,
         session: req.session,
         user,
-        cartAndWishlist
+        cartAndWishlist,
       });
     } catch (error) {
       res.status(429).render("admin/error-429");
@@ -327,11 +327,16 @@ module.exports = {
   getTracking: async (req, res) => {
     try {
       let userId = req.session.userId;
-    const cartAndWishlist = await cartAndWishlstNum(userId);
+      const cartAndWishlist = await cartAndWishlstNum(userId);
       let user = req.session.user;
       let orderId = req.query.id;
       let order = await orderModel.findById({ _id: orderId });
-      res.render("user/orderTracking", { login: true, user, order,cartAndWishlist });
+      res.render("user/orderTracking", {
+        login: true,
+        user,
+        order,
+        cartAndWishlist,
+      });
     } catch (error) {}
   },
   getCancelOrder: async (req, res) => {
@@ -339,14 +344,10 @@ module.exports = {
       let orderId = req.query.id;
       console.log(orderId, "orderId");
 
-      let order = await orderModel
-        .findByIdAndUpdate(orderId, {
-          orderStatus: "Cancellede",
-          track: "Cancellede",
-        })
-        .then((re) => {
-          console.log(re, "uuuuuuuuuuuuuuu");
-        });
+      let order = await orderModel.findByIdAndUpdate(orderId, {
+        orderStatus: "cancelled",
+        track: "cancelled",
+      });
     } catch (error) {
       res.status(429).render("admin/error-429");
     }
@@ -372,7 +373,7 @@ module.exports = {
           orderStatus: "Returnd",
           returnreason: value,
         })
-        .then((response) => {
+        .then(() => {
           res.json({ status: true });
         });
     } catch (error) {

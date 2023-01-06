@@ -5,6 +5,7 @@ const nodemailer = require("nodemailer");
 const cartModel = require("../model/cartModel");
 const { cartAndWishlstNum } = require("../middleware/cart-wishlist-number");
 const flash = require("connect-flash");
+const { render } = require("ejs");
 function otpCreation() {
   var otp = Math.random();
   var otp = otp * 1000000;
@@ -601,7 +602,6 @@ module.exports = {
   otpForForget: async (req, res) => {
     Email = req.body.email;
     const user = await User.findOne({ email: Email });
-    // const user = false;
     if (user) {
       otp = otpCreation();
       var mailOptions = {
@@ -622,7 +622,7 @@ module.exports = {
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
         // const otpError = req.flash("message");
 
-        res.redirect("/otp");
+        res.redirect("/reset-password-otp");
       });
     } else {
       const error = "Invalid email !!Please check your Email address ";
@@ -653,7 +653,7 @@ module.exports = {
         await User.findOneAndUpdate(
           { email: email },
           { $set: { password: password } }
-        );
+        ).then((re) => {});
         res.redirect("/signin");
       } else {
         req.flash("message", "Sorry ! Your Email Not Found !!");
@@ -673,7 +673,6 @@ module.exports = {
     const user = await User.findOne({ email: Email });
     // const user = false;
     if (!user) {
-      console.log("not find");
       // send mail with defined transport object
       otp = otpCreation();
 
@@ -706,12 +705,9 @@ module.exports = {
   otpVerifi: (req, res) => {
     var userOtp = [];
     for (let value of Object.values(req.body)) {
-      console.log(value);
       userOtp.push(value);
     }
     var userOtp = userOtp.join("");
-    console.log(userOtp, "userOtpp");
-    console.log(UserName, "UserNameUserName");
     if (otp == userOtp) {
       if (UserName) {
         const newUser = new User({
@@ -732,7 +728,6 @@ module.exports = {
                 res.redirect("/signin");
               })
               .catch((err) => {
-                console.log(err);
                 res.redirect("/signin");
               });
           });
@@ -746,9 +741,6 @@ module.exports = {
 
       res.redirect("/otp");
     }
-
-    console.log(req.body, "body");
-    // res.render("user/userlogin");
   },
   resentOpt: async (req, res) => {
     otp = otpCreation();
@@ -858,15 +850,6 @@ module.exports = {
         user,
         cartAndWishlist,
       });
-
-      //   addressModel.find({ userId: req.session.userId }).then((result) => {
-      //     res.render("user/profile", {
-      //       user,
-      //       session: req.session,
-      //       addresses: result,
-      //       login: true,
-      //     });
-      //   });
     } catch (err) {
       res.status(429).render("admin/error-429");
     }
@@ -875,10 +858,7 @@ module.exports = {
     try {
       let user = req.session.user;
       let prodId = req.params.Id;
-      console.log(
-        prodId,
-        "prodIdprodIdprod=================================IdprodId"
-      );
+
       let product = await productModel
         .findOne({ _id: prodId })
         .populate("category");
@@ -928,10 +908,7 @@ module.exports = {
     }
   },
   doAddaddress: async (req, res) => {
-    console.log(req.body, "addre");
-    console.log(req.session.userId, "userId");
     const userModel = await User.findOne({ _id: req.session.userId });
-    console.log(userModel, "userModel");
     try {
       userModel.address.unshift({
         firstName: req.body.firstName,
@@ -994,5 +971,64 @@ module.exports = {
       console.log(error.message);
       res.redirect("/userProfile");
     }
+  },
+  resetOtpPage: async (req, res) => {
+    try {
+      const otpError = req.flash("message");
+
+      let userId = req.session.userId;
+      const cartAndWishlist = await cartAndWishlstNum(userId);
+      res.render("user/reset-password-otp", {
+        login: false,
+        cartAndWishlist,
+        otpError,
+      });
+    } catch (error) {}
+  },
+  resetForgetOtp: async (req, res) => {
+    try {
+      let userId = req.session.userId;
+      const cartAndWishlist = await cartAndWishlstNum(userId);
+      res.render("user/reset-password-otp", { login: false, cartAndWishlist });
+    } catch (error) {}
+  },
+  verifyResetOtp: async (req, res) => {
+    let userId = req.session.userId;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
+    try {
+      var userOtp = [];
+      for (let value of Object.values(req.body)) {
+        console.log(value);
+        userOtp.push(value);
+      }
+      var userOtp = userOtp.join("");
+      console.log(userOtp, "userOtpp");
+      if (userOtp == otp) {
+        console.log("otp is currect");
+        const userInvalid = req.flash("message");
+        res.render("user/reset-password", {
+          login: false,
+          cartAndWishlist,
+          userInvalid,
+        });
+      } else {
+        const error = "Invalid OTP ! Please Enter valid OTP";
+        req.flash("message", error);
+        res.redirect("/reset-password-otp");
+      }
+    } catch (error) {}
+  },
+  resetPasswordPage: async (req, res) => {
+    let userId = req.session.userId;
+    const cartAndWishlist = await cartAndWishlstNum(userId);
+    try {
+      const userInvalid = req.flash("message");
+
+      res.render("user/user/reset-password", {
+        login: false,
+        cartAndWishlist,
+        userInvalid,
+      });
+    } catch (error) {}
   },
 };

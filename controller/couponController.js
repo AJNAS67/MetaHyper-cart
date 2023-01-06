@@ -69,7 +69,6 @@ module.exports = {
       let crt = await cartModel.findById(cartId);
       let cartTotal = crt.total;
       let subTotal = cartTotal;
-      console.log(crt, "crtcrt");
       let date = new Date();
       console.log(coupon, "coupon");
       if (user.applyCoupon) {

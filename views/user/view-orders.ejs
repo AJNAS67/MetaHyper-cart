@@ -32,7 +32,7 @@
                 <p>Rs.<span><%=Order.total%></span></p>
               </td>
               <td>
-                <% if (Order.orderStatus=="Cancellede") { %>
+                <% if (Order.orderStatus=="cancelled") { %>
                 <p><span style="color: red"><%=Order.orderStatus%></span></p>
 
                 <% }else {%>
