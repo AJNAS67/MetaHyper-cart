@@ -1,5 +1,5 @@
-const cartModel = require("../model/cart");
-const wishlistModel = require("../model/wishlistMode");
+const cartModel = require("../model/cartModel");
+const wishlistModel = require("../model/wishlistModel");
 
 async function findCartNumber(userId) {
   this.userId = userId;

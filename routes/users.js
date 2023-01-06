@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const userController = require("../controler/userController");
-const cartController = require("../controler/cartContoller");
-const wishlistControler = require("../controler/wishlistController");
+const userController = require("../controller/userController");
+const cartController = require("../controller/cartContoller");
+const wishlistcontroller = require("../controller/wishlistController");
 const authMiddleware = require("../auth/auth");
-const orderController = require("../controler/orderController");
-const couponController = require("../controler/couponController");
+const orderController = require("../controller/orderController");
+const couponController = require("../controller/couponController");
 // const { otpVerification, getOtpForm, sendOtp } = require("../middleware/otp");
 
 router.get("/", userController.homeView);
@@ -21,9 +21,9 @@ router.get("/userProfile", userController.profile);
 router.get(
   "/wishlist",
   authMiddleware.sessionchekDirectLogin,
-  wishlistControler.wishlist
+  wishlistcontroller.wishlist
 );
-router.get("/removeWishlist/:wishId", wishlistControler.removeWishlist);
+router.get("/removeWishlist/:wishId", wishlistcontroller.removeWishlist);
 router.get(
   "/product-details",
   userController.productDetails
@@ -69,7 +69,7 @@ router.post("/resendotp", userController.resentOpt);
 // router.post("/login", userController.doLogin);
 router.post("/signin", userController.signUp);
 router.post("/addtocart/:prodId", cartController.addTocart);
-router.post("/addtoWishlist/:prodId", authMiddleware.sessionchekDirectLogin,wishlistControler.addtoWishlist);
+router.post("/addtoWishlist/:prodId", authMiddleware.sessionchekDirectLogin,wishlistcontroller.addtoWishlist);
 router.get("/product-details/:Id", userController.prodDetail);
 router.get("/addAddress", userController.addAddress);
 router.post("/addAddress", userController.doAddaddress);

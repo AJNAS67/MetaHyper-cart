@@ -1,7 +1,7 @@
 const userModule = require("../model/userModel");
-const cartModel = require("../model/cart");
-const orderModel = require("../model/orderModule");
-const productModel = require("../model/product");
+const cartModel = require("../model/cartModel");
+const orderModel = require("../model/orderModel");
+const productModel = require("../model/productModel");
 const { default: mongoose } = require("mongoose");
 const Razorpay = require("razorpay");
 const userHelpers = require("../helpers/user-helper");

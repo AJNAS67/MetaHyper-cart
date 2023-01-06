@@ -1,4 +1,4 @@
-let wishlistModel = require("../model/wishlistMode");
+let wishlistModel = require("../model/wishlistModel");
 
 async function findWishistNumber() {
   const wishlist = await wishlistModel.findOne({userId});

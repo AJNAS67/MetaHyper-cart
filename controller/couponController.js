@@ -1,7 +1,7 @@
-const couponModule = require("../model/couponModal");
+const couponModule = require("../model/couponModel");
 const moment = require("moment");
 const User = require("../model/userModel");
-const cartModel = require("../model/cart");
+const cartModel = require("../model/cartModel");
 const { cartAndWishlstNum } = require("../middleware/cart-wishlist-number");
 
 module.exports = {

@@ -1,4 +1,4 @@
-const cartModel = require("../model/cart");
+const cartModel = require("../model/cartModel");
 
 var crypto = require("crypto");
 

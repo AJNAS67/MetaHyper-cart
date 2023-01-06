@@ -1,6 +1,6 @@
-const ProductModel = require("../model/product");
-const CategoryModel = require("../model/category");
-const orderModel = require("../model/orderModule");
+const ProductModel = require("../model/productModel");
+const CategoryModel = require("../model/categoryModel");
+const orderModel = require("../model/orderModel");
 var fs = require("fs");
 
 module.exports = {

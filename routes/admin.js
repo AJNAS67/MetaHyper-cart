@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const adminController = require("../controler/adminController");
-const productController = require("../controler/productController");
-const categoryController = require("../controler/categoryController");
+const adminController = require("../controller/adminController");
+const productController = require("../controller/productController");
+const categoryController = require("../controller/categoryController");
 const store = require("../middleware/multer");
-const couponController = require("../controler/couponController");
-const cartContoller = require("../controler/cartContoller");
+const couponController = require("../controller/couponController");
+const cartContoller = require("../controller/cartContoller");
 
 
 router.get("/", adminController.admin);

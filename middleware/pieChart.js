@@ -1,5 +1,5 @@
 const moment = require("moment");
-const orderModule = require("../model/orderModule");
+const orderModule = require("../model/orderModel");
 
 async function getFirstMonthOrders() {
   const startDate = moment().subtract(1, "months").startOf("month");

@@ -1,10 +1,10 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const UserModel = require("../model/userModel");
-const categoryModel = require("../model/category");
+const categoryModel = require("../model/categoryModel");
 const adminData = require("../model/adminModel");
-const orderModule = require("../model/orderModule");
-const productModel = require("../model/product");
+const orderModule = require("../model/orderModel");
+const productModel = require("../model/productModel");
 const moment = require("moment");
 const { pieChartDetails } = require("../middleware/pieChart");
 const userModel = require("../model/userModel");

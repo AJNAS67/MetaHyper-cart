@@ -1,6 +1,6 @@
-const cartModel = require("../model/cart");
-const productModel = require("../model/product");
-const wishlistModel = require("../model/wishlistMode");
+const cartModel = require("../model/cartModel");
+const productModel = require("../model/productModel");
+const wishlistModel = require("../model/wishlistModel");
 const { cartAndWishlstNum } = require("../middleware/cart-wishlist-number");
 
 

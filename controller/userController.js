@@ -1,8 +1,8 @@
 const User = require("../model/userModel");
-const productModel = require("../model/product");
+const productModel = require("../model/productModel");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
-const cartModel = require("../model/cart");
+const cartModel = require("../model/cartModel");
 const { cartAndWishlstNum } = require("../middleware/cart-wishlist-number");
 const flash = require("connect-flash");
 function otpCreation() {
