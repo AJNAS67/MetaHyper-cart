@@ -92,10 +92,10 @@ module.exports = {
         cys = currentYearSales[0].total;
       }
       let pys = pys1 - cys;
-      console.log(pys, "pys");
+
       let sg;
       try {
-        if (pyg == 0) {
+        if (pys == 0) {
           sg = 100;
         } else {
           sg = ((cys - pys) / pys) * 100;
@@ -103,7 +103,6 @@ module.exports = {
       } catch (error) {
         sg = 100;
       }
-      console.log(sg, "iiiiiiisg====iiiiii");
 
       let salesGrouth = Math.round(sg);
       const TodaySalesT = await orderModule.aggregate([
@@ -619,20 +618,33 @@ module.exports = {
       } else {
         monthlySales = monthlySalesT[0].total;
       }
-      let pys;
+      let pys1;
       let cys;
       let sg;
 
       if (previousYearSales == "") {
-        pys = 0;
+        pys1 = 0;
       } else {
-        pys = previousYearSales[0].total;
+        pys1 = previousYearSales[0].total;
       }
       if (currentYearSales == "") {
         cys = 0;
       } else {
         cys = currentYearSales[0].total;
       }
+
+      let pys = pys1 - cys;
+
+      try {
+        if (pys == 0) {
+          sg = 100;
+        } else {
+          sg = ((cys - pys) / pys) * 100;
+        }
+      } catch (error) {
+        sg = 100;
+      }
+
       try {
         sg = ((cys - pys) / pys) * 100;
       } catch (error) {
