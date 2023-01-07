@@ -61,7 +61,6 @@ module.exports = {
           },
         },
       ]);
-      console.log(previousYearSales, "previousYearSalespreviousYearSales");
       const currentYearSales = await orderModule.aggregate([
         {
           $match: {
@@ -120,6 +119,25 @@ module.exports = {
           },
         },
       ]);
+      let yesteday = today - 1;
+      const YestrdaySalesT = await orderModule.aggregate([
+        {
+          $match: {
+            createdAt: {
+              $gte: new Date(
+                new Date(year, month, yesteday).setHours(00, 00, 00)
+              ),
+            },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: "$total" },
+          },
+        },
+      ]);
+      console.log(YestrdaySalesT, "YestrdaySalesT");
 
       const weaklySalesT = await orderModule.aggregate([
         {
@@ -274,6 +292,7 @@ module.exports = {
       let weaklySales;
       let TodaySales;
       let monthlySales;
+      let YestrdaySales;
       if (weaklySalesT == "") {
         weaklySales = 0;
       } else {
@@ -284,12 +303,36 @@ module.exports = {
       } else {
         TodaySales = TodaySalesT[0].total;
       }
+      if (YestrdaySalesT == "") {
+        YestrdaySales = 0;
+      } else {
+        YestrdaySales = YestrdaySalesT[0].total;
+      }
       if (monthlySalesT == "") {
         monthlySales = 0;
       } else {
         monthlySales = monthlySalesT[0].total;
       }
+      console.log(TodaySales, "TodaySales");
+      console.log(YestrdaySales, "YestrdaySales");
 
+      let daysGrouthPercentage;
+      if (YestrdaySales != 0) {
+        daysGrouthPercentage = Math.round(
+          ((TodaySales - YestrdaySales) / YestrdaySales) * 100
+        );
+      } else {
+        daysGrouthPercentage = 100;
+      }
+      console.log(daysGrouthPercentage, "daysGrouthPercentage");
+      let daysGrouth;
+      if (TodaySales - YestrdaySales >= 0) {
+        daysGrouth = true;
+      } else {
+        daysGrouth = false;
+      }
+
+      console.log(daysGrouth, "daysGrouthdaysGrouth");
       var WomenCount = WomenCount.length;
       var AccessoriesCount = AccessoriesCount.length;
       var KidsCount = KidsCount.length;
@@ -297,6 +340,15 @@ module.exports = {
       var CosmeticsCount = CosmeticsCount.length;
       let test = [1, 2, 3, 4];
       const allData = await pieChartDetails();
+      console.log(allData, "allData");
+      let monthlySale = ((allData[6] - allData[5]) / allData[5]) * 100;
+      let MonthlySalesGrouth = Math.round(monthlySale);
+      let monthInc;
+      if (allData[6] - allData[5] >= 0) {
+        monthInc = true;
+      } else {
+        monthInc = false;
+      }
 
       res.render("admin/adminHome", {
         TodaySales,
@@ -325,6 +377,10 @@ module.exports = {
         allData,
         TotalProdAvailable,
         numberOfUser,
+        MonthlySalesGrouth,
+        monthInc,
+        daysGrouthPercentage,
+        daysGrouth,
       });
     } else {
       res.redirect("/admin");
@@ -450,6 +506,23 @@ module.exports = {
           },
         },
       ]);
+      let yesteday = today - 1;
+      const YestrdaySalesT = await orderModule.aggregate([
+        {
+          $match: {
+            createdAt: {
+              $gte: new Date(new Date(year, month, -1).setHours(00, 00, 00)),
+            },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: "$total" },
+          },
+        },
+      ]);
+      console.log(YestrdaySalesT, "YestrdaySalesT");
 
       const weaklySalesT = await orderModule.aggregate([
         {
@@ -645,18 +718,11 @@ module.exports = {
         sg = 100;
       }
 
-      try {
-        sg = ((cys - pys) / pys) * 100;
-      } catch (error) {
-        sg = 0;
-      }
-
       // let pys = previousYearSales[0].total;
       // let cys = currentYearSales[0].total;
       // let sg = ((cys - pys) / pys) * 100;
       // console.log(sg, "salesGrouth");
       let salesGrouth = Math.round(sg);
-      console.log(monthlySalesT, "monthlySalesmonthlySales");
       // let TodaySales = TodaySalesT.total;
       // let weaklySales = weaklySalesT[0].total;
       // let monthlySales = monthlySalesT[0].total;
@@ -667,12 +733,39 @@ module.exports = {
       var CosmeticsCount = CosmeticsCount.length;
       let test = [1, 2, 3, 4];
       const allData = await pieChartDetails();
+
       let TotalProdAvailable =
         MenTotalProdAvailable +
         KidsTotalProdAvailable +
         AccessoriesTotalProdAvailable +
         CosmeticsTotalProdAvailable +
         WomenCountTotalProdAvailable;
+      let daysGrouthPercentage;
+      let daysGrouth;
+      let YestrdaySales;
+      console.log(YestrdaySales, "YestrdaySales,");
+
+      if (YestrdaySales != 0) {
+        daysGrouthPercentage = Math.round(
+          ((TodaySales - YestrdaySales) / YestrdaySales) * 100
+        );
+      } else {
+        daysGrouthPercentage = 100;
+      }
+      if (TodaySales - YestrdaySales >= 0) {
+        daysGrouth = true;
+      } else {
+        daysGrouth = false;
+      }
+      let monthlySale = ((allData[6] - allData[5]) / allData[5]) * 100;
+      let MonthlySalesGrouth = Math.round(monthlySale);
+
+      let monthInc;
+      if (allData[6] - allData[5] >= 0) {
+        monthInc = true;
+      } else {
+        monthInc = false;
+      }
 
       res.render("admin/adminHome", {
         TodaySales,
@@ -702,7 +795,13 @@ module.exports = {
         allData,
         TotalProdAvailable,
         numberOfUser,
+        MonthlySalesGrouth,
+        monthInc,
+        daysGrouthPercentage,
+        daysGrouth,
       });
+    } else {
+      res.redirect("/admin/adminlog");
     }
   },
   product: (req, res) => {

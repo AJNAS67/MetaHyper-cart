@@ -14,8 +14,8 @@
                   Congratulations Ajnas! 🎉
                 </h5>
                 <p class="mb-4">
-                  You have done <span class="fw-bold">72%</span> more sales
-                  today. Check your new badge in your profile.
+                  You have done <span class="fw-bold"><%=MonthlySalesGrouth%>%</span> more sales
+                  this month. Check your new badge in your profile.
                 </p>
 
                 <a href="javascript:;" class="btn btn-sm btn-outline-primary"
@@ -77,9 +77,17 @@
                 </div>
                 <span>Monthly Sales</span>
                 <h3 class="card-title text-nowrap mb-1">₹<%=monthlySales%></h3>
-                <small class="text-success fw-semibold"
-                  ><i class="bx bx-up-arrow-alt"></i> +28.42%</small
+                <% if(monthInc){ %>
+                  <small class="text-success fw-semibold"
+                  ><i class="bx bx-up-arrow-alt"></i> +<%=MonthlySalesGrouth%>%</small
                 >
+                <% } else{ %>  
+                  <small class="text-danger fw-semibold"
+                  ><i class="bx bx-down-arrow-alt"></i><%=MonthlySalesGrouth%>%</small
+                >
+               <% } %>
+               
+                
               </div>
             </div>
           </div>
@@ -161,9 +169,19 @@
                 </div>
                 <span class="d-block mb-1">Todays Sales</span>
                 <h3 class="card-title text-nowrap mb-2">₹<%=TodaySales%></h3>
-                <small class="text-danger fw-semibold"
-                  ><i class="bx bx-down-arrow-alt"></i> -14.82%</small
+                <% if (daysGrouth) { %>
+                  <small class="text-success fw-semibold"
+                  ><i class="bx bx-up-arrow-alt"></i> +<%=daysGrouthPercentage%>%</small
                 >
+                  <%} else { %>
+                    <small class="text-danger fw-semibold"
+                  ><i class="bx bx-down-arrow-alt"></i> <%=daysGrouthPercentage%>%</small
+                >
+                
+                  <% } %>
+
+                
+                
               </div>
             </div>
           </div>
@@ -368,17 +386,7 @@
                   aria-controls="navs-tabs-line-card-income"
                   aria-selected="true"
                 >
-                  Income
-                </button>
-              </li>
-              <li class="nav-item">
-                <button type="button" class="nav-link" role="tab">
-                  Expenses
-                </button>
-              </li>
-              <li class="nav-item">
-                <button type="button" class="nav-link" role="tab">
-                  Profit
+                  Monthly Sales
                 </button>
               </li>
             </ul>
@@ -398,25 +406,29 @@
                     />
                   </div>
                   <div>
-                    <small class="text-muted d-block">Total Balance</small>
+                    <small class="text-muted d-block"
+                      >Sales of this month</small
+                    >
                     <div class="d-flex align-items-center">
-                      <h6 class="mb-0 me-1">₹459.10</h6>
+                      <h6 class="mb-0 me-1">₹<%=allData[6]%></h6>
                       <small class="text-success fw-semibold">
                         <i class="bx bx-chevron-up"></i>
-                        42.9%
+                        
+                        <%=MonthlySalesGrouth%> %
                       </small>
+
                     </div>
                   </div>
                 </div>
                 <div id="incomeChart"></div>
                 <div class="d-flex justify-content-center pt-4 gap-2">
-                  <div class="flex-shrink-0">
+                  <!-- <div class="flex-shrink-0">
                     <div id="expensesOfWeek"></div>
-                  </div>
-                  <div>
+                  </div> -->
+                  <!-- <div>
                     <p class="mb-n1 mt-1">Expenses This Week</p>
                     <small class="text-muted">₹39 less than last week</small>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -633,4 +645,16 @@
 
   <div class="content-backdrop fade"></div>
 </div>
+<script>
+  let allData = document.getElementById("allData").innerHTML;
+  let currentMonthSales = allData[6];
+  let previousMothSales = allData[5];
+  let monthGrouth;
+  if (previousMothSales != 0) {
+    monthGrouth =
+      ((currentMonthSales - previousMothSales) / previousMothSales) * 100;
+  } else {
+    monthGrouth = 100;
+  }
+</script>
 <%- include('./partials/admin-footer.ejs') %>

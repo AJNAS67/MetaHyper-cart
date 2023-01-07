@@ -41,23 +41,24 @@
   let AccessorieTotalProd=parseInt(atpa)
   let test = document.getElementById("test").innerHTML;
   let allData = document.getElementById("allData").innerHTML;
+  // let currentMonthSales=allData[6]
   const myArray = allData.split(",");
   const map1 = myArray.map(x => parseInt(x));
-console.log(map1,'map1map1map1');
-  console.log(myArray,'dddddddddddddd');
-  console.log(allData.length,'888888888888888888888');
+// console.log(map1,'map1map1map1');
+//   console.log(myArray,'dddddddddddddd');
+  // console.log(allData.length,'888888888888888888888');
 let dt=[0,6,9,0,87,6,4]
-console.log(dt,'dt');
+// console.log(dt,'dt');
 let allData1=[allData];
-console.log(allData1,'allData1allData1');
+// console.log(allData1,'allData1allData1');
 
 
 var result = allData1.map(function (x) { 
   return parseInt(x, 10); 
 });
-console.log(result,'resultresultresult');
+// console.log(result,'resultresultresult');
 
-  console.log([allData],'ppppppppppppppppppp');
+  // console.log([allData],'ppppppppppppppppppp');
   const allMonths = [
     "Jul",
     "Aug",
