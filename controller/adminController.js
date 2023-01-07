@@ -341,7 +341,12 @@ module.exports = {
       let test = [1, 2, 3, 4];
       const allData = await pieChartDetails();
       console.log(allData, "allData");
-      let monthlySale = ((allData[6] - allData[5]) / allData[5]) * 100;
+      let monthlySale;
+      if (allData[5] == 0) {
+        monthlySale = 100;
+      } else {
+        monthlySale = ((allData[6] - allData[5]) / allData[5]) * 100;
+      }
       let MonthlySalesGrouth = Math.round(monthlySale);
       let monthInc;
       if (allData[6] - allData[5] >= 0) {
@@ -757,7 +762,13 @@ module.exports = {
       } else {
         daysGrouth = false;
       }
-      let monthlySale = ((allData[6] - allData[5]) / allData[5]) * 100;
+
+      let monthlySale;
+      if (allData[5] == 0) {
+        monthlySale = 100;
+      } else {
+        monthlySale = ((allData[6] - allData[5]) / allData[5]) * 100;
+      }
       let MonthlySalesGrouth = Math.round(monthlySale);
 
       let monthInc;
