@@ -237,7 +237,6 @@ module.exports = {
     }
   },
   postPaymentFailed: async (req, res) => {
-    console.log("00000000000000yyyyyyy");
     let id = req.body.userOrderData._id;
 
     await orderModel.updateOne(
@@ -278,15 +277,16 @@ module.exports = {
           // cart remove
           await cartModel.findOneAndRemove({ userId: req.session.userId });
         } else {
+          console.log("pppppppppppppppppppppppppppppppppp88888888888");
           await orderModel.updateOne(
             {
               _id: orderdata._id,
             },
             {
               $set: {
-                orderStatus: "Pending",
-                paymentStatus: "Payment Failed",
-                track: "Payment Error",
+                orderStatus: "Payment Completed",
+                paymentStatus: "orderconfirmed",
+                track: "orderconfirmed",
               },
             }
           );
