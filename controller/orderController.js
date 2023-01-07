@@ -237,6 +237,7 @@ module.exports = {
     }
   },
   postPaymentFailed: async (req, res) => {
+    console.log("00000000000000yyyyyyy");
     let id = req.body.userOrderData._id;
 
     await orderModel.updateOne(
@@ -245,9 +246,9 @@ module.exports = {
       },
       {
         $set: {
-          orderStatus: "orderconfirmed",
-          paymentStatus: "Payment Completed",
-          track: "orderconfirmed",
+          orderStatus: "Pending",
+          paymentStatus: "Payment Pending",
+          track: "Order Pending",
         },
       }
     );
@@ -261,8 +262,6 @@ module.exports = {
     userHelpers
       .veryfiyPayment(orderdata)
       .then(async (rs) => {
-        console.log(rs, "************************");
-        console.log(orderdata, "////////////////////////////////////////////");
         if (orderdata.userOrderData.paymentMethod == "Wallet") {
           let walletAmount = await userModule.findOneAndUpdate(
             { _id: req.session.userId },
