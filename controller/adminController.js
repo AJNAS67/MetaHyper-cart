@@ -92,12 +92,16 @@ module.exports = {
         cys = currentYearSales[0].total;
       }
       let pys = pys1 - cys;
-      console.log(pys,'pys');
+      console.log(pys, "pys");
       let sg;
       try {
-        sg = ((cys - pys) / pys) * 100;
+        if (pyg == 0) {
+          sg = 100;
+        } else {
+          sg = ((cys - pys) / pys) * 100;
+        }
       } catch (error) {
-        sg = 0;
+        sg = 100;
       }
       console.log(sg, "iiiiiiisg====iiiiii");
 
