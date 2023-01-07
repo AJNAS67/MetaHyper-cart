@@ -43,7 +43,7 @@ module.exports = {
       let year = currentDate.getFullYear();
 
       let previousYear = year - 1;
-      console.log(previousYear,'previousYearpreviousYear');
+      console.log(previousYear, "previousYearpreviousYear");
       const previousYearSales = await orderModule.aggregate([
         {
           $match: {
@@ -61,7 +61,7 @@ module.exports = {
           },
         },
       ]);
-      console.log(previousYearSales,'previousYearSalespreviousYearSales');
+      console.log(previousYearSales, "previousYearSalespreviousYearSales");
       const currentYearSales = await orderModule.aggregate([
         {
           $match: {
@@ -78,24 +78,28 @@ module.exports = {
         },
       ]);
 
-      let pys;
+      let pys1;
       let cys;
       if (previousYearSales == "") {
-        pys = 0;
+        pys1 = 0;
       } else {
-        pys = previousYearSales[0].total;
+        pys1 = previousYearSales[0].total;
       }
+
       if (currentYearSales == "") {
         cys = 0;
       } else {
         cys = currentYearSales[0].total;
       }
+      let pys = pys1 - cys;
+      console.log(pys,'pys');
       let sg;
       try {
         sg = ((cys - pys) / pys) * 100;
       } catch (error) {
         sg = 0;
       }
+      console.log(sg, "iiiiiiisg====iiiiii");
 
       let salesGrouth = Math.round(sg);
       const TodaySalesT = await orderModule.aggregate([
