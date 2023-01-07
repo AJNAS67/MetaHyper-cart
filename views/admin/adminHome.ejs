@@ -14,8 +14,9 @@
                   Congratulations Ajnas! 🎉
                 </h5>
                 <p class="mb-4">
-                  You have done <span class="fw-bold"><%=MonthlySalesGrouth%>%</span> more sales
-                  this month. Check your new badge in your profile.
+                  You have done
+                  <span class="fw-bold"><%=MonthlySalesGrouth%>%</span> more
+                  sales this month. Check your new badge in your profile.
                 </p>
 
                 <a href="javascript:;" class="btn btn-sm btn-outline-primary"
@@ -78,16 +79,16 @@
                 <span>Monthly Sales</span>
                 <h3 class="card-title text-nowrap mb-1">₹<%=monthlySales%></h3>
                 <% if(monthInc){ %>
-                  <small class="text-success fw-semibold"
-                  ><i class="bx bx-up-arrow-alt"></i> +<%=MonthlySalesGrouth%>%</small
+                <small class="text-success fw-semibold"
+                  ><i class="bx bx-up-arrow-alt"></i>
+                  +<%=MonthlySalesGrouth%>%</small
                 >
-                <% } else{ %>  
-                  <small class="text-danger fw-semibold"
-                  ><i class="bx bx-down-arrow-alt"></i><%=MonthlySalesGrouth%>%</small
+                <% } else{ %>
+                <small class="text-danger fw-semibold"
+                  ><i class="bx bx-down-arrow-alt"></i
+                  ><%=MonthlySalesGrouth%>%</small
                 >
-               <% } %>
-               
-                
+                <% } %>
               </div>
             </div>
           </div>
@@ -170,18 +171,17 @@
                 <span class="d-block mb-1">Todays Sales</span>
                 <h3 class="card-title text-nowrap mb-2">₹<%=TodaySales%></h3>
                 <% if (daysGrouth) { %>
-                  <small class="text-success fw-semibold"
-                  ><i class="bx bx-up-arrow-alt"></i> +<%=daysGrouthPercentage%>%</small
+                <small class="text-success fw-semibold"
+                  ><i class="bx bx-up-arrow-alt"></i>
+                  +<%=daysGrouthPercentage%>%</small
                 >
-                  <%} else { %>
-                    <small class="text-danger fw-semibold"
-                  ><i class="bx bx-down-arrow-alt"></i> <%=daysGrouthPercentage%>%</small
+                <%} else { %>
+                <small class="text-danger fw-semibold"
+                  ><i class="bx bx-down-arrow-alt"></i>
+                  <%=daysGrouthPercentage%>%</small
                 >
-                
-                  <% } %>
 
-                
-                
+                <% } %>
               </div>
             </div>
           </div>
@@ -413,10 +413,9 @@
                       <h6 class="mb-0 me-1">₹<%=allData[6]%></h6>
                       <small class="text-success fw-semibold">
                         <i class="bx bx-chevron-up"></i>
-                        
+
                         <%=MonthlySalesGrouth%> %
                       </small>
-
                     </div>
                   </div>
                 </div>
@@ -485,11 +484,13 @@
                   class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2"
                 >
                   <div class="me-2">
-                    <small class="text-muted d-block mb-1">Paypal</small>
+                    <small class="text-muted d-block mb-1">Razorpay</small>
                     <h6 class="mb-0">Send money</h6>
                   </div>
                   <div class="user-progress d-flex align-items-center gap-1">
-                    <h6 class="mb-0">+82.6</h6>
+                    <h6 class="mb-0">
+                      +<%=onlinePayment_transaction[0]?.total | 0%>
+                    </h6>
                     <span class="text-muted">INR</span>
                   </div>
                 </div>
@@ -510,7 +511,30 @@
                     <h6 class="mb-0">Mac'D</h6>
                   </div>
                   <div class="user-progress d-flex align-items-center gap-1">
-                    <h6 class="mb-0">+270.69</h6>
+                    <h6 class="mb-0">
+                      + <%=wallet_transaction[0]?.total | 0%>
+                    </h6>
+                    <span class="text-muted">INR</span>
+                  </div>
+                </div>
+              </li>
+              <li class="d-flex mb-4 pb-1">
+                <div class="avatar flex-shrink-0 me-3">
+                  <img
+                    src="../assets/img/icons/unicons/cc-success.png"
+                    alt="User"
+                    class="rounded"
+                  />
+                </div>
+                <div
+                  class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2"
+                >
+                  <div class="me-2">
+                    <small class="text-muted d-block mb-1">Cash on delivery</small>
+                    <h6 class="mb-0">Ordered </h6>
+                  </div>
+                  <div class="user-progress d-flex align-items-center gap-1">
+                    <h6 class="mb-0">+ <%=cash_on_delivery_transaction[0]?.total | 0%></h6>
                     <span class="text-muted">INR</span>
                   </div>
                 </div>
@@ -531,28 +555,7 @@
                     <h6 class="mb-0">Refund</h6>
                   </div>
                   <div class="user-progress d-flex align-items-center gap-1">
-                    <h6 class="mb-0">+637.91</h6>
-                    <span class="text-muted">INR</span>
-                  </div>
-                </div>
-              </li>
-              <li class="d-flex mb-4 pb-1">
-                <div class="avatar flex-shrink-0 me-3">
-                  <img
-                    src="../assets/img/icons/unicons/cc-success.png"
-                    alt="User"
-                    class="rounded"
-                  />
-                </div>
-                <div
-                  class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2"
-                >
-                  <div class="me-2">
-                    <small class="text-muted d-block mb-1">Credit Card</small>
-                    <h6 class="mb-0">Ordered Food</h6>
-                  </div>
-                  <div class="user-progress d-flex align-items-center gap-1">
-                    <h6 class="mb-0">-838.71</h6>
+                    <h6 class="mb-0"> --</h6>
                     <span class="text-muted">INR</span>
                   </div>
                 </div>
@@ -573,28 +576,7 @@
                     <h6 class="mb-0">Starbucks</h6>
                   </div>
                   <div class="user-progress d-flex align-items-center gap-1">
-                    <h6 class="mb-0">+203.33</h6>
-                    <span class="text-muted">INR</span>
-                  </div>
-                </div>
-              </li>
-              <li class="d-flex">
-                <div class="avatar flex-shrink-0 me-3">
-                  <img
-                    src="../assets/img/icons/unicons/cc-warning.png"
-                    alt="User"
-                    class="rounded"
-                  />
-                </div>
-                <div
-                  class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2"
-                >
-                  <div class="me-2">
-                    <small class="text-muted d-block mb-1">Mastercard</small>
-                    <h6 class="mb-0">Ordered Food</h6>
-                  </div>
-                  <div class="user-progress d-flex align-items-center gap-1">
-                    <h6 class="mb-0">-92.45</h6>
+                    <h6 class="mb-0"> --</h6>
                     <span class="text-muted">INR</span>
                   </div>
                 </div>

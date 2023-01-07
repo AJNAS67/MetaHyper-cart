@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const UserModel = require("../model/userModel");
 const categoryModel = require("../model/categoryModel");
 const adminData = require("../model/adminModel");
-const orderModule = require("../model/orderModel");
+const orderModel = require("../model/orderModel");
 const productModel = require("../model/productModel");
 const moment = require("moment");
 const { pieChartDetails } = require("../middleware/pieChart");
@@ -44,7 +44,7 @@ module.exports = {
 
       let previousYear = year - 1;
       console.log(previousYear, "previousYearpreviousYear");
-      const previousYearSales = await orderModule.aggregate([
+      const previousYearSales = await orderModel.aggregate([
         {
           $match: {
             createdAt: {
@@ -61,7 +61,7 @@ module.exports = {
           },
         },
       ]);
-      const currentYearSales = await orderModule.aggregate([
+      const currentYearSales = await orderModel.aggregate([
         {
           $match: {
             createdAt: {
@@ -104,7 +104,7 @@ module.exports = {
       }
 
       let salesGrouth = Math.round(sg);
-      const TodaySalesT = await orderModule.aggregate([
+      const TodaySalesT = await orderModel.aggregate([
         {
           $match: {
             createdAt: {
@@ -120,7 +120,7 @@ module.exports = {
         },
       ]);
       let yesteday = today - 1;
-      const YestrdaySalesT = await orderModule.aggregate([
+      const YestrdaySalesT = await orderModel.aggregate([
         {
           $match: {
             createdAt: {
@@ -139,7 +139,7 @@ module.exports = {
       ]);
       console.log(YestrdaySalesT, "YestrdaySalesT");
 
-      const weaklySalesT = await orderModule.aggregate([
+      const weaklySalesT = await orderModel.aggregate([
         {
           $match: {
             createdAt: {
@@ -156,7 +156,7 @@ module.exports = {
           },
         },
       ]);
-      const monthlySalesT = await orderModule.aggregate([
+      const monthlySalesT = await orderModel.aggregate([
         {
           $match: {
             createdAt: {
@@ -354,6 +354,48 @@ module.exports = {
       } else {
         monthInc = false;
       }
+      const onlinePayment_transaction = await orderModel.aggregate([
+        {
+          $match: {
+            paymentMethod: "Online Payment",
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: "$total" },
+          },
+        },
+      ]);
+      console.log(onlinePayment_transaction,'000000000000');
+
+      const cash_on_delivery_transaction = await orderModel.aggregate([
+        {
+          $match: {
+            paymentMethod: "Cash On Delivery",
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: "$total" },
+          },
+        },
+      ]);
+      console.log(cash_on_delivery_transaction, "cash_on_delivery_transaction");
+      const wallet_transaction = await orderModel.aggregate([
+        {
+          $match: {
+            paymentMethod: "Wallet",
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: "$total" },
+          },
+        },
+      ]);
 
       res.render("admin/adminHome", {
         TodaySales,
@@ -386,6 +428,9 @@ module.exports = {
         monthInc,
         daysGrouthPercentage,
         daysGrouth,
+        wallet_transaction,
+        cash_on_delivery_transaction,
+        onlinePayment_transaction,
       });
     } else {
       res.redirect("/admin");
@@ -463,7 +508,7 @@ module.exports = {
       console.log(year, "year");
 
       let previousYear = year - 1;
-      const previousYearSales = await orderModule.aggregate([
+      const previousYearSales = await orderModel.aggregate([
         {
           $match: {
             createdAt: {
@@ -480,7 +525,7 @@ module.exports = {
           },
         },
       ]);
-      const currentYearSales = await orderModule.aggregate([
+      const currentYearSales = await orderModel.aggregate([
         {
           $match: {
             createdAt: {
@@ -496,7 +541,7 @@ module.exports = {
         },
       ]);
 
-      const TodaySalesT = await orderModule.aggregate([
+      const TodaySalesT = await orderModel.aggregate([
         {
           $match: {
             createdAt: {
@@ -512,7 +557,7 @@ module.exports = {
         },
       ]);
       let yesteday = today - 1;
-      const YestrdaySalesT = await orderModule.aggregate([
+      const YestrdaySalesT = await orderModel.aggregate([
         {
           $match: {
             createdAt: {
@@ -529,7 +574,7 @@ module.exports = {
       ]);
       console.log(YestrdaySalesT, "YestrdaySalesT");
 
-      const weaklySalesT = await orderModule.aggregate([
+      const weaklySalesT = await orderModel.aggregate([
         {
           $match: {
             createdAt: {
@@ -546,7 +591,7 @@ module.exports = {
           },
         },
       ]);
-      const monthlySalesT = await orderModule.aggregate([
+      const monthlySalesT = await orderModel.aggregate([
         {
           $match: {
             createdAt: {
@@ -777,6 +822,47 @@ module.exports = {
       } else {
         monthInc = false;
       }
+      const onlinePayment_transaction = await orderModel.aggregate([
+        {
+          $match: {
+            paymentMethod: "Online Payment",
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: "$total" },
+          },
+        },
+      ]);
+
+      const cash_on_delivery_transaction = await orderModel.aggregate([
+        {
+          $match: {
+            paymentMethod: "Cash On Delivery",
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: "$total" },
+          },
+        },
+      ]);
+      console.log(cash_on_delivery_transaction, "cash_on_delivery_transaction");
+      const wallet_transaction = await orderModel.aggregate([
+        {
+          $match: {
+            paymentMethod: "Wallet",
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: "$total" },
+          },
+        },
+      ]);
 
       res.render("admin/adminHome", {
         TodaySales,
@@ -810,6 +896,9 @@ module.exports = {
         monthInc,
         daysGrouthPercentage,
         daysGrouth,
+        wallet_transaction,
+        cash_on_delivery_transaction,
+        onlinePayment_transaction,
       });
     } else {
       res.redirect("/admin/adminlog");
@@ -840,7 +929,7 @@ module.exports = {
   viewOrderDetails: async (req, res) => {
     let orderId = req.query.id;
     console.log(orderId, "orderIdorderId");
-    let orders = await orderModule.findById(orderId);
+    let orders = await orderModel.findById(orderId);
     console.log(orders, "ooooooooooooooo");
     res.render("admin/viewOrder", { orders });
   },
@@ -856,7 +945,7 @@ module.exports = {
       const today = moment().startOf("day");
 
       console.log(today, "today");
-      orders = await orderModule.find({
+      orders = await orderModel.find({
         orderStatus: "Delivered",
         createdAt: {
           $gte: today.toDate(),
@@ -867,7 +956,7 @@ module.exports = {
       console.log(total, "total");
     } else if (sort.no == 2) {
       const month = moment().startOf("month");
-      orders = await orderModule.find({
+      orders = await orderModel.find({
         orderStatus: "Delivered",
         createdAt: {
           $gte: month.toDate(),
@@ -878,7 +967,7 @@ module.exports = {
       console.log(total, "total");
     } else if (sort.no == 3) {
       const year = moment().startOf("year");
-      orders = await orderModule.find({
+      orders = await orderModel.find({
         orderStatus: "Delivered",
         createdAt: {
           $gte: year.toDate(),
@@ -887,7 +976,7 @@ module.exports = {
       });
       total = orders.reduce((acc, cur) => acc + cur.total, 0);
     } else {
-      orders = await orderModule.find();
+      orders = await orderModel.find();
       total = orders.reduce((acc, cur) => acc + cur.total, 0);
     }
 

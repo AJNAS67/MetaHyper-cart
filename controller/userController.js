@@ -3,9 +3,9 @@ const productModel = require("../model/productModel");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const cartModel = require("../model/cartModel");
+const orderModel = require("../model/orderModel");
 const { cartAndWishlstNum } = require("../middleware/cart-wishlist-number");
 const flash = require("connect-flash");
-const { render } = require("ejs");
 function otpCreation() {
   var otp = Math.random();
   var otp = otp * 1000000;
@@ -215,6 +215,8 @@ module.exports = {
   },
 
   homeView: async (req, res) => {
+
+
     let userId = req.session.userId;
     const cartAndWishlist = await cartAndWishlstNum(userId);
 
