@@ -1,5 +1,5 @@
 <%- include('./partials/userHeader.ejs') %>
-<!-- Categories Section Begin -->
+
 <section class="categories">
   <div class="container-fluid">
     <div class="row">
@@ -99,7 +99,7 @@
       <% products.forEach(function(product) { %>
 
       <div
-        class="col-lg-3 col-md-4 col-sm-6 mix <% if (product.category.category =='Men') { %> men<% } %> <% if (product.category.category =='Women') { %> women<% } %> <% if (product.category.category =='Accessories') { %> accessories<% } %> <% if (product.category.category =='Cosmetics') { %> cosmetic<% } %>  <% if (product.category.category =='Kids') { %> kid<% } %>"
+        class="col-lg-3 col-md-4 col-sm-6 mix <% if (product.category.category =='Men') { %> men<% } %> <% if (product.category.category =='Women') { %> women<% } %> <% if (product.category.category =='Accessories') { %> accessories<% } %> <% if (product.category.category =='Cosmetics') { %> cosmetic<% } %> <% if (product.category.category =='Kids') { %> kid<% } %>"
       >
         <div class="product__item">
           <div

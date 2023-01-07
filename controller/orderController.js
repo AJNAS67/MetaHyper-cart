@@ -114,12 +114,12 @@ module.exports = {
         quantity: cart.products.length,
         total: subtotal,
         paymentMethod: paymentMethod,
-        paymentStatus: "Payment Completed",
-        orderStatus: "orderconfirmed",
-        track: "orderconfirmed",
+        paymentStatus: "Payment Pending",
+        orderStatus: "Pending",
+        track: "Order Pending",
         estimatedDate: estimatedDate,
       });
-      await cart.remove();
+      // await cart.remove();
       newOrder.save().then((result) => {
         let userOrderData = result;
         // console.log(result, "result");
@@ -148,7 +148,8 @@ module.exports = {
       });
     } else {
       const walletBlance = user.useWallet;
-      if (walletBlance == 0) {
+
+      if ((walletBlance == 0) | (walletBlance == undefined)) {
         res.json({ noBalane: true });
       } else {
         if (walletBlance < subtotal) {
@@ -244,9 +245,9 @@ module.exports = {
       },
       {
         $set: {
-          orderStatus: "Pending",
-          paymentStatus: "Payment Failed",
-          track: "Payment Error",
+          orderStatus: "orderconfirmed",
+          paymentStatus: "Payment Completed",
+          track: "orderconfirmed",
         },
       }
     );
@@ -260,6 +261,8 @@ module.exports = {
     userHelpers
       .veryfiyPayment(orderdata)
       .then(async (rs) => {
+        console.log(rs, "************************");
+        console.log(orderdata, "////////////////////////////////////////////");
         if (orderdata.userOrderData.paymentMethod == "Wallet") {
           let walletAmount = await userModule.findOneAndUpdate(
             { _id: req.session.userId },
@@ -275,9 +278,22 @@ module.exports = {
 
           // cart remove
           await cartModel.findOneAndRemove({ userId: req.session.userId });
+        } else {
+          await orderModel.updateOne(
+            {
+              _id: orderdata._id,
+            },
+            {
+              $set: {
+                orderStatus: "Pending",
+                paymentStatus: "Payment Failed",
+                track: "Payment Error",
+              },
+            }
+          );
+          await cartModel.findOneAndRemove({ userId: req.session.userId });
+          res.json({ status: true });
         }
-
-        res.json({ status: true });
       })
       .catch(async (err) => {
         await orderModel

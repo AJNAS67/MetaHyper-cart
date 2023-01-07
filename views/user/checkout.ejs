@@ -149,6 +149,10 @@
 </section>
 <!-- Checkout Section End -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+/>
 <script>
   $("#checkout-form").submit((e) => {
     let razorpayoderData;
@@ -175,6 +179,16 @@
               location.href = "/";
             }
           });
+        } else if ((response.noBalane = true)) {
+          Swal.fire({
+            title: "Sorry ! Your Wallet is Empty",
+            showClass: {
+              popup: "animate__animated animate__fadeInDown",
+            },
+            hideClass: {
+              popup: "animate__animated animate__fadeOutUp",
+            },
+          });
         } else if (response.onlinePayment) {
           console.log(response, "responseresponseonline");
           razorpayoderData = response.razorpayOrderData;
@@ -183,7 +197,7 @@
           var options = {
             key: response.razorpayOrderData.notes.key1, // Enter the Key ID generated from the Dashboard
             amount: response.razorpayOrderData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-            currency: "USD",
+            currency: "INR",
             name: " Meta Hyprt mart",
             description: "Test Transaction",
             image: "https://example.com/your_logo",
@@ -228,8 +242,6 @@
     userOrderData,
     walletBalance
   ) {
-    
-
     $.ajax({
       url: "/verifyPayment",
       data: {
@@ -253,6 +265,24 @@
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
               location.href = "/viewOrders";
+            } else if (result.isDenied) {
+              location.href = "/";
+            }
+          });
+        } else if ((response.noBalane = true)) {
+          console.log("ppppppppp");
+
+          Swal.fire({
+            title: "No Balence awailabe in wallet !! ",
+            icon: "error",
+            showDenyButton: true,
+            confirmButtonText: "Shoping Cart",
+            denyButtonText: `Continue Shopping`,
+            toast: true,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              location.href = "/shoping-cart";
             } else if (result.isDenied) {
               location.href = "/";
             }

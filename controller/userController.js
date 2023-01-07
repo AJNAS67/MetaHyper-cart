@@ -143,6 +143,7 @@ module.exports = {
   getCosmeticsFilter: async (req, res) => {
     const minPrice = req.query.minPrice || 100;
     const maxPrice = req.query.maxPrice || 5000;
+    let userId = req.session.userId;
     const cartAndWishlist = await cartAndWishlstNum(userId);
 
     var query = await productModel.find().populate({
@@ -177,6 +178,7 @@ module.exports = {
   getAccessoriesFilter: async (req, res) => {
     const minPrice = req.query.minPrice || 100;
     const maxPrice = req.query.maxPrice || 5000;
+    let userId = req.session.userId;
     const cartAndWishlist = await cartAndWishlstNum(userId);
 
     var query = await productModel.find().populate({
@@ -846,12 +848,19 @@ module.exports = {
       let user = req.session.user;
 
       const userDetail = await User.findById(userId);
+      let walletBallance;
+      if ((userDetail.useWallet == undefined) | (userDetail.useWallet == 0)) {
+        walletBallance = 0;
+      } else {
+        walletBallance = userDetail.useWallet;
+      }
 
       res.render("user/profile", {
         login: true,
         userDetail,
         user,
         cartAndWishlist,
+        walletBallance,
       });
     } catch (err) {
       res.status(429).render("admin/error-429");
