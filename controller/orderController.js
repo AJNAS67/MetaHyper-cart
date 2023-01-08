@@ -44,6 +44,7 @@ module.exports = {
   },
   postCheckOut: async (req, res) => {
     const { address, paymentMethod } = req.body;
+    console.log(paymentMethod,'paymentMethod');
     let userId = req.session.userId;
     const user = await userModule.findById(userId);
 

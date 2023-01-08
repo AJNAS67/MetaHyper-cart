@@ -367,7 +367,7 @@ module.exports = {
           },
         },
       ]);
-      console.log(onlinePayment_transaction,'000000000000');
+      console.log(onlinePayment_transaction, "000000000000");
 
       const cash_on_delivery_transaction = await orderModel.aggregate([
         {
@@ -930,7 +930,6 @@ module.exports = {
     let orderId = req.query.id;
     console.log(orderId, "orderIdorderId");
     let orders = await orderModel.findById(orderId);
-    console.log(orders, "ooooooooooooooo");
     res.render("admin/viewOrder", { orders });
   },
   salesReport: async (req, res) => {
