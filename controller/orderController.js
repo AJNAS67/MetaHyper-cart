@@ -277,10 +277,9 @@ module.exports = {
           // cart remove
           await cartModel.findOneAndRemove({ userId: req.session.userId });
         } else {
-          console.log("pppppppppppppppppppppppppppppppppp88888888888");
           await orderModel.updateOne(
             {
-              _id: orderdata._id,
+              _id: orderdata.userOrderData._id,
             },
             {
               $set: {
@@ -311,11 +310,6 @@ module.exports = {
             console.log(rk, "payment status");
             res.json({ status: "Payment Failed" });
           });
-        // order.paymentStatus = "Payment Failed ";
-        // order.orderStatus = "Pending";
-
-        // order.save();
-        // res.json({ status: "Payment Failed" });
       });
   },
   postOderSuccess: async (req, res) => {
