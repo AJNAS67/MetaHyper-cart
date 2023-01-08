@@ -51,11 +51,11 @@
                 </td>
                 <td class="cart__price">₹ <%=p.ProductId.price%></td>
 
-                <td class="cart__total" style="width:161px !important ;">
-                  <div class="cart__btn" style="margin-top: 45px;">
+                <td class="cart__total" style="width: 161px !important ">
+                  <div class="cart__btn" style="margin-top: 45px">
                     <a
                       href="/"
-                      onclick="addTocart('<%p.ProductId._id%>','<%=p.name%>','<%=p.ProductId.price%>','<%=product.quantity%>','<%=product.image[0]%>')"
+                      onclick="addTocart('<%p.ProductId._id%>','<%=p.name%>','<%=p.ProductId.price%>','<%=p.ProductId.quantity%>','<%=p.ProductId.image[0]%>')"
                       >Add to Cart</a
                     >
                   </div>
@@ -65,8 +65,6 @@
                     ><span class="icon_close"></span
                   ></a>
                 </td>
-
-                <!-- <td class="cart__close"><span class="icon_close"></span></td> -->
               </tr>
               <% }) %>
             </tbody>

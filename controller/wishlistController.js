@@ -20,7 +20,6 @@ module.exports = {
         req.session.wishNum = wishView.myWishlist.length;
       }
       wishNum = req.session.wishNum;
-      console.log(wishView, "wishView");
 
       cartNum = req.session.cartNum;
       res.render("user/wishlist", {
