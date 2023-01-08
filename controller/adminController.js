@@ -311,7 +311,6 @@ module.exports = {
       } else {
         monthlySales = monthlySalesT[0].total;
       }
-  
 
       let daysGrouthPercentage;
       if (YestrdaySales != 0) {
@@ -622,7 +621,6 @@ module.exports = {
         }
       });
 
-
       var prodKids = await productModel.find().populate({
         path: "category",
         match: {
@@ -760,9 +758,8 @@ module.exports = {
         sg = 100;
       }
 
-    
       let salesGrouth = Math.round(sg);
-    
+
       var WomenCount = WomenCount.length;
       var AccessoriesCount = AccessoriesCount.length;
       var KidsCount = KidsCount.length;
@@ -915,7 +912,6 @@ module.exports = {
     res.render("admin/viewOrder", { orders });
   },
   salesReport: async (req, res) => {
-
     let orders;
     let total;
     let sort = req.query;
@@ -956,5 +952,9 @@ module.exports = {
     }
 
     res.render("admin/salesReport", { orders, total, number: req.query.no });
+  },
+  adminLogout: (req, res) => {
+    req.session.adminLogin = false;
+    res.redirect("/admin");
   },
 };
