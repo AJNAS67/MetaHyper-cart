@@ -13,10 +13,7 @@ function otpCreation() {
 
   return otp;
 }
-// var otp = Math.random();
-// otp = otp * 1000000;
-// otp = parseInt(otp);
-// console.log(otp);
+
 let transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
@@ -77,7 +74,6 @@ module.exports = {
     const maxPrice = req.query.maxPrice || 5000;
     const cartAndWishlist = await cartAndWishlstNum(userId);
 
-    console.log(minPrice, "minPriceminPrice");
     var query = await productModel.find().populate({
       path: "category",
       match: {
@@ -254,7 +250,6 @@ module.exports = {
     });
 
     if (!user) {
-      console.log("notUser");
 
       const error = "User Email not found";
       req.flash("user", error);
@@ -623,7 +618,6 @@ module.exports = {
 
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          return console.log(error), "otp errorrrrrrrrrr";
         }
         console.log("Message sent: %s", info.messageId);
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
@@ -695,7 +689,6 @@ module.exports = {
 
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          return console.log(error), "otp errorrrrrrrrrr";
         }
         console.log("Message sent: %s", info.messageId);
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
@@ -766,30 +759,25 @@ module.exports = {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        return console.log(error), "otp errorrrrrrrrrr";
+        res.redirect('/')
       }
       console.log("Message sent: %s", info.messageId);
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-      // const otpError = req.flash("message");
       res.redirect("/otp");
-      // res.render("user/otpPage", { login: false, cartAndWishlist, otpError });
     });
   },
 
   signUp: (req, res) => {
     const { user_name, email, password, confirm } = req.body;
     if (!user_name || !email || !password || !confirm) {
-      console.log("Fill empty fields");
     }
 
     //Confirm Passwords
     if (password !== confirm) {
-      console.log("Password must match");
     } else {
       //Validation
       User.findOne({ email: email }).then((user) => {
         if (user) {
-          console.log("email exists");
           res.render("user/usersignup", {
             user_name,
             email,
@@ -819,17 +807,8 @@ module.exports = {
       });
     }
 
-    // res.render("user/otp");
   },
-  // doLogout: (req, res) => {
-  //   req.logout(function (err) {
-  //     if (err) {
-  //       console.log(err);
-  //     } else {
-  //       res.redirect("/");
-  //     }
-  //   });
-  // },
+
   logout: (req, res) => {
     req.session.loggedOut = true;
     // if(req.session.loggedOut){
@@ -963,8 +942,7 @@ module.exports = {
         },
       }
     )
-      .then((rk) => {
-        console.log(rk, "res update");
+      .then(() => {
         res.redirect("/userProfile");
       })
       .catch((err) => {
@@ -1013,13 +991,10 @@ module.exports = {
     try {
       var userOtp = [];
       for (let value of Object.values(req.body)) {
-        console.log(value);
         userOtp.push(value);
       }
       var userOtp = userOtp.join("");
-      console.log(userOtp, "userOtpp");
       if (userOtp == otp) {
-        console.log("otp is currect");
         const userInvalid = req.flash("message");
         res.render("user/reset-password", {
           login: false,

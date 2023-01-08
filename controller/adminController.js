@@ -43,7 +43,6 @@ module.exports = {
       let year = currentDate.getFullYear();
 
       let previousYear = year - 1;
-      console.log(previousYear, "previousYearpreviousYear");
       const previousYearSales = await orderModel.aggregate([
         {
           $match: {
@@ -137,7 +136,6 @@ module.exports = {
           },
         },
       ]);
-      console.log(YestrdaySalesT, "YestrdaySalesT");
 
       const weaklySalesT = await orderModel.aggregate([
         {
@@ -313,8 +311,7 @@ module.exports = {
       } else {
         monthlySales = monthlySalesT[0].total;
       }
-      console.log(TodaySales, "TodaySales");
-      console.log(YestrdaySales, "YestrdaySales");
+  
 
       let daysGrouthPercentage;
       if (YestrdaySales != 0) {
@@ -324,7 +321,6 @@ module.exports = {
       } else {
         daysGrouthPercentage = 100;
       }
-      console.log(daysGrouthPercentage, "daysGrouthPercentage");
       let daysGrouth;
       if (TodaySales - YestrdaySales >= 0) {
         daysGrouth = true;
@@ -332,7 +328,6 @@ module.exports = {
         daysGrouth = false;
       }
 
-      console.log(daysGrouth, "daysGrouthdaysGrouth");
       var WomenCount = WomenCount.length;
       var AccessoriesCount = AccessoriesCount.length;
       var KidsCount = KidsCount.length;
@@ -340,7 +335,6 @@ module.exports = {
       var CosmeticsCount = CosmeticsCount.length;
       let test = [1, 2, 3, 4];
       const allData = await pieChartDetails();
-      console.log(allData, "allData");
       let monthlySale;
       if (allData[5] == 0) {
         monthlySale = 100;
@@ -367,7 +361,6 @@ module.exports = {
           },
         },
       ]);
-      console.log(onlinePayment_transaction, "000000000000");
 
       const cash_on_delivery_transaction = await orderModel.aggregate([
         {
@@ -382,7 +375,6 @@ module.exports = {
           },
         },
       ]);
-      console.log(cash_on_delivery_transaction, "cash_on_delivery_transaction");
       const wallet_transaction = await orderModel.aggregate([
         {
           $match: {
@@ -396,7 +388,6 @@ module.exports = {
           },
         },
       ]);
-      console.log(wallet_transaction,'wallet_transaction');
 
       res.render("admin/adminHome", {
         TodaySales,
@@ -450,7 +441,6 @@ module.exports = {
 
     const isMatch = await bcrypt.compare(password, admin.password);
     if (!isMatch) {
-      console.log("not math");
       return res.redirect("/admin");
     }
     req.session.adminLogin = true;
@@ -501,12 +491,8 @@ module.exports = {
       } else {
         startdate = today - 7;
       }
-      console.log(today, "today");
-      console.log(startdate, "start dat");
       let month = currentDate.getMonth();
-      console.log(month, "month");
       let year = currentDate.getFullYear();
-      console.log(year, "year");
 
       let previousYear = year - 1;
       const previousYearSales = await orderModel.aggregate([
@@ -575,7 +561,6 @@ module.exports = {
           },
         },
       ]);
-      console.log(YestrdaySalesT, "YestrdaySalesT");
 
       const weaklySalesT = await orderModel.aggregate([
         {
@@ -637,7 +622,6 @@ module.exports = {
         }
       });
 
-      console.log(MenCount.length, "MenCount");
 
       var prodKids = await productModel.find().populate({
         path: "category",
@@ -734,7 +718,6 @@ module.exports = {
       } else {
         weaklySales = weaklySalesT[0].total;
       }
-      console.log(weaklySales, "weaklySalesweaklySalesweaklySales");
       if (TodaySalesT == "") {
         TodaySales = 0;
       } else {
@@ -777,14 +760,9 @@ module.exports = {
         sg = 100;
       }
 
-      // let pys = previousYearSales[0].total;
-      // let cys = currentYearSales[0].total;
-      // let sg = ((cys - pys) / pys) * 100;
-      // console.log(sg, "salesGrouth");
+    
       let salesGrouth = Math.round(sg);
-      // let TodaySales = TodaySalesT.total;
-      // let weaklySales = weaklySalesT[0].total;
-      // let monthlySales = monthlySalesT[0].total;
+    
       var WomenCount = WomenCount.length;
       var AccessoriesCount = AccessoriesCount.length;
       var KidsCount = KidsCount.length;
@@ -807,7 +785,6 @@ module.exports = {
       } else {
         daysGrouthPercentage = 100;
       }
-      console.log(daysGrouthPercentage, "daysGrouthPercentage");
       let daysGrouth;
       if (TodaySales - YestrdaySales >= 0) {
         daysGrouth = true;
@@ -856,7 +833,6 @@ module.exports = {
           },
         },
       ]);
-      console.log(cash_on_delivery_transaction, "cash_on_delivery_transaction");
       const wallet_transaction = await orderModel.aggregate([
         {
           $match: {
@@ -870,7 +846,6 @@ module.exports = {
           },
         },
       ]);
-      console.log(wallet_transaction,'wallet_transactionwallet_transaction');
 
       res.render("admin/adminHome", {
         TodaySales,
@@ -936,22 +911,17 @@ module.exports = {
   },
   viewOrderDetails: async (req, res) => {
     let orderId = req.query.id;
-    console.log(orderId, "orderIdorderId");
     let orders = await orderModel.findById(orderId);
     res.render("admin/viewOrder", { orders });
   },
   salesReport: async (req, res) => {
-    // res.render('admin/salesReport')
 
     let orders;
     let total;
     let sort = req.query;
-    console.log(sort, "sort");
     if (sort.no == 1) {
-      console.log("jij");
       const today = moment().startOf("day");
 
-      console.log(today, "today");
       orders = await orderModel.find({
         orderStatus: "Delivered",
         createdAt: {
@@ -960,7 +930,6 @@ module.exports = {
         },
       });
       total = orders.reduce((acc, cur) => acc + cur.total, 0);
-      console.log(total, "total");
     } else if (sort.no == 2) {
       const month = moment().startOf("month");
       orders = await orderModel.find({
@@ -971,7 +940,6 @@ module.exports = {
         },
       });
       total = orders.reduce((acc, cur) => acc + cur.total, 0);
-      console.log(total, "total");
     } else if (sort.no == 3) {
       const year = moment().startOf("year");
       orders = await orderModel.find({
