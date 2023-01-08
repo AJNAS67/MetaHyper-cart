@@ -561,7 +561,9 @@ module.exports = {
         {
           $match: {
             createdAt: {
-              $gte: new Date(new Date(year, month, -1).setHours(00, 00, 00)),
+              $gte: new Date(
+                new Date(year, month, yesteday).setHours(00, 00, 00)
+              ),
             },
           },
         },
@@ -791,10 +793,7 @@ module.exports = {
         CosmeticsTotalProdAvailable +
         WomenCountTotalProdAvailable;
       let daysGrouthPercentage;
-      let daysGrouth;
       let YestrdaySales;
-      console.log(YestrdaySales, "YestrdaySales,");
-
       if (YestrdaySales != 0) {
         daysGrouthPercentage = Math.round(
           ((TodaySales - YestrdaySales) / YestrdaySales) * 100
@@ -802,6 +801,8 @@ module.exports = {
       } else {
         daysGrouthPercentage = 100;
       }
+      console.log(daysGrouthPercentage, "daysGrouthPercentage");
+      let daysGrouth;
       if (TodaySales - YestrdaySales >= 0) {
         daysGrouth = true;
       } else {
