@@ -396,6 +396,7 @@ module.exports = {
           },
         },
       ]);
+      console.log(wallet_transaction,'wallet_transaction');
 
       res.render("admin/adminHome", {
         TodaySales,
@@ -727,6 +728,7 @@ module.exports = {
       let weaklySales;
       let TodaySales;
       let monthlySales;
+      let YestrdaySales;
       if (weaklySalesT == "") {
         weaklySales = 0;
       } else {
@@ -737,6 +739,11 @@ module.exports = {
         TodaySales = 0;
       } else {
         TodaySales = TodaySalesT[0].total;
+      }
+      if (YestrdaySalesT == "") {
+        YestrdaySales = 0;
+      } else {
+        YestrdaySales = YestrdaySalesT[0].total;
       }
       if (monthlySalesT == "") {
         monthlySales = 0;
@@ -793,7 +800,6 @@ module.exports = {
         CosmeticsTotalProdAvailable +
         WomenCountTotalProdAvailable;
       let daysGrouthPercentage;
-      let YestrdaySales;
       if (YestrdaySales != 0) {
         daysGrouthPercentage = Math.round(
           ((TodaySales - YestrdaySales) / YestrdaySales) * 100
@@ -864,6 +870,7 @@ module.exports = {
           },
         },
       ]);
+      console.log(wallet_transaction,'wallet_transactionwallet_transaction');
 
       res.render("admin/adminHome", {
         TodaySales,
